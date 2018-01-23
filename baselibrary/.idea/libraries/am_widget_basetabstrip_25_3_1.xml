@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="am.widget:basetabstrip-25.3.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/basetabstrip-25.3.1.aar/53670a1593e1905b232f7026784a3a64/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/basetabstrip-25.3.1.aar/53670a1593e1905b232f7026784a3a64/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/am.widget/basetabstrip/25.3.1/66c2d5764f17e3ee44050ac4e026e36b7b0453be/basetabstrip-25.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

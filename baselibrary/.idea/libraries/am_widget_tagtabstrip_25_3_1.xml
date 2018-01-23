@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="am.widget:tagtabstrip-25.3.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tagtabstrip-25.3.1.aar/697ecfc103023a5010e28a66bb07b812/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/tagtabstrip-25.3.1.aar/697ecfc103023a5010e28a66bb07b812/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/am.widget/tagtabstrip/25.3.1/3e701e530ae5a4c80d9d791bd29f6a0c825e594a/tagtabstrip-25.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

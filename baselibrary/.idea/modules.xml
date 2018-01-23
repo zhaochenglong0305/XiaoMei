@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../SmallVideoLib2/SmallVideoLib2.iml" filepath="$PROJECT_DIR$/../SmallVideoLib2/SmallVideoLib2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WineSocial.iml" filepath="$PROJECT_DIR$/../WineSocial.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app/app.iml" filepath="$PROJECT_DIR$/../app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/baselibrary.iml" filepath="$PROJECT_DIR$/baselibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../checkpermissions/checkpermissions.iml" filepath="$PROJECT_DIR$/../checkpermissions/checkpermissions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../dragwithflowlayout/dragwithflowlayout.iml" filepath="$PROJECT_DIR$/../dragwithflowlayout/dragwithflowlayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../jiaozivideoplayer/jiaozivideoplayer.iml" filepath="$PROJECT_DIR$/../jiaozivideoplayer/jiaozivideoplayer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../multi_image_selector/multi_image_selector.iml" filepath="$PROJECT_DIR$/../multi_image_selector/multi_image_selector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../pickerview/pickerview.iml" filepath="$PROJECT_DIR$/../pickerview/pickerview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../switch_button/switch_button.iml" filepath="$PROJECT_DIR$/../switch_button/switch_button.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../uikit/uikit.iml" filepath="$PROJECT_DIR$/../uikit/uikit.iml" />
+    </modules>
+  </component>
+</project>
