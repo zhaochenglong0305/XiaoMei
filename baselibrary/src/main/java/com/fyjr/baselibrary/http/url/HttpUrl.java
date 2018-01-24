@@ -15,12 +15,12 @@ public class HttpUrl {
     /**
      * 测试服务器
      */
-    public static String BASE_URL = "http://192.168.0.17:8080/";
+    public static String BASE_URL = "http://113.6.252.165:8081/";
 
     /**
      * 登录
      */
-    public static String LOGIN = "clubApp/login";
+    public static String LOGIN = "webservice/Json/Login.aspx";
 
 
     /**

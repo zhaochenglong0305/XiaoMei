@@ -10,21 +10,21 @@ public class BaseResponseData {
     /**
      * 成功
      */
-    public static final String STATE_OK = "ok";
+    public static final String Code_OK = "1";
     /**
      * 失败
      */
-    public static final String STATE_FAIL = "fail";
+    public static final String Code_FAIL = "0";
 
-    private String state;
+    private String Code;
     private String msg;
 
-    public String getState() {
-        return state;
+    public String getCode() {
+        return Code;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setCode(String code) {
+        Code = code;
     }
 
     public String getMsg() {
@@ -38,7 +38,7 @@ public class BaseResponseData {
     @Override
     public String toString() {
         return "BaseResponseData{" +
-                "state='" + state + '\'' +
+                "state='" + Code + '\'' +
                 ", msg='" + msg + '\'' +
                 '}';
     }

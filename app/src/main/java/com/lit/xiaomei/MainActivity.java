@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.widget.RadioGroup;
 
+import com.blanke.xsocket.tcp.client.XTcpClient;
+import com.blanke.xsocket.tcp.client.bean.TargetInfo;
+import com.blanke.xsocket.tcp.client.bean.TcpMsg;
+import com.blanke.xsocket.tcp.client.listener.TcpClientListener;
 import com.fyjr.baselibrary.base.BaseActivity;
+import com.fyjr.baselibrary.http.url.HttpUrl;
 import com.lit.xiaomei.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -16,7 +21,7 @@ import fragment.MineFragment;
 import fragment.ReleaseFragment;
 import fragment.TubeCarFragment;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener,TcpClientListener {
     private List<Fragment> fragments;
     private TubeCarFragment tubeCarFragment;
     private ReleaseFragment releaseFragment;
@@ -24,6 +29,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private MineFragment mineFragment;
     private int currentIndex = 0;
     private int oldIndex = 0;
+    private XTcpClient xTcpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,5 +95,35 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             ft.show(fragments.get(currentIndex)).commit();
             oldIndex = currentIndex;
         }
+    }
+    private void initSocket(){
+        String ip = HttpUrl.BASE_URL.substring(HttpUrl.BASE_URL.indexOf("//")+2,HttpUrl.BASE_URL.indexOf(":8081"));
+        TargetInfo targetInfo = new TargetInfo(ip, 7600);
+        xTcpClient = XTcpClient.getTcpClient(targetInfo);
+    }
+
+    @Override
+    public void onConnected(XTcpClient client) {
+
+    }
+
+    @Override
+    public void onSended(XTcpClient client, TcpMsg tcpMsg) {
+
+    }
+
+    @Override
+    public void onDisconnected(XTcpClient client, String msg, Exception e) {
+
+    }
+
+    @Override
+    public void onReceive(XTcpClient client, TcpMsg tcpMsg) {
+
+    }
+
+    @Override
+    public void onValidationFail(XTcpClient client, TcpMsg tcpMsg) {
+
     }
 }

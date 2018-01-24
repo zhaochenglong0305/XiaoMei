@@ -31,7 +31,7 @@ public abstract class HttpCallBack<T> implements Callback<T> {
             if (response.isSuccessful()) {
                 String value = JsonUtils.toJson(response.body());
                 BaseResponseData baseResponseData = JsonUtils.parse(value, BaseResponseData.class);
-                if (TextUtils.equals(BaseResponseData.STATE_OK, baseResponseData.getState())) {
+                if (TextUtils.equals(BaseResponseData.Code_OK, baseResponseData.getCode())) {
                     //根据泛型将json转为对象
                     Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
                     String typeStr = type.toString();
@@ -45,7 +45,7 @@ public abstract class HttpCallBack<T> implements Callback<T> {
                         }
                     }
                 } else {
-                    onFail(1, TextUtils.isEmpty(baseResponseData.getMsg()) ? "请求失败" : baseResponseData.getMsg());
+                    onFail(0, TextUtils.isEmpty(baseResponseData.getMsg()) ? "请求失败" : baseResponseData.getMsg());
                 }
             } else {
                 onFail(response.code(), response.errorBody().string());

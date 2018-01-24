@@ -92,6 +92,7 @@
                     android:gravity="center">
 
                     <CheckBox
+                        android:id="@+id/cb_remember_password"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -112,6 +113,7 @@
                     android:gravity="center">
 
                     <CheckBox
+                        android:id="@+id/cb_automatic_logon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"

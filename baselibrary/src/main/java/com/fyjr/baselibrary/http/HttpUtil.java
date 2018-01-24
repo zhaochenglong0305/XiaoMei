@@ -1,6 +1,7 @@
 package com.fyjr.baselibrary.http;
 
 
+import android.provider.Settings;
 import android.text.TextUtils;
 
 import com.fyjr.baselibrary.http.url.HttpUrl;
@@ -8,6 +9,7 @@ import com.fyjr.baselibrary.http.url.HttpUrl;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -75,17 +77,33 @@ public class HttpUtil {
     /**
      * 登录
      *
+     * @param NetID      用户名
+     * @param PWord      密码
+     * @param key        唯一标识
+     * @param Type       用户类型：1司机，0货主
+     * @param TextFormat 返回格式  字符串 0 | json 1
      * @param callBack
      */
-    public void login(String userName, String passWord, String deviceCode, String nickName, String headUrl, int loginType, Callback callBack) {
+    public void login(String NetID, String PWord, String key, String Type, String TextFormat, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
-        map.put("userName", userName);
-        map.put("passWord", passWord);
-        map.put("deviceCode", deviceCode);
-        map.put("nickName", nickName);
-        map.put("headUrl", headUrl);
-        map.put("loginType", loginType);
-        doPost(HttpUrl.LOGIN, map, callBack);
+        map.put("NetID", NetID);
+        map.put("PWord", PWord);
+        map.put("key", key);
+        map.put("Type", Type);
+        map.put("TextFormat", TextFormat);
+//        doPost(HttpUrl.LOGIN, map, callBack);
+        doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
     }
+
+    private String pinUrl(Map<String, Object> map) {
+        String pin = "?";
+        Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, Object> entry = it.next();
+            pin = pin + entry.getKey() + "=" + entry.getValue() + "&";
+        }
+        return pin;
+    }
+
 
 }
