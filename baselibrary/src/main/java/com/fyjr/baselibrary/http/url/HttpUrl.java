@@ -22,18 +22,11 @@ public class HttpUrl {
      */
     public static String LOGIN = "webservice/Json/Login.aspx";
 
+    /**
+     * 信息搜索
+     */
+    public static String SEARCHINFORMATION = "webservice/search/GetSearData.aspx";
 
-    /**
-     * 注册
-     */
-    public static String REGISTER = "clubApp/login/register";
-    /**
-     * 手机发送验证码
-     */
-    public static String SENDSMS = "clubApp/login/sendSMS";
-    /**
-     * 修改密码或者找回密码
-     */
-    public static String UPDATEPASSWORD = "clubApp/login/updatePassWord";
+
 
 }

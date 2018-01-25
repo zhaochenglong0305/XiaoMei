@@ -31,7 +31,7 @@ public abstract class HttpCallBack<T> implements Callback<T> {
             if (response.isSuccessful()) {
                 String value = JsonUtils.toJson(response.body());
                 BaseResponseData baseResponseData = JsonUtils.parse(value, BaseResponseData.class);
-                if (TextUtils.equals(BaseResponseData.Code_OK, baseResponseData.getCode())) {
+                if (TextUtils.equals(BaseResponseData.Code_OK, baseResponseData.getCode())||TextUtils.equals(BaseResponseData.Code_OK, baseResponseData.getStatus())) {
                     //根据泛型将json转为对象
                     Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
                     String typeStr = type.toString();

@@ -95,6 +95,25 @@ public class HttpUtil {
         doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
     }
 
+    public void searchInformation(String USER, String PASS, String KEYY,
+                                  String INXH, String PROV, String CITY,
+                                  String INCITY, String INCLASS, String INPHONE,
+                                  String INFOR, String TextFormat, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("USER", USER);
+        map.put("PASS", PASS);
+        map.put("KEYY", KEYY);
+        map.put("INXH", INXH);
+        map.put("PROV", PROV);
+        map.put("CITY", CITY);
+        map.put("INCITY", INCITY);
+        map.put("INCLASS", INCLASS);
+        map.put("INPHONE", INPHONE);
+        map.put("INFOR", INFOR);
+        map.put("TextFormat", TextFormat);
+        doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
+    }
+
     private String pinUrl(Map<String, Object> map) {
         String pin = "?";
         Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator();
