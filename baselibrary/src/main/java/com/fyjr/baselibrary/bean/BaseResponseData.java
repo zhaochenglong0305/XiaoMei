@@ -17,7 +17,16 @@ public class BaseResponseData {
     public static final String Code_FAIL = "0";
 
     private String Code;
+    private String status;
     private String msg;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getCode() {
         return Code;
