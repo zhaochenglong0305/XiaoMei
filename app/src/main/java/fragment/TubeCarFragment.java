@@ -11,6 +11,9 @@ import com.fyjr.baselibrary.base.BaseFragment;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.FragmentTubeCarBinding;
 
+/**
+ * 管车Fragment
+ */
 public class TubeCarFragment extends BaseFragment<FragmentTubeCarBinding> {
 
 

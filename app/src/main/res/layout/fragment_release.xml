@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="fragment.ReleaseFragment">
 
@@ -12,14 +13,36 @@
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@drawable/bg_status_bar"
+            android:background="@color/cFD933C"
             android:visibility="gone" />
 
-        <TextView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/cFD933C"
+            android:paddingBottom="8dp"
+            android:paddingTop="5dp">
+
+            <com.flyco.tablayout.CommonTabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                app:tl_iconVisible="false"
+                app:tl_indicator_color="@color/white"
+                app:tl_indicator_corner_radius="1dp"
+                app:tl_indicator_height="3dp"
+                app:tl_indicator_width="20dp"
+                app:tl_textSelectColor="@color/white"
+                app:tl_textUnselectColor="@color/cc1c1c1"
+                app:tl_textsize="17sp" />
+        </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="ReleaseFragment" />
+            android:background="@color/white" />
     </LinearLayout>
 
 

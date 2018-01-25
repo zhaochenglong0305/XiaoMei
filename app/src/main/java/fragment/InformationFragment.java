@@ -32,6 +32,9 @@ import manager.UseInfoManager;
 import utils.CreateSendMsg;
 import utils.FormatString;
 
+/**
+ * 信息Fragment
+ */
 public class InformationFragment extends BaseFragment<FragmentInformationBinding> implements RefreshLayout.OnLoadListener {
     private MainActivity mainActivity;
     private IntentFilter intentFilter;
