@@ -162,6 +162,433 @@
                     </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/boder_release_3"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/c7E64EE"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:ems="1"
+                        android:gravity="center"
+                        android:text="信息内容"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="请选择车长车型"
+                            android:textColor="@color/c888888"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/cc1c1c1" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="请选择货物类型"
+                            android:textColor="@color/c888888"
+                            android:textSize="15sp" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/cc1c1c1" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/iv_num_xia">
+
+                            <EditText
+                                android:id="@+id/et_goods_num"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toLeftOf="@+id/ll_company"
+                                android:background="@null"
+                                android:hint="请选择货物数量"
+                                android:textColor="@color/c888888"
+                                android:textColorHint="@color/c888888"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_company"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right">
+
+                                <ImageView
+                                    android:layout_width="20dp"
+                                    android:layout_height="20dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:src="@mipmap/icon_bian" />
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/ce5e5e5" />
+
+                                <TextView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="5dp"
+                                    android:gravity="center_vertical|right"
+                                    android:text="吨"
+                                    android:textColor="@color/c4A9EFE"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+
+                        <ImageView
+                            android:id="@+id/iv_num_xia"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/cc1c1c1" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/iv_money_xia">
+
+                            <EditText
+                                android:id="@+id/et_goods_money"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toLeftOf="@+id/ll_company_money"
+                                android:background="@null"
+                                android:hint="请选择货物运费"
+                                android:textColor="@color/c888888"
+                                android:textColorHint="@color/c888888"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_company_money"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right">
+
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/ce5e5e5" />
+
+                                <TextView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="5dp"
+                                    android:gravity="center_vertical|right"
+                                    android:text="元/吨"
+                                    android:textColor="@color/c4A9EFE"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_money_xia"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/boder_release_4"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/cffaa01"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:ems="1"
+                        android:gravity="center"
+                        android:text="信息"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/boder_release_5"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/c7CCD7C"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:ems="1"
+                        android:gravity="center"
+                        android:text="重发"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/iv_time_xia">
+
+                            <TextView
+                                android:id="@+id/tv_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toLeftOf="@+id/ll_company_time"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:text="不自动重发"
+                                android:textColor="@color/c888888"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_company_time"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right">
+
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/ce5e5e5" />
+
+                                <TextView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="5dp"
+                                    android:gravity="center_vertical|right"
+                                    android:text="分"
+                                    android:textColor="@color/c4A9EFE"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+
+                        <ImageView
+                            android:id="@+id/iv_time_xia"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/cc1c1c1" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/iv_frequency_xia">
+
+                            <TextView
+                                android:id="@+id/tv_frequency"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_toLeftOf="@+id/ll_company_frequency"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:hint="请选择货物数量"
+                                android:textColor="@color/c888888"
+                                android:textSize="15sp" />
+
+                            <LinearLayout
+                                android:id="@+id/ll_company_frequency"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:gravity="right">
+
+
+                                <View
+                                    android:layout_width="1dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_marginTop="8dp"
+                                    android:background="@color/ce5e5e5" />
+
+                                <TextView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginRight="5dp"
+                                    android:gravity="center_vertical|right"
+                                    android:text="次"
+                                    android:textColor="@color/c4A9EFE"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+
+                        <ImageView
+                            android:id="@+id/iv_frequency_xia"
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/icon_biao_xia" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_publish"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/selector_publish_btn"
+                android:text="确认发布"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
         </LinearLayout>
     </ScrollView>
 
