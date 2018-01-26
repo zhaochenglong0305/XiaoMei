@@ -10,7 +10,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/transparent"/>
+            android:background="@color/transparent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -23,11 +23,10 @@
 
             <ProgressBar
                 android:id="@+id/progress"
-                style="@android:style/Widget.ProgressBar.Small.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:indeterminate="true"
-                android:padding="10dp"/>
+                android:indeterminateTint="@color/cFD933C" />
 
             <TextView
                 android:id="@+id/textView"
@@ -36,8 +35,8 @@
                 android:padding="10dp"
                 android:text="加载中"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/text_gray"
-                android:textSize="12sp"/>
+                android:textColor="@color/c888888"
+                android:textSize="14sp" />
         </LinearLayout>
 
 

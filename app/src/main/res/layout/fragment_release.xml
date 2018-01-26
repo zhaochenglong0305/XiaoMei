@@ -35,7 +35,7 @@
                 app:tl_indicator_width="20dp"
                 app:tl_textSelectColor="@color/white"
                 app:tl_textUnselectColor="@color/cc1c1c1"
-                app:tl_textsize="17sp" />
+                app:tl_textsize="15sp" />
         </RelativeLayout>
 
         <android.support.v4.view.ViewPager

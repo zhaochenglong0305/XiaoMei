@@ -24,6 +24,7 @@
                 android:padding="10dp">
 
                 <RelativeLayout
+                    android:id="@+id/rl_publish_from"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -35,6 +36,7 @@
                         android:src="@mipmap/icon_from" />
 
                     <TextView
+                        android:id="@+id/tv_publish_from"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
@@ -57,7 +59,7 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/cc1c1c1" />
+                    android:background="@color/ce5e5e5" />
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -99,31 +101,29 @@
                 android:padding="10dp">
 
                 <RelativeLayout
+                    android:id="@+id/rl_msg_goods"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <LinearLayout
+
+                    <ImageView
+                        android:id="@+id/iv_msg_goods"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:src="@mipmap/icon_information_select" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@mipmap/icon_information_select" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="center"
-                            android:text="货源"
-                            android:textColor="@color/c595a6e"
-                            android:textSize="15sp" />
-                    </LinearLayout>
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="货源"
+                        android:textColor="@color/c595a6e"
+                        android:textSize="15sp" />
                 </RelativeLayout>
 
                 <View
@@ -131,35 +131,33 @@
                     android:layout_height="20dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@color/cc1c1c1" />
+                    android:background="@color/ce5e5e5" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_msg_cars"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <LinearLayout
+
+                    <ImageView
+                        android:id="@+id/iv_msg_cars"
+                        android:layout_width="30dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="25dp"
+                        android:src="@mipmap/icon_information_select"
+                        android:visibility="gone" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="25dp"
-                            android:src="@mipmap/icon_information_select"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="center"
-                            android:text="车源"
-                            android:textColor="@color/c595a6e"
-                            android:textSize="15sp" />
-                    </LinearLayout>
+                        android:layout_marginLeft="5dp"
+                        android:gravity="center"
+                        android:text="车源"
+                        android:textColor="@color/c595a6e"
+                        android:textSize="15sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -218,7 +216,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/cc1c1c1" />
+                        android:background="@color/ce5e5e5" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -246,7 +244,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/cc1c1c1" />
+                        android:background="@color/ce5e5e5" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -319,7 +317,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/cc1c1c1" />
+                        android:background="@color/ce5e5e5" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -412,6 +410,9 @@
                 </LinearLayout>
 
                 <TextView
+                    android:padding="10dp"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="15sp"
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -512,7 +513,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/cc1c1c1" />
+                        android:background="@color/ce5e5e5" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

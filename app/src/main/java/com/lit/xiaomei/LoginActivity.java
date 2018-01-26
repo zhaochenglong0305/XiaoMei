@@ -126,7 +126,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         }
         final ArrayList<String> ips = UseInfoManager.getStringArraylist(this, "NetIPs");
         HttpUrl.BASE_URL = ips.get(ipFre);
-        HttpUtil.getInstance().login(NetID, PWord, key, Type, TextFormat, new HttpCallBack<User>() {
+//        key为90cf9e6c2544be04越过权限，正式上线时替换成key
+        HttpUtil.getInstance().login(NetID, PWord, "90cf9e6c2544be04", Type, TextFormat, new HttpCallBack<User>() {
             @Override
             public void onSuccess(User data, String msg) {
                 hideLoading();
@@ -242,7 +243,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     private void initAutomaticLogon() {
         if (UseInfoManager.getBoolean(this, "AutomaticLogon", false)) {
             if (user != null) {
-                doLogin(user.getListData().get(0).getUS(), user.getListData().get(0).getPW(), user.getListData().get(0).getKY(), "0", "1", false);
+                doLogin(user.getListData().get(0).getUS(), user.getListData().get(0).getPW(), user.getListData().get(0).getKY(), "0", "1", true);
             }
         }
     }

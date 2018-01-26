@@ -6,7 +6,8 @@ package bean;
 
 public class GlobalVariable {
     public static class ReceiverAction {
-        public static final String REAL_TIME_MSG = "com.lit.xiaomei.RECEIVEMSG";
+        public static final String REAL_TIME_MSG = "com.lit.xiaomei.REAL_TIME_MSG";
+        public static final String RELEASE_RESULT = "com.lit.xiaomei.RELEASE_RESULT";
     }
 
     public static class DateBaseMsg{

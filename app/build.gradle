@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.lit.xiaomei"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -32,4 +32,5 @@ dependencies {
     implementation project(':baselibrary')
     compile 'org.jsoup:jsoup:1.9.2'
     implementation project(':lib')
+    implementation project(':library')
 }

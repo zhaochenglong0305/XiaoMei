@@ -66,6 +66,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private CityAdapter provinceAdapter;
     private CityAdapter cityAdapter;
     private CityAdapter zoneAdapter;
+    private boolean isLoad = false;
 
     public InformationFragment() {
     }
@@ -120,15 +121,19 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     @Override
     public void onRefresh() {
+        isLoad = false;
         isStartReceive = false;
-        searchINFOBeans.clear();
         searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", "", listDataBean.getCT(),
                 "", "", "", "", "1");
     }
 
     @Override
     public void onLoad() {
-
+        isLoad = true;
+        binding.reRefresh.addFooterView();
+        binding.reRefresh.showLoading();
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(),
+                "", listDataBean.getCT(), "", "", "", "", "1");
     }
 
     @Override
@@ -167,10 +172,19 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, INCLASS, INPHONE, INFOR, TextFormat, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
-                binding.reRefresh.setRefreshing(false);
-                searchINFOBeans = data.getSearchINFO();
-                adapter.setData(searchINFOBeans);
-                isStartReceive = true;
+                if (isLoad) {
+                    if (data.getSearchINFO().size() == 0 || data == null) {
+                        binding.reRefresh.setNoMoreData();
+                    }else {
+                        adapter.addListMsg(data.getSearchINFO());
+                    }
+                } else {
+                    binding.reRefresh.setRefreshing(false);
+                    searchINFOBeans.clear();
+                    searchINFOBeans = data.getSearchINFO();
+                    adapter.setData(searchINFOBeans);
+                    isStartReceive = true;
+                }
             }
 
             @Override

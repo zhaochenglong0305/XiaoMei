@@ -36,7 +36,7 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/rb_live"
+                android:id="@+id/rb_tube_car"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -52,7 +52,7 @@
                 android:textSize="10sp"/>
 
             <RadioButton
-                android:id="@+id/rb_find"
+                android:id="@+id/rb_release"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -69,7 +69,7 @@
 
 
             <RadioButton
-                android:id="@+id/rb_message"
+                android:id="@+id/rb_information"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

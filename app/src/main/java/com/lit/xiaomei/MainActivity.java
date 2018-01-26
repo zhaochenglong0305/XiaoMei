@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private XTcpClient xTcpClient;
     private boolean isheart = true;
     private String requestSave = "";
-
+    private long time = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,13 +79,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_live:
+            case R.id.rb_tube_car:
                 currentIndex = 0;
                 break;
-            case R.id.rb_find:
+            case R.id.rb_release:
                 currentIndex = 1;
                 break;
-            case R.id.rb_message:
+            case R.id.rb_information:
                 currentIndex = 2;
                 break;
             case R.id.rb_mine:
@@ -131,7 +131,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             Log.e("long", "已经存在该连接");
         }
     }
-
+    @Override
+    public void onBackClick() {
+        if (time == 0 || System.currentTimeMillis() - time > 2000) {
+            time = System.currentTimeMillis();
+            showMessage("再次点击返回键退出");
+        } else if (System.currentTimeMillis() - time < 2000) {
+            finish();
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -190,6 +198,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         if (receive.contains("DATA")){
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
         }
+        if (receive.contains("SJSB")){
+            sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
+        }
 
     }
 
@@ -203,6 +214,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             return;
         }
         xTcpClient.sendMsg(msg);
+    }
+    public void showInformationFragment(){
+        binding.bottomBarRg.check(R.id.rb_information);
     }
 
     private void HeartBeat() {

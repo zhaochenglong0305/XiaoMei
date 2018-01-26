@@ -12,15 +12,15 @@
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@drawable/bg_status_bar"/>
+            android:background="@color/cFD933C"/>
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_base"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/cFD933C"
             android:minHeight="42dp"
-            app:navigationIcon="@mipmap/arrow_back">
+            app:navigationIcon="@mipmap/arrow_back_white">
 
             <TextView
                 android:id="@+id/tv_title"
