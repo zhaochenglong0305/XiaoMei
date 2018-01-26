@@ -30,7 +30,11 @@ import bean.Information;
 import bean.User;
 import manager.UseInfoManager;
 import utils.CreateSendMsg;
+import utils.FormatString;
 
+/**
+ * 信息Fragment
+ */
 public class InformationFragment extends BaseFragment<FragmentInformationBinding> implements RefreshLayout.OnLoadListener {
     private MainActivity mainActivity;
     private IntentFilter intentFilter;
@@ -87,7 +91,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     @Override
     public void onRefresh() {
-
+        searchINFOBeans.clear();
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", "", listDataBean.getCT(),
+                "", "", "", "", "1");
     }
 
     @Override
@@ -101,6 +107,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("Msg");
             Log.e("long", "InformationFragment获得数据：" + msg);
+            Information.SearchINFOBean bean = FormatString.formatInformation(msg);
+            if (bean != null) {
+                adapter.addMsg(bean);
+            }
         }
     }
 
@@ -120,7 +130,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 binding.reRefresh.setRefreshing(false);
                 searchINFOBeans = data.getSearchINFO();
                 adapter.setData(searchINFOBeans);
-                adapter.notifyDataSetChanged();
             }
 
             @Override

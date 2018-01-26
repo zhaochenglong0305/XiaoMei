@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class InformationAdapter extends BaseAdapter {
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
 
     public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans) {
+        mInflater = LayoutInflater.from(context);
         this.context = context;
         this.searchINFOBeans = searchINFOBeans;
     }
@@ -65,7 +67,12 @@ public class InformationAdapter extends BaseAdapter {
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
         holder.tv_information.setText(searchINFOBean.getMS());
         holder.tv_phone.setText(searchINFOBean.getPH());
-        holder.tv_huozhan.setText("货站名:" + searchINFOBean.getNA());
+        if (!TextUtils.isEmpty(searchINFOBean.getNA())){
+            holder.tv_huozhan.setVisibility(View.VISIBLE);
+            holder.tv_huozhan.setText("货站名:" + searchINFOBean.getNA());
+        }else {
+            holder.tv_huozhan.setVisibility(View.GONE);
+        }
         String timet = searchINFOBean.getDT();
         if (timet.contains(" ")) {
             String[] timets = timet.split(" ");
@@ -78,8 +85,20 @@ public class InformationAdapter extends BaseAdapter {
         }
         return view;
     }
-    public void setData( List<Information.SearchINFOBean> searchINFOBeans){
+
+    public void setData(List<Information.SearchINFOBean> searchINFOBeans) {
         this.searchINFOBeans = searchINFOBeans;
+        notifyDataSetChanged();
+    }
+
+    public void addMsg(Information.SearchINFOBean bean) {
+        this.searchINFOBeans.add(0, bean);
+        notifyDataSetChanged();
+    }
+
+    public void addListMsg(List<Information.SearchINFOBean> searchINFOBeans) {
+        this.searchINFOBeans.addAll(searchINFOBeans);
+        notifyDataSetChanged();
     }
 
     private class ViewHolder {

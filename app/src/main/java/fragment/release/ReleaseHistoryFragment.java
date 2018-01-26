@@ -1,4 +1,4 @@
-package fragment;
+package fragment.release;
 
 
 import android.os.Bundle;
@@ -9,33 +9,31 @@ import android.view.ViewGroup;
 
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.lit.xiaomei.R;
-import com.lit.xiaomei.databinding.FragmentMineBinding;
+import com.lit.xiaomei.databinding.FragmentReleaseHistoryBinding;
 
 /**
- * 我的Fragment
+ * A simple {@link Fragment} subclass.
  */
-public class MineFragment extends BaseFragment<FragmentMineBinding> {
+public class ReleaseHistoryFragment extends BaseFragment<FragmentReleaseHistoryBinding> {
 
 
-    public MineFragment() {
-
+    public ReleaseHistoryFragment() {
+        // Required empty public constructor
     }
-
-    public static MineFragment newInstance() {
-        MineFragment fragment = new MineFragment();
+    public static ReleaseHistoryFragment newInstance() {
+        ReleaseHistoryFragment fragment = new ReleaseHistoryFragment();
         return fragment;
     }
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_mine;
+        return R.layout.fragment_release_history;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        space(binding.space);
         return binding.getRoot();
     }
 
