@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.Information;
+import utils.StringUtil;
 
 /**
  * Created by Adminis on 2018/1/25.
@@ -65,11 +66,11 @@ public class InformationAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
-        holder.tv_information.setText(searchINFOBean.getMS());
-        holder.tv_phone.setText(searchINFOBean.getPH());
+        holder.tv_information.setText(searchINFOBean.getSF()+"出发："+StringUtil.formatString(searchINFOBean.getMS()));
+        holder.tv_phone.setText("电话："+searchINFOBean.getPH());
         if (!TextUtils.isEmpty(searchINFOBean.getNA())){
             holder.tv_huozhan.setVisibility(View.VISIBLE);
-            holder.tv_huozhan.setText("货站名:" + searchINFOBean.getNA());
+            holder.tv_huozhan.setText("货站名：" + searchINFOBean.getNA());
         }else {
             holder.tv_huozhan.setVisibility(View.GONE);
         }

@@ -27,10 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.GlobalVariable;
+import bean.User;
 import fragment.InformationFragment;
 import fragment.MineFragment;
 import fragment.ReleaseFragment;
 import fragment.TubeCarFragment;
+import manager.UseInfoManager;
 import utils.CreateSendMsg;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener {
@@ -42,9 +44,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private int currentIndex = 0;
     private int oldIndex = 0;
     private XTcpClient xTcpClient;
-    private boolean isheart = true;
     private String requestSave = "";
     private long time = 0;
+    private boolean isClientFaile = false;
+    private User.ListDataBean listDataBean = new User.ListDataBean();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void initView() {
         super.initView();
+        listDataBean = UseInfoManager.getUser(this).getListData().get(0);
         initFragments();
         binding.bottomBarRg.setOnCheckedChangeListener(this);
     }
@@ -131,6 +135,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             Log.e("long", "已经存在该连接");
         }
     }
+
     @Override
     public void onBackClick() {
         if (time == 0 || System.currentTimeMillis() - time > 2000) {
@@ -140,6 +145,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             finish();
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -152,7 +158,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void onConnected(XTcpClient client) {
         Log.e("long", "连接成功");
-//        HeartBeat();
+        HeartBeat();
+        if (isClientFaile){
+            isClientFaile = false;
+            String informationMsg = CreateSendMsg.createInformationMsg(this, listDataBean.getPR(), listDataBean.getCT());
+            xTcpClient.sendMsg(informationMsg);
+        }
     }
 
     @Override
@@ -163,6 +174,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void onDisconnected(XTcpClient client, String msg, Exception e) {
         Log.e("long", client.getTargetInfo().getIp() + "断开连接 " + msg + e);
+        isClientFaile = true;
     }
 
     @Override
@@ -195,10 +207,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             e.printStackTrace();
         }
         Log.e("long", "获得数据：解密后===" + receive);
-        if (receive.contains("DATA")){
+        if (receive.contains("DATA")) {
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
         }
-        if (receive.contains("SJSB")){
+        if (receive.contains("SJSB")) {
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
         }
 
@@ -215,7 +227,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         }
         xTcpClient.sendMsg(msg);
     }
-    public void showInformationFragment(){
+
+    public void showInformationFragment() {
         binding.bottomBarRg.check(R.id.rb_information);
     }
 
@@ -224,12 +237,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         new Thread() {
             @Override
             public void run() {
-                while (isheart) {
-                    xTcpClient.sendMsg(heart);
-                    try {
-                        sleep(30000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                while (true) {
+                    if (!isClientFaile) {
+                        xTcpClient.sendMsg(heart);
+                        try {
+                            sleep(30000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 

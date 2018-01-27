@@ -1,6 +1,7 @@
 package fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,7 +26,7 @@ import fragment.release.ReleaseInformationFragment;
 /**
  * 发布Fragment
  */
-public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implements OnTabSelectListener,ViewPager.OnPageChangeListener {
+public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private String[] mTitles = {"发布", "历史"};
     private ArrayList<CustomTabEntity> mTabEntities;
     private ArrayList<Fragment> mFragments;
@@ -33,6 +34,7 @@ public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implem
 
     public ReleaseFragment() {
     }
+
     public static ReleaseFragment newInstance() {
         ReleaseFragment fragment = new ReleaseFragment();
         return fragment;
@@ -61,31 +63,17 @@ public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implem
         for (String mTitle : mTitles) {
             mTabEntities.add(new TabEntity(mTitle));
         }
-        binding.tabLayout.setTabData(mTabEntities);
-        binding.tabLayout.setOnTabSelectListener(this);
+        binding.tvTitleLeft.setOnClickListener(this);
         binding.viewPager.setAdapter(new ReleaseFragmentAdapter(getActivity().getSupportFragmentManager()));
         binding.viewPager.addOnPageChangeListener(this);
     }
-    /**
-     * 切换标签
-     *
-     * @param position
-     */
-    @Override
-    public void onTabSelect(int position) {
-        isTab = true;
-        binding.viewPager.setCurrentItem(position);
-    }
 
-    @Override
-    public void onTabReselect(int position) {
-
-    }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
+
     /**
      * 滑动切换页面
      *
@@ -93,16 +81,24 @@ public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implem
      */
     @Override
     public void onPageSelected(int position) {
-        if (!isTab) {
-            binding.tabLayout.setCurrentTab(position);
-        } else {
-            isTab = false;
-        }
+        switchTitle(position);
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_title_left:
+                switchTitle(0);
+                break;
+            case R.id.tv_title_right:
+                switchTitle(1);
+                break;
+        }
     }
 
     /**
@@ -127,5 +123,23 @@ public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implem
         public Fragment getItem(int position) {
             return mFragments.get(position);
         }
+    }
+
+    private void switchTitle(int type) {
+        switch (type) {
+            case 0:
+                binding.tvTitleLeft.setTextColor(getResources().getColor(R.color.cFD933C));
+                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_select);
+                binding.tvTitleRight.setTextColor(Color.WHITE);
+                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_normal);
+                break;
+            case 1:
+                binding.tvTitleLeft.setTextColor(Color.WHITE);
+                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_normal);
+                binding.tvTitleRight.setTextColor(getResources().getColor(R.color.cFD933C));
+                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_select);
+                break;
+        }
+        binding.viewPager.setCurrentItem(type);
     }
 }

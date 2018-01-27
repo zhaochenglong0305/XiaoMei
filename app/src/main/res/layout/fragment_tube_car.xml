@@ -7,18 +7,82 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical">
+
         <View
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@drawable/bg_status_bar"
-            android:visibility="gone"/>
+            android:background="@color/cFD933C"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/cFD933C">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_search" />
+
+                <TextView
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="搜索"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="管车"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:text="添加"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+        <com.fyjr.baselibrary.views.RefreshLayout
+            android:id="@+id/re_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <ListView
+                android:id="@+id/lv_drivers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/white"
+                android:dividerHeight="5dp"
+                android:scrollbars="none" />
+        </com.fyjr.baselibrary.views.RefreshLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="TubeCarFragment" />
+            android:text="没有数据"
+            android:textColor="@color/c888888"
+            android:textSize="15sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 

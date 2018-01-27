@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_driver_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="司机姓名"
+        android:textColor="@color/c595a6e"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_car_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="车牌号"
+        android:textColor="@color/c888888"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="电话"
+        android:textColor="@color/c1159ff"
+        android:textSize="13sp" />
+
+</LinearLayout>

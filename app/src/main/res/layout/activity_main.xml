@@ -31,7 +31,7 @@
         <RadioGroup
             android:id="@+id/bottom_bar_rg"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:background="@color/white"
             android:orientation="horizontal">
 
@@ -42,14 +42,14 @@
                 android:layout_weight="1"
                 android:button="@null"
                 android:checked="true"
-                android:drawableTop="@mipmap/mine"
+                android:drawableTop="@drawable/selector_main_tube_car"
                 android:gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingTop="6dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="管车"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="10sp"/>
+                android:textSize="11sp"/>
 
             <RadioButton
                 android:id="@+id/rb_release"
@@ -57,14 +57,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/mine"
+                android:drawableTop="@drawable/selector_main_release"
                 android:gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingTop="6dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="发布"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="10sp"/>
+                android:textSize="11sp"/>
 
 
 
@@ -74,14 +74,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/mine"
+                android:drawableTop="@drawable/selector_main_information"
                 android:gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingTop="6dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="信息"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="10sp"/>
+                android:textSize="11sp"/>
 
             <RadioButton
                 android:id="@+id/rb_mine"
@@ -89,14 +89,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
-                android:drawableTop="@mipmap/mine"
+                android:drawableTop="@drawable/selector_main_mine"
                 android:gravity="center"
-                android:paddingBottom="4dp"
-                android:paddingTop="6dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="我的"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="10sp"/>
+                android:textSize="11sp"/>
         </RadioGroup>
     </LinearLayout>
 </layout>

@@ -26,7 +26,10 @@ public class HttpUrl {
      * 信息搜索
      */
     public static String SEARCHINFORMATION = "webservice/search/GetSearData.aspx";
-
+    /**
+     * 根据货站网号得到司机信息
+     */
+    public static String SEARCHDRIVERS = "webservice/Car/JSon/GetVarList.aspx";
 
 
 }

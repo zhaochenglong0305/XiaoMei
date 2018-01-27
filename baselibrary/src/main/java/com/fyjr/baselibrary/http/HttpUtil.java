@@ -95,6 +95,22 @@ public class HttpUtil {
         doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
     }
 
+    /**
+     * 信息搜索
+     *
+     * @param USER
+     * @param PASS
+     * @param KEYY
+     * @param INXH
+     * @param PROV
+     * @param CITY
+     * @param INCITY
+     * @param INCLASS
+     * @param INPHONE
+     * @param INFOR
+     * @param TextFormat
+     * @param callBack
+     */
     public void searchInformation(String USER, String PASS, String KEYY,
                                   String INXH, String PROV, String CITY,
                                   String INCITY, String INCLASS, String INPHONE,
@@ -112,6 +128,18 @@ public class HttpUtil {
         map.put("INFOR", INFOR);
         map.put("TextFormat", TextFormat);
         doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
+    }
+
+    /**
+     * 根据货站网号得到司机信息
+     *
+     * @param NetID
+     * @param callBack
+     */
+    public void searchDrivers(String NetID, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", NetID);
+        doGet(HttpUrl.SEARCHDRIVERS + pinUrl(map), callBack);
     }
 
     private String pinUrl(Map<String, Object> map) {
