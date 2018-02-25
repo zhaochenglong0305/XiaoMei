@@ -28,11 +28,15 @@
                 android:background="@color/white"
                 android:elevation="20dp"/>
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/ce5e5e5"/>
         <RadioGroup
             android:id="@+id/bottom_bar_rg"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/white"
+            android:layout_height="43dp"
+            android:background="@color/cfcfcfc"
             android:orientation="horizontal">
 
             <RadioButton
@@ -44,7 +48,7 @@
                 android:checked="true"
                 android:drawableTop="@drawable/selector_main_tube_car"
                 android:gravity="center"
-                android:paddingBottom="5dp"
+                android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="管车"
@@ -59,7 +63,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_main_release"
                 android:gravity="center"
-                android:paddingBottom="5dp"
+                android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="发布"
@@ -76,7 +80,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_main_information"
                 android:gravity="center"
-                android:paddingBottom="5dp"
+                android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="信息"
@@ -91,7 +95,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_main_mine"
                 android:gravity="center"
-                android:paddingBottom="5dp"
+                android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="我的"

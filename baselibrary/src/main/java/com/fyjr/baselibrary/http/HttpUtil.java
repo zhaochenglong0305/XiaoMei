@@ -136,9 +136,11 @@ public class HttpUtil {
      * @param NetID
      * @param callBack
      */
-    public void searchDrivers(String NetID, Callback callBack) {
+    public void searchDrivers(String NetID,String LicensePlate,String CarID, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("NetID", NetID);
+        map.put("LicensePlate", LicensePlate);
+        map.put("CarID", CarID);
         doGet(HttpUrl.SEARCHDRIVERS + pinUrl(map), callBack);
     }
 

@@ -82,7 +82,17 @@ public class CityAdapter<T> extends BaseAdapter {
         return view;
     }
 
-    public  void setDatas(int CityType, List<T> citys) {
+    public void setDatas(int CityType, List<T> citys) {
+        if (CityType == 2) {
+            List<City> cs = (List<City>) citys;
+            City byqCity = new City();
+            byqCity.setCityName("鲅鱼圈");
+            cs.add(byqCity);
+            City jzxCity = new City();
+            jzxCity.setCityName("集装箱");
+            cs.add(jzxCity);
+            citys = (List<T>) cs;
+        }
         this.citys = citys;
         this.CityType = CityType;
         notifyDataSetChanged();

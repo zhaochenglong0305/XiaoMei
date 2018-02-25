@@ -88,7 +88,7 @@
                 android:gravity="bottom"
                 android:text="14:26"
                 android:textColor="@color/c888888"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

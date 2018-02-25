@@ -19,6 +19,8 @@ import java.util.List;
 
 import adapter.TubeCarAdapter;
 import bean.Drivers;
+import bean.User;
+import manager.UseInfoManager;
 
 /**
  * 管车Fragment
@@ -26,7 +28,7 @@ import bean.Drivers;
 public class TubeCarFragment extends BaseFragment<FragmentTubeCarBinding> implements RefreshLayout.OnLoadListener {
     private List<Drivers.ListDataBean> listDataBeans = new ArrayList<>();
     private TubeCarAdapter adapter;
-
+    private User.ListDataBean listDataBean = new User.ListDataBean();
 
     public TubeCarFragment() {
     }
@@ -52,17 +54,18 @@ public class TubeCarFragment extends BaseFragment<FragmentTubeCarBinding> implem
     @Override
     public void initView() {
         super.initView();
+        listDataBean = UseInfoManager.getUser(getContext()).getListData().get(0);
         adapter = new TubeCarAdapter(getContext(), listDataBeans);
         binding.lvDrivers.setAdapter(adapter);
         binding.reRefresh.setListView(binding.lvDrivers);
         binding.reRefresh.setOnLoadListener(this);
         binding.reRefresh.setRefreshing(true);
-        getDrivers("");
+        getDrivers(listDataBean.getUS(),"","");
     }
 
     @Override
     public void onRefresh() {
-        getDrivers("");
+        getDrivers(listDataBean.getUS(),"","");
     }
 
     @Override
@@ -70,8 +73,8 @@ public class TubeCarFragment extends BaseFragment<FragmentTubeCarBinding> implem
 
     }
 
-    private void getDrivers(String NetID) {
-        HttpUtil.getInstance().searchDrivers(NetID, new HttpCallBack<Drivers>() {
+    private void getDrivers(String NetID, String LicensePlate, String CarID) {
+        HttpUtil.getInstance().searchDrivers(NetID, LicensePlate, CarID, new HttpCallBack<Drivers>() {
             @Override
             public void onSuccess(Drivers data, String msg) {
                 binding.reRefresh.setRefreshing(false);
@@ -81,7 +84,8 @@ public class TubeCarFragment extends BaseFragment<FragmentTubeCarBinding> implem
 
             @Override
             public void onFail(int errorCode, String msg) {
-
+                binding.reRefresh.setRefreshing(false);
+                showMessage("没有数据");
             }
         });
     }

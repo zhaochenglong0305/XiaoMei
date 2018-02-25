@@ -34,8 +34,6 @@ public class EditReleaseMsgActivity extends BaseActivity<ActivityEditReleaseMsgB
         setTitle("信息");
         setTitleTextColor("#FFFFFF");
         setRightText("完成");
-        Random random = new Random();
-
         // 循环添加TextView到容器
         for (int i = 0; i < mDatas.length; i++) {
             final TextView view = new TextView(this);

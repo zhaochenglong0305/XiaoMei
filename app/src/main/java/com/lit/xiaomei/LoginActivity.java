@@ -160,11 +160,12 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
             @Override
             public void onFail(int errorCode, String msg) {
+                ipFre++;
                 if (ipFre < ips.size()) {
                     showMessage("登录失败，正在切换线路！");
-                    ipFre++;
                     doLogin(NetID, PWord, key, Type, TextFormat, false);
                 } else {
+                    ipFre = 0;
                     hideLoading();
                     showMessage("登录失败，请检查网络！");
                 }
@@ -226,7 +227,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                     } else {
                         ips.add("http://113.6.252.165:8081/");
                     }
-                    initAutomaticLogon();
+//                    initAutomaticLogon();
                     break;
                 case GETNETIPNOTFIND:
                     ips.add("http://113.6.252.165:8081/");

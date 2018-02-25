@@ -1,4 +1,5 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="fragment.InformationFragment">
 
@@ -15,12 +16,170 @@
             android:background="@color/cFD933C"
             android:visibility="gone" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/cFD933C">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="配货网"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="7dp"
+                android:background="@drawable/fillet_informaton_search"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/icon_information_search" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center_vertical"
+                    android:text="请输入关键字"
+                    android:textColor="@color/cc1c1c1"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.gongwen.marqueen.SimpleMarqueeView
+            android:id="@+id/simpleMarqueeView"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/cfcfcfc"
+            android:flipInterval="2500"
+            android:inAnimation="@anim/in_right"
+            android:outAnimation="@anim/out_left"
+            android:visibility="gone"
+            app:marqueeAnimDuration="2000"
+            app:smvTextColor="@color/white"
+            app:smvTextEllipsize="end"
+            app:smvTextGravity="center_vertical"
+            app:smvTextSingleLine="true"
+            app:smvTextSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/ll_from"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:text="集装箱"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_from_biao_huang"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/select_xia_huang" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/cE5E5E5" />
+
+            <LinearLayout
+                android:id="@+id/ll_search"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:text="搜索"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_search_biao_huang"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/select_xia_huang" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/cE5E5E5" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="专线 >"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cE5E5E5" />
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/cFD933C"
             android:paddingBottom="8dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/rl_from"
@@ -133,25 +292,136 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/tv_selected_city_level_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="选择省份"
                     android:textColor="@color/c595a6e"
                     android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_city_back_level_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="返回上一级"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <GridView
-                android:id="@+id/gv_city"
+                android:id="@+id/gv_citylevel_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:horizontalSpacing="1dp"
-                android:listSelector="@color/cc1c1c1"
+                android:horizontalSpacing="10dp"
+                android:listSelector="@android:color/transparent"
                 android:numColumns="4"
                 android:scrollbars="none"
-                android:verticalSpacing="1dp" />
+                android:verticalSpacing="5dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_search_level_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="已选择地区"
+                android:textColor="@color/c595a6e"
+                android:textSize="13sp" />
+
+
+            <am.widget.wraplayout.WrapLayout
+                android:id="@+id/wl_add_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="5dp"
+                app:wlyGravity="top"
+                app:wlyHorizontalSpacing="5dp"
+                app:wlyVerticalSpacing="5dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp">
+
+                <Button
+                    android:id="@+id/btn_add_city"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/selector_btn"
+                    android:text="添加"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/et_add_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/btn_add_city"
+                    android:background="@drawable/boder_fillet_city"
+                    android:hint="请输入城市"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:textColor="@color/c888888"
+                    android:textSize="13sp" />
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/ce5e5e5" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/tv_selected_city_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选择省份"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_city_back_level_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="返回上一级"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <GridView
+                android:id="@+id/gv_citylevel_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:horizontalSpacing="10dp"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="4"
+                android:scrollbars="none"
+                android:verticalSpacing="5dp" />
 
         </LinearLayout>
 
@@ -166,8 +436,8 @@
                 android:id="@+id/lv_information"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/white"
-                android:dividerHeight="5dp"
+                android:divider="@color/ce5e5e5"
+                android:dividerHeight="1dp"
                 android:scrollbars="none" />
         </com.fyjr.baselibrary.views.RefreshLayout>
 
