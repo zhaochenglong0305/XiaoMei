@@ -100,6 +100,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private String selectZone = "";
     private String searchSelectZone = "";
     private List<String> addCities = new ArrayList<>();
+    private List<String> searchEdits = new ArrayList<>();
+    private List<String> filterText = new ArrayList<>();
 
     public InformationFragment() {
     }
@@ -156,6 +158,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.tvCityBackLevel1.setOnClickListener(this);
         binding.tvCityBackLevel2.setOnClickListener(this);
         binding.btnAddCity.setOnClickListener(this);
+        binding.btnDoSearch.setOnClickListener(this);
     }
 
     @Override
@@ -259,6 +262,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 addCities.add(city);
                 addCity();
                 break;
+            case R.id.btn_do_search:
+                isSearchLayoutShow = false;
+                initSearchFromLayout();
+                binding.tvSearch.setText(showText(1, addCities));
+                filterText.clear();
+                filterText.addAll(addCities);
+                filterText.addAll(searchEdits);
+                break;
         }
 
     }
@@ -298,6 +309,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             "", "", "", "", "1");
                     isFromLayoutShow = false;
                     initFromLayout();
+                    binding.tvFrom.setText(selectCity);
 //                    if (TextUtils.equals(selectProvince, "北京") ||
 //                            TextUtils.equals(selectProvince, "天津") ||
 //                            TextUtils.equals(selectProvince, "上海") ||
@@ -400,7 +412,15 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             Log.e("long", "InformationFragment获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             if (bean != null && isStartReceive) {
-                adapter.addMsg(bean);
+                if (filterText.size() == 0) {
+                    adapter.addMsg(bean);
+                } else {
+                    for (String filter : filterText) {
+                        if (bean.getMS().contains(filter)) {
+                            adapter.addMsg(bean);
+                        }
+                    }
+                }
             }
         }
     }
@@ -473,25 +493,25 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private void initFromLayout() {
         binding.llSearchLevel1.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
-        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
+        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_xia);
     }
 
     private void showFromLayout() {
         binding.llSearchLevel1.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
-        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
+        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_shang);
     }
 
     private void initSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
-        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
+        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_xia);
     }
 
     private void showSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
-        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
+        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_shang);
     }
 
 
@@ -513,6 +533,48 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             });
             binding.wlAddCity.addView(view);
         }
+    }
+
+    private String CityListToString(List<String> list) {
+        String text = "";
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (i != list.size()) {
+                text += list.get(i) + "~";
+            } else {
+                text += list.get(i);
+            }
+        }
+        return text;
+    }
+
+    /**
+     * 处理显示的城市
+     *
+     * @param type 类型：1为一级搜索，2为二级搜索
+     * @param list
+     * @return
+     */
+    private String showText(int type, List<String> list) {
+        String text = "";
+        if (list.size() != 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (i != list.size() - 1) {
+                    text += list.get(i) + "，";
+                } else {
+                    text += list.get(i);
+                }
+            }
+        } else {
+            switch (type) {
+                case 1:
+                    text = "搜索";
+                    break;
+                case 2:
+                    text = "搜索";
+                    break;
+            }
+        }
+        return text;
     }
 
 
