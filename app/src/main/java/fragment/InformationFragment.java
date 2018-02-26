@@ -51,6 +51,7 @@ import utils.DataBaseUtils.DaoFactory;
 import utils.DataBaseUtils.DbSqlite;
 import utils.DataBaseUtils.IBaseDao;
 import utils.FormatString;
+import view.DialogSearchLv2;
 
 /**
  * 信息Fragment
@@ -159,6 +160,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.tvCityBackLevel2.setOnClickListener(this);
         binding.btnAddCity.setOnClickListener(this);
         binding.btnDoSearch.setOnClickListener(this);
+        binding.tvInputKey.setOnClickListener(this);
     }
 
     @Override
@@ -269,6 +271,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 filterText.clear();
                 filterText.addAll(addCities);
                 filterText.addAll(searchEdits);
+                break;
+            case R.id.tv_input_key:
+                shwoInputKeyDialog();
                 break;
         }
 
@@ -493,25 +498,25 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private void initFromLayout() {
         binding.llSearchLevel1.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
-        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_xia);
+        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
     }
 
     private void showFromLayout() {
         binding.llSearchLevel1.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
-        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_shang);
+        binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
     }
 
     private void initSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
-        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_xia);
+        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
     }
 
     private void showSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
-        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_shang);
+        binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
     }
 
 
@@ -575,6 +580,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             }
         }
         return text;
+    }
+
+    private void shwoInputKeyDialog() {
+        DialogSearchLv2 dialogSearchLv2 = new DialogSearchLv2(getContext());
+        dialogSearchLv2.setSearchCListener(new DialogSearchLv2.OnSearchListener() {
+            @Override
+            public void onClick(String searchText) {
+                binding.tvInputKey.setText(searchText);
+            }
+        });
     }
 
 
