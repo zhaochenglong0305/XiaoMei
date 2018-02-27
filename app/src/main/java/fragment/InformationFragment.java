@@ -582,12 +582,47 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         return text;
     }
 
+    private String searchContext = "";
+
     private void shwoInputKeyDialog() {
-        DialogSearchLv2 dialogSearchLv2 = new DialogSearchLv2(getContext());
+        DialogSearchLv2 dialogSearchLv2 = new DialogSearchLv2(getActivity());
+        dialogSearchLv2.showAtLocation(binding.llInputKey, Gravity.CENTER, 0, 0);
         dialogSearchLv2.setSearchCListener(new DialogSearchLv2.OnSearchListener() {
             @Override
-            public void onClick(String searchText) {
-                binding.tvInputKey.setText(searchText);
+            public void onClick(boolean isDo, String searchText) {
+                isFromLayoutShow = false;
+                initFromLayout();
+                isSearchLayoutShow = false;
+                initSearchFromLayout();
+                if (isDo) {
+                    searchContext = searchText;
+                    binding.tvInputKey.setText(searchText);
+                    if (searchText.contains("，")) {
+                        String[] searchTexts = searchText.split("，");
+                        for (int i = 0; i < searchTexts.length; i++) {
+                            filterText.add(searchTexts[i]);
+                        }
+                    } else {
+                        filterText.add(searchText);
+                    }
+                } else {
+                    binding.tvInputKey.setText("请输入关键字");
+                    if (!TextUtils.isEmpty(searchContext)) {
+                        if (searchContext.contains("，")) {
+                            String[] searchTexts = searchContext.split("，");
+                            for (int i = 0; i < searchTexts.length; i++) {
+                                String text = searchTexts[i];
+                                if (filterText.contains(text)) {
+                                    filterText.remove(text);
+                                }
+                            }
+                        } else {
+                            if (filterText.contains(searchContext)) {
+                                filterText.remove(searchContext);
+                            }
+                        }
+                    }
+                }
             }
         });
     }
