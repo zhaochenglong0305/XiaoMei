@@ -1,7 +1,6 @@
 package view;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
 import android.view.Display;
@@ -21,7 +20,6 @@ import com.fyjr.baselibrary.utils.ToastUtil;
 import com.lit.xiaomei.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import manager.UseInfoManager;
 
@@ -29,7 +27,7 @@ import manager.UseInfoManager;
  * Created by Administrator on 2018/2/26.
  */
 
-public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener {
+public class ADedicatedLineDialog extends PopupWindow implements View.OnClickListener {
     private Activity context;
     private ArrayList<String> texts = new ArrayList<>();
     private EditText inputCity;
@@ -40,7 +38,7 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
     private RecordAdapter adapter;
     private OnSearchListener listener;
 
-    public DialogSearchLv2(final Activity context) {
+    public ADedicatedLineDialog(final Activity context) {
         super(context);
         this.context = context;
         View view = View.inflate(context, R.layout.dialog_information_search_lv2, null);
@@ -73,9 +71,9 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
         WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
 
         //设置SelectPicPopupWindow弹出窗体的宽
-        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setWidth((int) (d.getWidth() * 0.85));
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        this.setHeight((int) (d.getHeight() * 0.75));
         // 设置外部可点击
         this.setOutsideTouchable(false);
         //设置SelectPicPopupWindow弹出窗体可点击
@@ -83,9 +81,9 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
         //设置SelectPicPopupWindow弹出窗体动画效果
         // this.setAnimationStyle(R.style.AnimBottom);
         //实例化一个ColorDrawable颜色为半透明
-//        ColorDrawable dw = new ColorDrawable(0xb0000000);
+        ColorDrawable dw = new ColorDrawable(0xb0000000);
         //设置SelectPicPopupWindow弹出窗体的背景
-        this.setBackgroundDrawable(null);
+        this.setBackgroundDrawable(dw);
     }
 
     /**

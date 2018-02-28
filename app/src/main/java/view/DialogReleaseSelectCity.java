@@ -1,20 +1,15 @@
 package view;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
+import android.text.TextUtils;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -57,7 +52,14 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
     private CityAdapter provinceAdapter;
     private CityAdapter cityAdapter;
     private CityAdapter zoneAdapter;
+    private int searchCityType = 1;
+    //所选的省
+    private String selectProvince = "";
+    //所选的市
     private String selectCity = "";
+    //所选的区
+    private String selectZone = "";
+    private OnCitySeectListener selectListener;
 
     public DialogReleaseSelectCity(Activity context) {
         super(context);
@@ -103,7 +105,7 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
         //实例化一个ColorDrawable颜色为半透明
 //        ColorDrawable dw = new ColorDrawable(0xb0000000);
         //设置SelectPicPopupWindow弹出窗体的背景
-//        this.setBackgroundDrawable(dw);
+        this.setBackgroundDrawable(null);
     }
 
 
@@ -111,24 +113,94 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_city_back:
+                switch (searchCityType) {
+                    case 1:
+                        break;
+                    case 2:
+                        cityText.setText("选择省份");
+                        cityGrid.setAdapter(provinceAdapter);
+                        cityBack.setVisibility(View.GONE);
+                        searchCityType = 1;
+                        break;
+                    case 3:
+                        cityText.setText("当前所在：" + selectProvince);
+                        cityGrid.setAdapter(cityAdapter);
+                        searchCityType = 2;
+                        break;
+                }
                 break;
             case R.id.tv_selected_city_cancel:
                 dismiss();
                 break;
             case R.id.tv_selected_city_ok:
+                if (selectListener != null) {
+                    selectListener.onClick(selectCity);
+                }
+                dismiss();
                 break;
         }
     }
+
     /**
      * 回调接口
-     *
-     * @author Administrator
      */
-    public interface OnSearchListener {
-        public void onClick(boolean isDo, String searchText);
+    public interface OnCitySeectListener {
+        void onClick(String city);
     }
+
+    public void setSelectCityListener(OnCitySeectListener onSelectListener) {
+        this.selectListener = selectListener;
+    }
+
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+        switch (searchCityType) {
+            case 1:
+                Province province = provinces.get(i);
+                selectProvince = province.getProName();
+                if (TextUtils.equals(selectProvince, "北京") ||
+                        TextUtils.equals(selectProvince, "天津") ||
+                        TextUtils.equals(selectProvince, "上海") ||
+                        TextUtils.equals(selectProvince, "重庆")) {
+                    cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
+                    zones = zoneIBaseDao.query("CityID=?", new String[]{cities.get(0).getCitySort()});
+                    cityGrid.setAdapter(zoneAdapter);
+                    zoneAdapter.setDatas(3, zones);
+                } else {
+                    cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
+                    cityGrid.setAdapter(cityAdapter);
+                    cityAdapter.setDatas(2, cities);
+                }
+                cityText.setText("当前所在：" + selectProvince);
+                cityBack.setVisibility(View.VISIBLE);
+                searchCityType = 2;
+                break;
+            case 2:
+                if (TextUtils.equals(selectProvince, "北京") ||
+                        TextUtils.equals(selectProvince, "天津") ||
+                        TextUtils.equals(selectProvince, "上海") ||
+                        TextUtils.equals(selectProvince, "重庆")) {
+                    Zone zone = zones.get(i);
+                    selectCity = zone.getZoneName();
+                    zoneAdapter.setSelect(selectCity);
+                    ok.setVisibility(View.VISIBLE);
+                } else {
+                    City city = cities.get(i);
+                    selectCity = city.getCityName();
+                    zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                    cityGrid.setAdapter(zoneAdapter);
+                    zoneAdapter.setDatas(3, zones);
+                    cityText.setText(cityText.getText().toString() + " — " + selectCity);
+                    searchCityType = 3;
+                }
+                break;
+            case 3:
+                Zone zone = zones.get(i);
+                selectCity = zone.getZoneName();
+                zoneAdapter.setSelect(selectCity);
+                ok.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     private void initDateBase() {

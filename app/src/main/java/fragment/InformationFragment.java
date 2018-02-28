@@ -161,7 +161,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.tvCityBackLevel2.setOnClickListener(this);
         binding.btnAddCity.setOnClickListener(this);
         binding.btnDoSearch.setOnClickListener(this);
-        binding.tvInputKey.setOnClickListener(this);
+        binding.llInputKey.setOnClickListener(this);
     }
 
     @Override
@@ -273,7 +273,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 filterText.addAll(addCities);
                 filterText.addAll(searchEdits);
                 break;
-            case R.id.tv_input_key:
+            case R.id.ll_input_key:
                 showInputKeyDialog();
                 break;
             case R.id.iv_call:
@@ -629,6 +629,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     }
                 }
             }
+
         });
     }
 

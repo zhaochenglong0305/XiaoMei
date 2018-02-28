@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ public class CityAdapter<T> extends BaseAdapter {
     private List<T> citys = new ArrayList<>();
     // 1：省，2：市，3：区
     private int CityType = 0;
+    private String select = "";
 
     public CityAdapter(Context context, int CityType, List<T> citys) {
         mInflater = LayoutInflater.from(context);
@@ -72,7 +74,15 @@ public class CityAdapter<T> extends BaseAdapter {
                 break;
             case 3:
                 Zone zone = (Zone) citys.get(position);
-                holder.text.setText(zone.getZoneName());
+                String zoneName = zone.getZoneName();
+                holder.text.setText(zoneName);
+                if (TextUtils.equals(select, zoneName)) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+                }else {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
                 break;
             default:
                 holder.text.setText("");
@@ -95,6 +105,12 @@ public class CityAdapter<T> extends BaseAdapter {
         }
         this.citys = citys;
         this.CityType = CityType;
+        this.select = "";
+        notifyDataSetChanged();
+    }
+
+    public void setSelect(String select) {
+        this.select = select;
         notifyDataSetChanged();
     }
 

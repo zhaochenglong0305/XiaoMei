@@ -21,12 +21,11 @@ import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.FragmentRelesaeInformationBinding;
 
 import bean.GlobalVariable;
-import bean.Information;
 import bean.User;
-import fragment.InformationFragment;
 import manager.UseInfoManager;
 import utils.CreateSendMsg;
-import utils.FormatString;
+import view.DialogCarLongType;
+import view.DialogGoodType;
 import view.DialogReleaseSelectCity;
 
 /**
@@ -82,6 +81,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         binding.rlMsgCars.setOnClickListener(this);
         binding.tvContent.setOnClickListener(this);
         binding.btnPublish.setOnClickListener(this);
+        binding.rlCarLongType.setOnClickListener(this);
+        binding.rlGoodType.setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +108,15 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 break;
             case R.id.rl_publish_from:
                 showCityDialog();
+                break;
+            case R.id.rl_publish_to:
+                showCityDialog();
+                break;
+            case R.id.rl_car_long_type:
+                showAttributeDialog();
+                break;
+            case R.id.rl_good_type:
+                showGoodTypeDialog();
                 break;
         }
     }
@@ -157,6 +167,21 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
 
     private void showCityDialog() {
         DialogReleaseSelectCity dialogReleaseSelectCity = new DialogReleaseSelectCity(getActivity());
-        dialogReleaseSelectCity.showAtLocation(binding.svReleaseMain, Gravity.CENTER, 0, 0);
+        dialogReleaseSelectCity.showAtLocation(binding.llReleaseMain, Gravity.CENTER, 0, 0);
+        dialogReleaseSelectCity.setSelectCityListener(new DialogReleaseSelectCity.OnCitySeectListener() {
+            @Override
+            public void onClick(String select) {
+                binding.tvPublishFrom.setText(select);
+            }
+        });
+    }
+
+    private void showAttributeDialog() {
+        DialogCarLongType carLongType = new DialogCarLongType(getActivity());
+        carLongType.showAtLocation(binding.llReleaseMain, Gravity.CENTER, 0, 0);
+    }
+    private void showGoodTypeDialog() {
+        DialogGoodType goodType = new DialogGoodType(getActivity());
+        goodType.showAtLocation(binding.llReleaseMain, Gravity.CENTER, 0, 0);
     }
 }

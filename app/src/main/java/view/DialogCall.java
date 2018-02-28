@@ -76,7 +76,7 @@ public class DialogCall extends PopupWindow implements View.OnClickListener,Adap
         //实例化一个ColorDrawable颜色为半透明
 //        ColorDrawable dw = new ColorDrawable(0xb0000000);
         //设置SelectPicPopupWindow弹出窗体的背景
-//        this.setBackgroundDrawable(dw);
+        this.setBackgroundDrawable(null);
     }
 
 

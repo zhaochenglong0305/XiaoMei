@@ -3,13 +3,13 @@
     tools:context="fragment.release.ReleaseInformationFragment">
 
     <ScrollView
-        android:id="@+id/sv_release_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
         android:scrollbars="none">
 
         <LinearLayout
+            android:id="@+id/ll_release_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -192,6 +192,7 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:id="@+id/rl_car_long_type"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -220,6 +221,7 @@
                         android:background="@color/ce5e5e5" />
 
                     <RelativeLayout
+                        android:id="@+id/rl_good_type"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
