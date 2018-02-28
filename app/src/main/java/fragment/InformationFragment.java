@@ -51,6 +51,7 @@ import utils.DataBaseUtils.DaoFactory;
 import utils.DataBaseUtils.DbSqlite;
 import utils.DataBaseUtils.IBaseDao;
 import utils.FormatString;
+import view.DialogCall;
 import view.DialogSearchLv2;
 
 /**
@@ -140,7 +141,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         intentFilter.addAction(GlobalVariable.ReceiverAction.REAL_TIME_MSG);
         receiveMsgReceiver = new ReceiveMsgReceiver();
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
-        adapter = new InformationAdapter(getContext(), searchINFOBeans);
+        adapter = new InformationAdapter(getContext(), searchINFOBeans, this);
         binding.lvInformation.setAdapter(adapter);
         binding.reRefresh.setListView(binding.lvInformation);
         binding.reRefresh.setOnLoadListener(this);
@@ -273,7 +274,11 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 filterText.addAll(searchEdits);
                 break;
             case R.id.tv_input_key:
-                shwoInputKeyDialog();
+                showInputKeyDialog();
+                break;
+            case R.id.iv_call:
+                String phone = (String) v.getTag();
+                showPhone(phone);
                 break;
         }
 
@@ -584,9 +589,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     private String searchContext = "";
 
-    private void shwoInputKeyDialog() {
+    private void showInputKeyDialog() {
         DialogSearchLv2 dialogSearchLv2 = new DialogSearchLv2(getActivity());
-        dialogSearchLv2.showAtLocation(binding.llInputKey, Gravity.CENTER, 0, 0);
+        dialogSearchLv2.showAtLocation(binding.llInformationMain, Gravity.CENTER, 0, 0);
         dialogSearchLv2.setSearchCListener(new DialogSearchLv2.OnSearchListener() {
             @Override
             public void onClick(boolean isDo, String searchText) {
@@ -625,6 +630,31 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 }
             }
         });
+    }
+
+    private void showPhone(String phoneString) {
+        List<String> phones = new ArrayList<>();
+        if (phoneString.contains("，")) {
+            String[] pds = phoneString.split("，");
+            for (int i = 0; i < pds.length; i++) {
+                phones.add(pds[i]);
+            }
+
+        } else if (phoneString.contains(",")) {
+            String[] pxs = phoneString.split(",");
+            for (int i = 0; i < pxs.length; i++) {
+                phones.add(pxs[i]);
+            }
+        } else if (phoneString.contains(" ")) {
+            String[] pks = phoneString.split(" ");
+            for (int i = 0; i < pks.length; i++) {
+                phones.add(pks[i]);
+            }
+        } else {
+            phones.add(phoneString);
+        }
+        DialogCall dialogCall = new DialogCall(getActivity(), phones);
+        dialogCall.showAtLocation(binding.llInformationMain, Gravity.CENTER, 0, 0);
     }
 
 

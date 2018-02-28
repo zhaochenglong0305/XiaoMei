@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import fragment.InformationFragment;
 import manager.UseInfoManager;
 import utils.CreateSendMsg;
 import utils.FormatString;
+import view.DialogReleaseSelectCity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -74,6 +76,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
         bean = UseInfoManager.getUser(getContext()).getListData().get(0);
         binding.tvPublishFrom.setText(bean.getCT());
+        binding.rlPublishFrom.setOnClickListener(this);
+        binding.rlPublishTo.setOnClickListener(this);
         binding.rlMsgGoods.setOnClickListener(this);
         binding.rlMsgCars.setOnClickListener(this);
         binding.tvContent.setOnClickListener(this);
@@ -100,6 +104,9 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 showLoading();
                 String releseMsg = CreateSendMsg.createReleaseMsg(getContext(), type, binding.tvPublishFrom.getText().toString(), "", msg);
                 mainActivity.sendMsgToSocket(releseMsg);
+                break;
+            case R.id.rl_publish_from:
+                showCityDialog();
                 break;
         }
     }
@@ -146,5 +153,10 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 mainActivity.showInformationFragment();
             }
         }
+    }
+
+    private void showCityDialog() {
+        DialogReleaseSelectCity dialogReleaseSelectCity = new DialogReleaseSelectCity(getActivity());
+        dialogReleaseSelectCity.showAtLocation(binding.svReleaseMain, Gravity.CENTER, 0, 0);
     }
 }

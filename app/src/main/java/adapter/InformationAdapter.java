@@ -26,11 +26,13 @@ public class InformationAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context context;
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
+    private View.OnClickListener listener;
 
-    public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans) {
+    public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans, View.OnClickListener listener) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
         this.searchINFOBeans = searchINFOBeans;
+        this.listener = listener;
     }
 
     //    BG:DATA,XH123453PR吉林CT白城CH货源SFMDDT2016-11-03 16:34:34NA洮南万里马货站WHPH04366352756，6594223，15843616188WDRZ0LYhMS洮南168号洮南永茂长春德惠水稻30-32吨每吨100元马上装~hND
@@ -66,12 +68,12 @@ public class InformationAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
-        holder.tv_information.setText(searchINFOBean.getSF()+"出发："+StringUtil.formatString(searchINFOBean.getMS()));
-        holder.tv_phone.setText("电话："+searchINFOBean.getPH());
-        if (!TextUtils.isEmpty(searchINFOBean.getNA())){
+        holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + StringUtil.formatString(searchINFOBean.getMS()));
+        holder.tv_phone.setText("电话：" + searchINFOBean.getPH());
+        if (!TextUtils.isEmpty(searchINFOBean.getNA())) {
             holder.tv_huozhan.setVisibility(View.VISIBLE);
             holder.tv_huozhan.setText("货站名：" + searchINFOBean.getNA());
-        }else {
+        } else {
             holder.tv_huozhan.setVisibility(View.GONE);
         }
         String timet = searchINFOBean.getDT();
@@ -84,6 +86,8 @@ public class InformationAdapter extends BaseAdapter {
         } else {
             holder.tv_time.setText(timet);
         }
+        holder.iv_call.setTag(searchINFOBean.getPH());
+        holder.iv_call.setOnClickListener(listener);
         return view;
     }
 

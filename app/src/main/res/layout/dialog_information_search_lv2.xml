@@ -2,107 +2,118 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/boder_information_dialog_search"
+    android:background="#60ffffff"
+    android:gravity="center_vertical"
     android:orientation="vertical">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="@color/cFD933C">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="二级搜索"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tv_dialog_cancel"
-            android:layout_marginRight="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="取消"
-            android:textSize="14sp"
-            android:textColor="@color/white" />
-    </RelativeLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
-
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/boder_information_dialog_search"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_marginTop="10dp">
+            android:layout_height="35dp"
+            android:background="@color/cFD933C">
 
-            <Button
-                android:id="@+id/btn_add_city"
-                android:layout_width="50dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/selector_btn"
-                android:text="搜索"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="二级搜索"
                 android:textColor="@color/white"
-                android:textSize="13sp" />
-
-            <EditText
-                android:id="@+id/et_add_city"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/btn_add_city"
-                android:background="@drawable/boder_fillet_city"
-                android:hint="请输入关键字（多个关键字以，隔开）"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:singleLine="true"
-                android:textColor="@color/c888888"
-                android:textSize="13sp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+                android:textSize="15sp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="历史记录"
-                android:textColor="@color/c888888"
-                android:textSize="13sp" />
-
-            <TextView
-                android:id="@+id/tv_clear_record"
+                android:id="@+id/tv_dialog_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:text="清空"
-                android:textColor="@color/cFD933C"
-                android:textSize="13sp" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </RelativeLayout>
 
-        <ListView
-            android:id="@+id/lv_search_lv2_record"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:divider="@color/white"
-            android:dividerHeight="1dp"
-            android:scrollbars="none" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:padding="10dp">
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/btn_add_city"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/selector_btn"
+                    android:text="搜索"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/et_add_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/btn_add_city"
+                    android:background="@drawable/boder_fillet_city"
+                    android:hint="请输入关键字（多个关键字以，隔开）"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/c888888"
+                    android:textSize="13sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="历史记录"
+                    android:textColor="@color/c888888"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_clear_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="清空"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/lv_search_lv2_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
 

@@ -3,9 +3,10 @@
     tools:context="fragment.release.ReleaseInformationFragment">
 
     <ScrollView
+        android:id="@+id/sv_release_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cF3F6FA"
+        android:background="@color/white"
         android:scrollbars="none">
 
         <LinearLayout
@@ -61,6 +62,7 @@
                     android:background="@color/ce5e5e5" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_publish_to"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">

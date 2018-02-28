@@ -73,9 +73,9 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
         WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
 
         //设置SelectPicPopupWindow弹出窗体的宽
-        this.setWidth((int) (d.getWidth() * 0.85));
+        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight((int) (d.getHeight() * 0.75));
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         // 设置外部可点击
         this.setOutsideTouchable(false);
         //设置SelectPicPopupWindow弹出窗体可点击
