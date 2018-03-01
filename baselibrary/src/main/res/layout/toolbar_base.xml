@@ -17,9 +17,9 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_base"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="40dp"
             android:background="@color/cFD933C"
-            android:minHeight="42dp"
+            android:minHeight="40dp"
             app:navigationIcon="@mipmap/arrow_back_white">
 
             <TextView
