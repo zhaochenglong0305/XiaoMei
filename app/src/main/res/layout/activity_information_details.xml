@@ -33,6 +33,7 @@
                     android:gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/tv_details_from"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="frome"
@@ -45,14 +46,16 @@
                         android:src="@mipmap/icon_zhi" />
 
                     <TextView
+                        android:id="@+id/tv_details_to"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="frome"
+                        android:text="to"
                         android:textColor="@color/c595a6e"
                         android:textSize="18sp" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tv_details_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -72,12 +75,17 @@
                 android:padding="15dp">
 
                 <TextView
+                    android:id="@+id/tv_details_context"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_above="@+id/tv_information_details" />
+                    android:layout_above="@+id/tv_details_time"
+                    android:gravity="top"
+                    android:text="sljdflkjslkdjflksjdlkjflksjdlkfjlsjdflksjldjf"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tv_information_details"
+                    android:id="@+id/tv_details_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -93,8 +101,13 @@
                 android:background="@color/cFD933C" />
 
             <ListView
+                android:id="@+id/lv_details_phones"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
         </LinearLayout>
 
     </LinearLayout>

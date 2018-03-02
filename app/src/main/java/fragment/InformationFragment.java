@@ -25,6 +25,7 @@ import com.fyjr.baselibrary.base.BaseFragment;
 import com.fyjr.baselibrary.http.HttpUtil;
 import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.fyjr.baselibrary.views.RefreshLayout;
+import com.lit.xiaomei.InformationDetailsActivity;
 import com.lit.xiaomei.MainActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.FragmentInformationBinding;
@@ -57,7 +58,7 @@ import view.DialogSearchLv2;
 /**
  * 信息Fragment
  */
-public class InformationFragment extends BaseFragment<FragmentInformationBinding> implements RefreshLayout.OnLoadListener, View.OnClickListener {
+public class InformationFragment extends BaseFragment<FragmentInformationBinding> implements RefreshLayout.OnLoadListener, View.OnClickListener, AdapterView.OnItemClickListener {
     private MainActivity mainActivity;
     private IntentFilter intentFilter;
     private ReceiveMsgReceiver receiveMsgReceiver;
@@ -143,6 +144,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
         adapter = new InformationAdapter(getContext(), searchINFOBeans, this);
         binding.lvInformation.setAdapter(adapter);
+        binding.lvInformation.setOnItemClickListener(this);
         binding.reRefresh.setListView(binding.lvInformation);
         binding.reRefresh.setOnLoadListener(this);
         binding.reRefresh.setRefreshing(true);
@@ -272,6 +274,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 filterText.clear();
                 filterText.addAll(addCities);
                 filterText.addAll(searchEdits);
+                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), CityListToString(searchEdits), "", "", "1");
                 break;
             case R.id.ll_input_key:
                 showInputKeyDialog();
@@ -282,6 +286,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 break;
         }
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Information.SearchINFOBean bean = searchINFOBeans.get(position);
+        Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
+        intent.putExtra("Details", bean);
+        startActivity(intent);
     }
 
     private class FromOnItemClick implements AdapterView.OnItemClickListener {
@@ -320,22 +332,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     isFromLayoutShow = false;
                     initFromLayout();
                     binding.tvFrom.setText(selectCity);
-//                    if (TextUtils.equals(selectProvince, "北京") ||
-//                            TextUtils.equals(selectProvince, "天津") ||
-//                            TextUtils.equals(selectProvince, "上海") ||
-//                            TextUtils.equals(selectProvince, "重庆")) {
-//                        selectCity = selectProvince;
-//
-//
-//                    } else {
-//                        City city = cities.get(i);
-//                        selectCity = city.getCityName();
-//                        zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
-//                        binding.gvCitylevel1.setAdapter(fromZoneAdapter);
-//                        fromZoneAdapter.setDatas(3, zones);
-//                        binding.tvSelectedCityLevel1.setText(binding.tvSelectedCityLevel1.getText().toString() + " — " + selectCity);
-//                        cityType = 3;
-//                    }
                     break;
                 case 3:
                     break;
@@ -462,6 +458,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     adapter.setData(searchINFOBeans);
                     isStartReceive = true;
                 }
+                adapter.setFilter(filterText);
             }
 
             @Override
@@ -547,8 +544,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     private String CityListToString(List<String> list) {
         String text = "";
-        for (int i = 0; i < list.size() - 1; i++) {
-            if (i != list.size()) {
+        for (int i = 0; i < list.size(); i++) {
+            if (i != list.size() - 1) {
                 text += list.get(i) + "~";
             } else {
                 text += list.get(i);

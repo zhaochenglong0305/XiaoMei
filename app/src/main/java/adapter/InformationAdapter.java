@@ -1,7 +1,9 @@
 package adapter;
 
 import android.content.Context;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ public class InformationAdapter extends BaseAdapter {
     private Context context;
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
     private View.OnClickListener listener;
+    private List<String> filters = new ArrayList<>();
 
     public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans, View.OnClickListener listener) {
         mInflater = LayoutInflater.from(context);
@@ -68,7 +71,13 @@ public class InformationAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
-        holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + StringUtil.formatString(searchINFOBean.getMS()));
+        String information = StringUtil.formatString(searchINFOBean.getMS());
+        if (filters.size() != 0) {
+            CharSequence sequence = matcherSearchText(R.color.cFD933C, information, filters);
+            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + sequence);
+        } else {
+            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + information);
+        }
         holder.tv_phone.setText("电话：" + searchINFOBean.getPH());
         if (!TextUtils.isEmpty(searchINFOBean.getNA())) {
             holder.tv_huozhan.setVisibility(View.VISIBLE);
@@ -101,6 +110,14 @@ public class InformationAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void setFilter(List<String> filters) {
+        this.filters = filters;
+        if (filters.size()==0){
+            return;
+        }
+        notifyDataSetChanged();
+    }
+
     public void addListMsg(List<Information.SearchINFOBean> searchINFOBeans) {
         this.searchINFOBeans.addAll(searchINFOBeans);
         notifyDataSetChanged();
@@ -110,5 +127,16 @@ public class InformationAdapter extends BaseAdapter {
         TextView tv_time, tv_information, tv_huozhan, tv_phone;
         ImageView iv_call;
         LinearLayout ll_information;
+    }
+
+    private CharSequence matcherSearchText(int color, String string, List<String> keyWords) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(string);
+        for (String keyWord : keyWords) {
+            int indexOf = string.indexOf(keyWord);
+            if (indexOf != -1) {
+                builder.setSpan(new ForegroundColorSpan(color), indexOf, indexOf + keyWord.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        return builder;
     }
 }

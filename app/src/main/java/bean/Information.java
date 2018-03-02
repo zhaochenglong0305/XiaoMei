@@ -1,5 +1,6 @@
 package bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -28,7 +29,8 @@ public class Information {
         this.SearchINFO = SearchINFO;
     }
 
-    public static class SearchINFOBean {
+    public static class SearchINFOBean implements Serializable {
+        private static final long serialVersionUID = 4533175490074467021L;
         /**
          * XH : 19754
          * PR : 山西
