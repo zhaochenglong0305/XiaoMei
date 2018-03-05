@@ -54,24 +54,25 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:background="@null"
-                        android:padding="10dp"
                         android:gravity="top"
                         android:hint="测试"
                         android:maxLines="100"
+                        android:padding="10dp"
                         android:textSize="15sp" />
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="@color/ce5e5e5"/>
+                        android:background="@color/ce5e5e5" />
 
-
-                    <com.pinger.library.FlowLayout
-                        android:id="@+id/flow_layout"
+                    <am.widget.wraplayout.WrapLayout
+                        android:id="@+id/warp_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp"
-                        app:height_space="10dp"
-                        app:width_space="10dp" />
+                        app:wlyGravity="top"
+                        app:wlyHorizontalSpacing="10dp"
+                        app:wlyVerticalSpacing="10dp" />
 
                 </LinearLayout>
 

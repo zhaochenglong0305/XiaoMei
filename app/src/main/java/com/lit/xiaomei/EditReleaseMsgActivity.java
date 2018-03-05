@@ -7,6 +7,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,18 @@ public class EditReleaseMsgActivity extends BaseActivity<ActivityEditReleaseMsgB
         setTitle("信息");
         setTitleTextColor("#FFFFFF");
         setRightText("完成");
+        addView();
+    }
+
+    @Override
+    public void onRightClick(View view) {
+        super.onRightClick(view);
+        setResult(1, new Intent().putExtra("Text", binding.etContent.getText().toString()));
+        finish();
+    }
+
+    private void addView() {
+        binding.warpLayout.removeAllViews();
         // 循环添加TextView到容器
         for (int i = 0; i < mDatas.length; i++) {
             final TextView view = new TextView(this);
@@ -51,37 +64,7 @@ public class EditReleaseMsgActivity extends BaseActivity<ActivityEditReleaseMsgB
                     binding.etContent.setSelection(binding.etContent.getText().toString().length());
                 }
             });
-
-            // 设置彩色背景
-            GradientDrawable normalDrawable = new GradientDrawable();
-            normalDrawable.setShape(GradientDrawable.RECTANGLE);
-//            int a = 255;
-//            int r = 50 + random.nextInt(150);
-//            int g = 50 + random.nextInt(150);
-//            int b = 50 + random.nextInt(150);
-            normalDrawable.setColor(getResources().getColor(R.color.cF3F6FA));
-
-            // 设置按下的灰色背景
-            GradientDrawable pressedDrawable = new GradientDrawable();
-            pressedDrawable.setShape(GradientDrawable.RECTANGLE);
-            pressedDrawable.setColor(Color.WHITE);
-
-            // 背景选择器
-            StateListDrawable stateDrawable = new StateListDrawable();
-            stateDrawable.addState(new int[]{android.R.attr.state_pressed}, pressedDrawable);
-            stateDrawable.addState(new int[]{}, normalDrawable);
-
-            // 设置背景选择器到TextView上
-            view.setBackground(stateDrawable);
-
-            binding.flowLayout.addView(view);
+            binding.warpLayout.addView(view);
         }
-    }
-
-    @Override
-    public void onRightClick(View view) {
-        super.onRightClick(view);
-        setResult(1, new Intent().putExtra("Text", binding.etContent.getText().toString()));
-        finish();
     }
 }
