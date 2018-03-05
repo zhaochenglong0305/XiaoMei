@@ -7,4 +7,5 @@
     <string name="title_activity_edit_release_msg">EditReleaseMsgActivity</string>
     <string name="title_activity_information_details">InformationDetailsActivity</string>
     <string name="title_activity_regist">RegistActivity</string>
+    <string name="title_activity_my_income_information">MyIncomeInformationActivity</string>
 </resources>

@@ -30,6 +30,10 @@ public class HttpUrl {
      * 根据货站网号得到司机信息
      */
     public static String SEARCHDRIVERS = "webservice/Car/JSon/GetVarList.aspx";
+    /**
+     * 添加司机信息
+     */
+    public static String ADDDRIVERSMESSAGE = "webservice/Car/JSon/RegCar.aspx";
 
 
 }

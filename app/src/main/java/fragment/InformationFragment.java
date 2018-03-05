@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -40,6 +42,7 @@ import java.util.List;
 import adapter.CityAdapter;
 import adapter.InformationAdapter;
 import bean.City;
+import bean.DetecatedInformation;
 import bean.GlobalVariable;
 import bean.Information;
 import bean.Province;
@@ -52,6 +55,7 @@ import utils.DataBaseUtils.DaoFactory;
 import utils.DataBaseUtils.DbSqlite;
 import utils.DataBaseUtils.IBaseDao;
 import utils.FormatString;
+import view.DialogADedicatedLine;
 import view.DialogCall;
 import view.DialogSearchLv2;
 
@@ -106,6 +110,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private List<String> searchEdits = new ArrayList<>();
     private List<String> filterText = new ArrayList<>();
 
+    private InformationHandler handler;
+
     public InformationFragment() {
     }
 
@@ -133,6 +139,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     @Override
     public void initView() {
         super.initView();
+        handler = new InformationHandler();
         listDataBean = UseInfoManager.getUser(getContext()).getListData().get(0);
         doProvince = listDataBean.getPR();
         doCity = listDataBean.getCT();
@@ -164,6 +171,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCity.setOnClickListener(this);
         binding.btnDoSearch.setOnClickListener(this);
         binding.llInputKey.setOnClickListener(this);
+        binding.llDedicatedLine.setOnClickListener(this);
     }
 
     @Override
@@ -275,7 +283,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 filterText.addAll(addCities);
                 filterText.addAll(searchEdits);
                 searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), CityListToString(searchEdits), "", "", "1");
+                        CityListToString(addCities), "", "", CityListToString(searchEdits), "1");
                 break;
             case R.id.ll_input_key:
                 showInputKeyDialog();
@@ -283,6 +291,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             case R.id.iv_call:
                 String phone = (String) v.getTag();
                 showPhone(phone);
+                break;
+            case R.id.ll_dedicated_line:
+                showDedicatedLine();
                 break;
         }
 
@@ -445,26 +456,17 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, INCLASS, INPHONE, INFOR, TextFormat, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
-                if (isLoad) {
-                    if (data.getSearchINFO().size() == 0 || data == null) {
-                        binding.reRefresh.setNoMoreData();
-                    } else {
-                        adapter.addListMsg(data.getSearchINFO());
-                    }
-                } else {
-                    binding.reRefresh.setRefreshing(false);
-                    searchINFOBeans.clear();
-                    searchINFOBeans = data.getSearchINFO();
-                    adapter.setData(searchINFOBeans);
-                    isStartReceive = true;
-                }
-                adapter.setFilter(filterText);
+                Message message = new Message();
+                message.what = 1;
+                message.obj = data;
+                handler.sendMessage(message);
             }
 
             @Override
             public void onFail(int errorCode, String msg) {
-                binding.reRefresh.setRefreshing(false);
-                showMessage("获取失败！");
+                Message message = new Message();
+                message.what = 0;
+                handler.sendMessage(message);
             }
         });
     }
@@ -602,12 +604,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     if (searchText.contains("，")) {
                         String[] searchTexts = searchText.split("，");
                         for (int i = 0; i < searchTexts.length; i++) {
-                            filterText.add(searchTexts[i]);
+                            searchEdits.add(searchTexts[i]);
                         }
                     } else {
-                        filterText.add(searchText);
+                        searchEdits.add(searchText);
                     }
+                    filterText.addAll(searchEdits);
                 } else {
+                    searchEdits.clear();
                     binding.tvInputKey.setText("请输入关键字");
                     if (!TextUtils.isEmpty(searchContext)) {
                         if (searchContext.contains("，")) {
@@ -625,6 +629,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         }
                     }
                 }
+                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", "", CityListToString(searchEdits), "1");
             }
 
         });
@@ -653,6 +659,50 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         }
         DialogCall dialogCall = new DialogCall(getActivity(), phones);
         dialogCall.showAtLocation(binding.llInformationMain, Gravity.CENTER, 0, 0);
+    }
+
+    private void showDedicatedLine() {
+        DialogADedicatedLine dialogADedicatedLine = new DialogADedicatedLine(getActivity(), doCity);
+        dialogADedicatedLine.showAtLocation(binding.llInformationMain, Gravity.CENTER, 0, 0);
+        dialogADedicatedLine.setOnSetFinishListener(new DialogADedicatedLine.OnSetFinishListener() {
+            @Override
+            public void onClick(List<DetecatedInformation> detecatedInformations) {
+
+            }
+        });
+    }
+
+    private class InformationHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    binding.reRefresh.setRefreshing(false);
+                    showMessage("获取失败！");
+                    searchINFOBeans.clear();
+                    adapter.clear();
+                    binding.tvNotData.setVisibility(View.VISIBLE);
+                    break;
+                case 1:
+                    Information data = (Information) msg.obj;
+                    if (isLoad) {
+                        if (data.getSearchINFO().size() == 0 || data == null) {
+                            binding.reRefresh.setNoMoreData();
+                        } else {
+                            adapter.addListMsg(data.getSearchINFO());
+                        }
+                    } else {
+                        binding.tvNotData.setVisibility(View.GONE);
+                        binding.reRefresh.setRefreshing(false);
+                        searchINFOBeans.clear();
+                        searchINFOBeans = data.getSearchINFO();
+                        adapter.setData(searchINFOBeans);
+                        isStartReceive = true;
+                    }
+                    adapter.setFilter(filterText);
+                    break;
+            }
+        }
     }
 
 

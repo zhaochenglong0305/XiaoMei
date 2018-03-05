@@ -1,6 +1,7 @@
 package view;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,10 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
     private GridView carTypeGrid;
     private TextView cancel;
     private TextView ok;
+    private OnCarFinishListener listener;
+    private boolean isLD = false;
+    private String carLongR = "";
+    private String carTypeR = "";
 
     public DialogCarLongType(Activity context) {
         super(context);
@@ -88,15 +93,24 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.tv_cancel:
                 dismiss();
                 break;
             case R.id.tv_ok:
+                listener.onClick(isLD, carLongR, carTypeR);
                 dismiss();
                 break;
         }
 
+    }
+
+    public interface OnCarFinishListener {
+        void onClick(boolean isLD, String carlLong, String carType);
+    }
+
+    public void setOnCarFinishListener(OnCarFinishListener listener) {
+        this.listener = listener;
     }
 
     private class OnLingDanItemClickListener implements AdapterView.OnItemClickListener {
@@ -104,6 +118,11 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             lingDanAdapter.setSelect(lingDan[i]);
+            if (i == 0) {
+                isLD = false;
+            } else {
+                isLD = true;
+            }
         }
     }
 
@@ -112,6 +131,11 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             carLongAdapter.setSelect(carLong[i]);
+            if (i == 0) {
+                carLongR = "";
+            } else {
+                carLongR = carLong[i];
+            }
         }
     }
 
@@ -120,6 +144,11 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             carTypeAdapter.setSelect(carType[i]);
+            if (i == 0) {
+                carTypeR = "";
+            } else {
+                carTypeR = carType[i];
+            }
         }
     }
 

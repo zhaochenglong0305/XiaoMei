@@ -3,6 +3,7 @@
     tools:context="fragment.TubeCarFragment">
 
     <LinearLayout
+        android:id="@+id/ll_tube_car_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -21,6 +22,7 @@
             android:background="@color/cFD933C">
 
             <LinearLayout
+                android:id="@+id/ll_search_dirver"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -50,6 +52,7 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/tv_tube_add"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
@@ -60,30 +63,36 @@
                 android:textSize="15sp" />
         </RelativeLayout>
 
-        <com.fyjr.baselibrary.views.RefreshLayout
-            android:id="@+id/re_refresh"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
-
-            <ListView
-                android:id="@+id/lv_drivers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/white"
-                android:dividerHeight="5dp"
-                android:scrollbars="none" />
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/tv_not_data"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@color/white"
                 android:text="没有数据"
                 android:textColor="@color/c888888"
-                android:textSize="15sp"
+                android:textSize="20sp"
                 android:visibility="gone" />
-        </com.fyjr.baselibrary.views.RefreshLayout>
+
+            <com.fyjr.baselibrary.views.RefreshLayout
+                android:id="@+id/re_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ListView
+                    android:id="@+id/lv_drivers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@color/white"
+                    android:dividerHeight="5dp"
+                    android:scrollbars="none" />
+            </com.fyjr.baselibrary.views.RefreshLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

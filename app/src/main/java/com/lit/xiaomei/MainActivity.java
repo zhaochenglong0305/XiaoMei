@@ -144,6 +144,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         } else if (System.currentTimeMillis() - time < 2000) {
             finish();
         }
+
     }
 
     @Override

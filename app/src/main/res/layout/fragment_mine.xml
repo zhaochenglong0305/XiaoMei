@@ -56,6 +56,7 @@
             android:padding="10dp">
 
             <LinearLayout
+                android:id="@+id/ll_all_income"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -164,6 +165,7 @@
                     android:gravity="center">
 
                     <CheckBox
+                        android:id="@+id/cb_automatic_logon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -189,6 +191,7 @@
                     android:gravity="center">
 
                     <CheckBox
+                        android:id="@+id/cb_show_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -213,6 +216,7 @@
                     android:gravity="center">
 
                     <CheckBox
+                        android:id="@+id/cb_big_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -242,7 +246,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="5dp"
+                    android:layout_height="1dp"
                     android:background="@color/ce5e5e5" />
 
 
@@ -253,10 +257,10 @@
 
 
                     <LinearLayout
-                        android:padding="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="10dp">
 
                         <TextView
                             android:layout_width="0dp"

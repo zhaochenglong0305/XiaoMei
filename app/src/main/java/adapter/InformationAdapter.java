@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
@@ -17,6 +18,7 @@ import com.lit.xiaomei.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.DetecatedInformation;
 import bean.Information;
 import utils.StringUtil;
 
@@ -30,6 +32,7 @@ public class InformationAdapter extends BaseAdapter {
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
     private View.OnClickListener listener;
     private List<String> filters = new ArrayList<>();
+    private List<DetecatedInformation> detecatedInformations = new ArrayList<>();
 
     public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans, View.OnClickListener listener) {
         mInflater = LayoutInflater.from(context);
@@ -66,15 +69,24 @@ public class InformationAdapter extends BaseAdapter {
             holder.tv_huozhan = (TextView) view.findViewById(R.id.tv_huozhan);
             holder.iv_call = (ImageView) view.findViewById(R.id.iv_call);
             holder.ll_information = (LinearLayout) view.findViewById(R.id.ll_information);
+            holder.dedicatedIcon = (TextView) view.findViewById(R.id.tv_dedicated_icon);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
+        if (detecatedInformations.size() != 0) {
+            for (DetecatedInformation information : detecatedInformations) {
+                if (TextUtils.equals(information.getTo(), searchINFOBean.getMD()) && TextUtils.equals(information.getType(), searchINFOBean.getCH())) {
+                    holder.dedicatedIcon.setVisibility(View.VISIBLE);
+                    break;
+                }
+            }
+        }
         String information = StringUtil.formatString(searchINFOBean.getMS());
         if (filters.size() != 0) {
-            CharSequence sequence = matcherSearchText(R.color.cFD933C, information, filters);
-            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + sequence);
+            SpannableStringBuilder spannableStringBuilder = matcherSearchText(Color.YELLOW, information, filters);
+            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + spannableStringBuilder);
         } else {
             holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + information);
         }
@@ -100,6 +112,11 @@ public class InformationAdapter extends BaseAdapter {
         return view;
     }
 
+    public void clear() {
+        this.searchINFOBeans.clear();
+        notifyDataSetChanged();
+    }
+
     public void setData(List<Information.SearchINFOBean> searchINFOBeans) {
         this.searchINFOBeans = searchINFOBeans;
         notifyDataSetChanged();
@@ -112,7 +129,7 @@ public class InformationAdapter extends BaseAdapter {
 
     public void setFilter(List<String> filters) {
         this.filters = filters;
-        if (filters.size()==0){
+        if (filters.size() == 0) {
             return;
         }
         notifyDataSetChanged();
@@ -124,19 +141,26 @@ public class InformationAdapter extends BaseAdapter {
     }
 
     private class ViewHolder {
-        TextView tv_time, tv_information, tv_huozhan, tv_phone;
+        TextView tv_time, tv_information, tv_huozhan, tv_phone, dedicatedIcon;
         ImageView iv_call;
         LinearLayout ll_information;
     }
 
-    private CharSequence matcherSearchText(int color, String string, List<String> keyWords) {
+    public void setDedcatedLine(List<DetecatedInformation> detecatedInformations) {
+        this.detecatedInformations = detecatedInformations;
+        notifyDataSetChanged();
+    }
+
+    private SpannableStringBuilder matcherSearchText(int color, String string, List<String> keyWords) {
         SpannableStringBuilder builder = new SpannableStringBuilder(string);
+        ForegroundColorSpan span = new ForegroundColorSpan(color);
         for (String keyWord : keyWords) {
             int indexOf = string.indexOf(keyWord);
             if (indexOf != -1) {
-                builder.setSpan(new ForegroundColorSpan(color), indexOf, indexOf + keyWord.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(span, indexOf, indexOf + keyWord.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
         return builder;
     }
+
 }

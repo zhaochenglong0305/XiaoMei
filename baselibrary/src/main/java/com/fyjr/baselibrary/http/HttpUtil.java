@@ -136,12 +136,54 @@ public class HttpUtil {
      * @param NetID
      * @param callBack
      */
-    public void searchDrivers(String NetID,String LicensePlate,String CarID, Callback callBack) {
+    public void searchDrivers(String NetID, String LicensePlate, String CarID, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("NetID", NetID);
         map.put("LicensePlate", LicensePlate);
         map.put("CarID", CarID);
         doGet(HttpUrl.SEARCHDRIVERS + pinUrl(map), callBack);
+    }
+
+    /**
+     * 添加司机信息
+     *
+     * @param OPENID
+     * @param NetID
+     * @param PWord
+     * @param key
+     * @param Name
+     * @param Tel1
+     * @param Tel2
+     * @param Province
+     * @param City
+     * @param cardcode
+     * @param LicensePlate
+     * @param vehicleLength
+     * @param motorcycleType
+     * @param FatherNetID
+     * @param callBack
+     */
+    public void addDrivers(String OPENID, String NetID, String PWord,
+                           String key, String Name, String Tel1,
+                           String Tel2, String Province, String City,
+                           String cardcode, String LicensePlate, String vehicleLength,
+                           String motorcycleType, String FatherNetID, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("OPENID", OPENID);
+        map.put("NetID", NetID);
+        map.put("PWord", PWord);
+        map.put("key", key);
+        map.put("Name", Name);
+        map.put("Tel1", Tel1);
+        map.put("Tel2", Tel2);
+        map.put("Province", Province);
+        map.put("City", City);
+        map.put("cardcode", cardcode);
+        map.put("LicensePlate", LicensePlate);
+        map.put("vehicleLength", vehicleLength);
+        map.put("motorcycleType", motorcycleType);
+        map.put("FatherNetID", FatherNetID);
+        doGet(HttpUrl.ADDDRIVERSMESSAGE + pinUrl(map), callBack);
     }
 
     private String pinUrl(Map<String, Object> map) {

@@ -154,6 +154,7 @@
                 android:background="@color/cE5E5E5" />
 
             <LinearLayout
+                android:id="@+id/ll_dedicated_line"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -442,20 +443,36 @@
         </LinearLayout>
 
 
-        <com.fyjr.baselibrary.views.RefreshLayout
-            android:id="@+id/re_refresh"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible">
+            android:layout_height="match_parent">
 
-            <ListView
-                android:id="@+id/lv_information"
+            <TextView
+                android:id="@+id/tv_not_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@color/white"
+                android:text="没有数据"
+                android:textColor="@color/c888888"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <com.fyjr.baselibrary.views.RefreshLayout
+                android:id="@+id/re_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/ce5e5e5"
-                android:dividerHeight="1dp"
-                android:scrollbars="none" />
-        </com.fyjr.baselibrary.views.RefreshLayout>
+                android:visibility="visible">
+
+                <ListView
+                    android:id="@+id/lv_information"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@color/ce5e5e5"
+                    android:dividerHeight="1dp"
+                    android:scrollbars="none" />
+            </com.fyjr.baselibrary.views.RefreshLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

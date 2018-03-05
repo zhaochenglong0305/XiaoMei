@@ -8,58 +8,76 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="10dp"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <LinearLayout
-            android:id="@+id/ll_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/ll_cao"
-            android:orientation="vertical">
+            android:layout_toLeftOf="@+id/ll_cao">
 
             <TextView
-                android:id="@+id/tv_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="5dp"
-                android:ellipsize="end"
-                android:gravity="top"
-                android:lineSpacingExtra="5dp"
-                android:maxLines="3"
-                android:text="王答---->罗成要自卸车，大小可用60元/吨联系18234180369"
-                android:textColor="@color/c595a6e"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"
-                android:gravity="bottom"
-                android:singleLine="true"
-                android:text="15944445555"
-                android:textColor="@color/red"
+                android:id="@+id/tv_dedicated_icon"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:background="@color/cFD933C"
+                android:ems="1"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="定制"
+                android:textColor="@color/white"
                 android:textSize="15sp"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tv_huozhan"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_information"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"
-                android:gravity="bottom"
-                android:text="高升配货中心"
-                android:textColor="@color/c4A9EFE"
-                android:textSize="15sp" />
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:ellipsize="end"
+                    android:gravity="top"
+                    android:lineSpacingExtra="5dp"
+                    android:maxLines="3"
+                    android:text="王答---->罗成要自卸车，大小可用60元/吨联系18234180369"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="bottom"
+                    android:singleLine="true"
+                    android:text="15944445555"
+                    android:textColor="@color/red"
+                    android:textSize="15sp"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_huozhan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="bottom"
+                    android:text="高升配货中心"
+                    android:textColor="@color/c4A9EFE"
+                    android:textSize="15sp" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

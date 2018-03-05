@@ -73,6 +73,7 @@
                         android:src="@mipmap/icon_to" />
 
                     <TextView
+                        android:id="@+id/tv_publish_to"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
@@ -200,6 +201,7 @@
                         android:paddingRight="10dp">
 
                         <TextView
+                            android:id="@+id/tv_car_long_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -229,6 +231,7 @@
                         android:paddingRight="10dp">
 
                         <TextView
+                            android:id="@+id/tv_good_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -269,6 +272,7 @@
                                 android:layout_toLeftOf="@+id/ll_company"
                                 android:background="@null"
                                 android:hint="请选择货物数量"
+                                android:inputType="number"
                                 android:textColor="@color/c888888"
                                 android:textColorHint="@color/c888888"
                                 android:textSize="15sp" />
@@ -342,6 +346,7 @@
                                 android:layout_toLeftOf="@+id/ll_company_money"
                                 android:background="@null"
                                 android:hint="请选择货物运费"
+                                android:inputType="number"
                                 android:textColor="@color/c888888"
                                 android:textColorHint="@color/c888888"
                                 android:textSize="15sp" />
@@ -413,12 +418,12 @@
                 </LinearLayout>
 
                 <TextView
-                    android:padding="10dp"
-                    android:textColor="@color/c595a6e"
-                    android:textSize="15sp"
                     android:id="@+id/tv_content"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout

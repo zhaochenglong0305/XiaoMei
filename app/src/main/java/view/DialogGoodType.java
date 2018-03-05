@@ -26,6 +26,8 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
     private GridView goodTypeGrid;
     private TextView cancel;
     private TextView ok;
+    private OnGoodTypeListener listener;
+    private String goodTypeR = "";
 
     public DialogGoodType(Activity context) {
         super(context);
@@ -75,6 +77,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
                 dismiss();
                 break;
             case R.id.tv_ok:
+                listener.onClick(goodTypeR);
                 dismiss();
                 break;
         }
@@ -87,7 +90,16 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             goodTypeAdapter.setSelect(goodType[i]);
+            goodTypeR = goodType[i];
         }
+    }
+
+    public interface OnGoodTypeListener {
+        void onClick(String goodType);
+    }
+
+    public void setOnGoodTypeListener(OnGoodTypeListener listener) {
+        this.listener = listener;
     }
 
 }

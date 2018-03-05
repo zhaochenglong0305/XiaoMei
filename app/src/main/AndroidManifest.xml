@@ -32,7 +32,10 @@
             android:label="@string/title_activity_information_details" />
         <activity
             android:name=".RegistActivity"
-            android:label="@string/title_activity_regist"></activity>
+            android:label="@string/title_activity_regist" />
+        <activity
+            android:name=".MyIncomeInformationActivity"
+            android:label="@string/title_activity_my_income_information"></activity>
     </application>
 
 </manifest>

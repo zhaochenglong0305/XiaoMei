@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,7 @@ import manager.UseInfoManager;
  * Created by Administrator on 2018/2/26.
  */
 
-public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener {
+public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener,AdapterView.OnItemClickListener {
     private Activity context;
     private ArrayList<String> texts = new ArrayList<>();
     private EditText inputCity;
@@ -55,6 +56,7 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
         cancel = (TextView) view.findViewById(R.id.tv_dialog_cancel);
         record = (ListView) view.findViewById(R.id.lv_search_lv2_record);
         record.setAdapter(adapter);
+        record.setOnItemClickListener(this);
         clear.setOnClickListener(this);
         search.setOnClickListener(this);
         cancel.setOnClickListener(this);
@@ -86,6 +88,12 @@ public class DialogSearchLv2 extends PopupWindow implements View.OnClickListener
 //        ColorDrawable dw = new ColorDrawable(0xb0000000);
         //设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(null);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        listener.onClick(true, texts.get(i));
+        dismiss();
     }
 
     /**
