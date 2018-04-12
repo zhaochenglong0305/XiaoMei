@@ -7,6 +7,12 @@ import utils.DataBaseUtils.Table;
  */
 @Table(name = "T_Zone")
 public class Zone {
+    public Zone(){
+
+    }
+    public Zone(String zoneName){
+        this.setZoneName(zoneName);
+    }
     /**
      * 区/街道ID
      */

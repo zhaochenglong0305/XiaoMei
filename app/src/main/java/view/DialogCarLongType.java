@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.lit.xiaomei.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import adapter.AttributeAdapter;
 
 /**
@@ -22,8 +25,11 @@ import adapter.AttributeAdapter;
 
 public class DialogCarLongType extends PopupWindow implements View.OnClickListener {
     private String[] lingDan = {"不是", "是"};
+    private List<String> lingDanSelects = new ArrayList<>();
     private String[] carLong = {"不限", "4.2米", "4.5米", "6.2米", "6.8米", "7.2米", "8.2米", "8.6米", "9.6米", "11.7米", "12.5米", "13米", "13.5米", "14米", "17米", "17.5米", "18米"};
+    private List<String> carLongSelects = new ArrayList<>();
     private String[] carType = {"不限", "平板", "高栏", "厢式", "高低板", "保温", "冷藏", "危险品"};
+    private List<String> carTypeSelects = new ArrayList<>();
     private Activity context;
     private AttributeAdapter lingDanAdapter;
     private AttributeAdapter carLongAdapter;
@@ -35,20 +41,20 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
     private TextView ok;
     private OnCarFinishListener listener;
     private boolean isLD = false;
-    private String carLongR = "";
-    private String carTypeR = "";
 
     public DialogCarLongType(Activity context) {
         super(context);
         this.context = context;
         View view = View.inflate(context, R.layout.dialog_car_long_type, null);
-        lingDanAdapter = new AttributeAdapter(context, lingDan);
-        lingDanAdapter.setSelect(lingDan[0]);
-        carLongAdapter = new AttributeAdapter(context, carLong);
-        carLongAdapter.setSelect(carLong[0]);
-        carLongAdapter.isMultiselect(true);
-        carTypeAdapter = new AttributeAdapter(context, carType);
-        carTypeAdapter.setSelect(carType[0]);
+        lingDanAdapter = new AttributeAdapter(context, false, lingDan);
+        lingDanSelects.add(lingDan[0]);
+        lingDanAdapter.selects(lingDanSelects);
+        carLongAdapter = new AttributeAdapter(context, true, carLong);
+        carLongSelects.add(carLong[0]);
+        carLongAdapter.selects(carLongSelects);
+        carTypeAdapter = new AttributeAdapter(context, true, carType);
+        carTypeSelects.add(carType[0]);
+        carTypeAdapter.selects(carTypeSelects);
         lingDanGrid = (GridView) view.findViewById(R.id.gv_ling_dan);
         carLongGrid = (GridView) view.findViewById(R.id.gv_car_long);
         carTypeGrid = (GridView) view.findViewById(R.id.gv_car_type);
@@ -98,6 +104,26 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
                 dismiss();
                 break;
             case R.id.tv_ok:
+                String carLongR = "";
+                String carTypeR = "";
+                if (!carLongSelects.contains("不限")) {
+                    for (int i = 0; i < carLongSelects.size(); i++) {
+                        if (i != carLongSelects.size() - 1) {
+                            carLongR = carLongR + carLongSelects.get(i) + "，";
+                        } else {
+                            carLongR = carLongR + carLongSelects.get(i);
+                        }
+                    }
+                }
+                if (!carTypeSelects.contains("不限")) {
+                    for (int i = 0; i < carTypeSelects.size(); i++) {
+                        if (i != carLongSelects.size() - 1) {
+                            carTypeR = carTypeR + carTypeSelects.get(i) + "，";
+                        } else {
+                            carTypeR = carTypeR + carTypeSelects.get(i);
+                        }
+                    }
+                }
                 listener.onClick(isLD, carLongR, carTypeR);
                 dismiss();
                 break;
@@ -117,7 +143,9 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            lingDanAdapter.setSelect(lingDan[i]);
+            lingDanSelects.clear();
+            lingDanSelects.add(lingDan[i]);
+            lingDanAdapter.selects(lingDanSelects);
             if (i == 0) {
                 isLD = false;
             } else {
@@ -130,12 +158,20 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            carLongAdapter.setSelect(carLong[i]);
             if (i == 0) {
-                carLongR = "";
+                carLongSelects.clear();
+                carLongSelects.add(carLong[i]);
             } else {
-                carLongR = carLong[i];
+                if (carLongSelects.contains(carLong[0])) {
+                    carLongSelects.remove(carLong[0]);
+                    carLongSelects.add(carLong[i]);
+                } else if (carLongSelects.contains(carLong[i])) {
+                    carLongSelects.remove(carLong[i]);
+                } else {
+                    carLongSelects.add(carLong[i]);
+                }
             }
+            carLongAdapter.selects(carLongSelects);
         }
     }
 
@@ -143,12 +179,9 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            carTypeAdapter.setSelect(carType[i]);
-            if (i == 0) {
-                carTypeR = "";
-            } else {
-                carTypeR = carType[i];
-            }
+            carTypeSelects.clear();
+            carTypeSelects.add(carType[i]);
+            carTypeAdapter.selects(carTypeSelects);
         }
     }
 

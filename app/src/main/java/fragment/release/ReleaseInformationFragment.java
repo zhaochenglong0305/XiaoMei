@@ -22,6 +22,8 @@ import com.lit.xiaomei.MainActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.FragmentRelesaeInformationBinding;
 
+import org.w3c.dom.Text;
+
 import bean.GlobalVariable;
 import bean.User;
 import manager.UseInfoManager;
@@ -40,13 +42,13 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private User.ListDataBean bean = new User.ListDataBean();
     private String type = "货源";
     private final static int REQUESTCODE = 1; // 返回的结果码
-    private String msg = "";
     private String danwei = "吨";
     private String danjia = "元/吨";
     private int informationType = 1;
     private int cityType = 1;
     private String from = "", to = "", che = "", huo = "", shu = "", money = "";
     private boolean isLd = false;
+    private String publishMsg = "";
 
     public ReleaseInformationFragment() {
     }
@@ -82,12 +84,12 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         receiveMsgReceiver = new ReceiveMsgReceiver();
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
         bean = UseInfoManager.getUser(getContext()).getListData().get(0);
-        binding.tvPublishFrom.setText(bean.getCT());
+        from = bean.getCT();
+        binding.tvPublishFrom.setText(from);
         binding.rlPublishFrom.setOnClickListener(this);
         binding.rlPublishTo.setOnClickListener(this);
         binding.rlMsgGoods.setOnClickListener(this);
         binding.rlMsgCars.setOnClickListener(this);
-        binding.tvContent.setOnClickListener(this);
         binding.btnPublish.setOnClickListener(this);
         binding.rlCarLongType.setOnClickListener(this);
         binding.rlGoodType.setOnClickListener(this);
@@ -106,16 +108,14 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 initMsgCarsType();
                 setEdtext(from, to, che, isLd, huo, shu, money);
                 break;
-            case R.id.tv_content:
-                startActivityForResult(new Intent(getContext(), EditReleaseMsgActivity.class), REQUESTCODE);
-                break;
             case R.id.btn_publish:
-                if (TextUtils.isEmpty(msg)) {
+                publishMsg = binding.etContent.getText().toString();
+                if (TextUtils.isEmpty(publishMsg)) {
                     showMessage("信息不能为空！");
                     return;
                 }
                 showLoading();
-                String releseMsg = CreateSendMsg.createReleaseMsg(getContext(), type, binding.tvPublishFrom.getText().toString(), "", msg);
+                String releseMsg = CreateSendMsg.createReleaseMsg(getContext(), type, binding.tvPublishFrom.getText().toString(), "", publishMsg);
                 mainActivity.sendMsgToSocket(releseMsg);
                 break;
             case R.id.rl_publish_from:
@@ -162,8 +162,7 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 return;
             }
             String text = data.getStringExtra("Text");
-            msg = text;
-            binding.tvContent.setText(text);
+            binding.etContent.setText(text);
         }
     }
 
@@ -176,14 +175,17 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
             if (msg.length() > 20) {
                 hideLoading();
                 showMessage("上报成功！");
+                publishMsg = "";
                 mainActivity.showInformationFragment();
+            }else {
+                hideLoading();
+                showMessage("网络异常！");
             }
         }
     }
 
     private void showCityDialog() {
         DialogReleaseSelectCity dialogReleaseSelectCity = new DialogReleaseSelectCity(getActivity());
-        dialogReleaseSelectCity.showAtLocation(binding.llReleaseMain, Gravity.CENTER, 0, 0);
         dialogReleaseSelectCity.setSelectCityListener(new DialogReleaseSelectCity.OnCitySeectListener() {
             @Override
             public void onClick(String select) {
@@ -195,12 +197,14 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                         break;
                     case 2:
                         binding.tvPublishTo.setText(select);
+                        binding.tvPublishTo.setTextColor(getResources().getColor(R.color.c595a6e));
                         to = select;
                         setEdtext(from, to, che, isLd, huo, shu, money);
                         break;
                 }
             }
         });
+        dialogReleaseSelectCity.showAtLocation(binding.llReleaseMain, Gravity.CENTER, 0, 0);
     }
 
     private void showAttributeDialog() {
@@ -209,9 +213,10 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         carLongType.setOnCarFinishListener(new DialogCarLongType.OnCarFinishListener() {
             @Override
             public void onClick(boolean isLD, String carlLong, String carType) {
-                che = carlLong + carType;
-                if (TextUtils.isEmpty(che)) {
-                    che = "不限车型，不限车长";
+                if (TextUtils.isEmpty(carType)) {
+                    che = carlLong + carType;
+                } else {
+                    che = carlLong + "，" + carType;
                 }
                 binding.tvCarLongType.setText(che);
                 setEdtext(from, to, che, isLd, huo, shu, money);
@@ -239,17 +244,18 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         } else {
             to = "->" + to;
         }
-        if (TextUtils.isEmpty(che)) {
+        String cheR = "";
+        if (TextUtils.isEmpty(che) ) {
             if (informationType == 1) {
-                che = "，求车";
+                cheR = "，求车";
             } else {
-                che = "，有车";
+                cheR = "，有车";
             }
         } else {
             if (informationType == 1) {
-                che = "，求" + che + "车";
+                cheR = "，求" + che + "车";
             } else {
-                che = "，有" + che + "车";
+                cheR = "，有" + che + "车";
             }
         }
         String lz = "";
@@ -280,12 +286,11 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
             money = money + danjia;
         }
         if (informationType == 1) {
-            result = from + to + lz + huo + shu + money + che;
+            result = from + to + lz + huo + shu + money + cheR;
         } else {
-            result = from + to + lz + che + huo + shu + money;
+            result = from + to + lz + cheR + huo + shu + money;
         }
-        msg = result;
-        binding.tvContent.setText(msg);
+        binding.etContent.setText(result);
     }
 
     private class GoodNumEditChangeListener implements TextWatcher {

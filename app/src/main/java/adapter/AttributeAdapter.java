@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.lit.xiaomei.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +28,14 @@ public class AttributeAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity context;
     private String[] attributes = {};
-    private String select = "";
-    private boolean multiselect = false;
+    private boolean isMuchSelect = false;
+    private List<String> selects = new ArrayList<>();
 
-    public AttributeAdapter(Activity context, String[] attributes) {
+
+    public AttributeAdapter(Activity context, boolean isMuchSelect, String[] attributes) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
+        this.isMuchSelect = isMuchSelect;
         this.attributes = attributes;
     }
 
@@ -61,12 +65,21 @@ public class AttributeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.text.setText(attributes[position]);
-        if (TextUtils.equals(select, attributes[position])) {
-            holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
-            holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+        String text = attributes[position];
+        holder.text.setText(text);
+        if (isMuchSelect) {
+            if (selects.contains(text)){
+                holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
+                holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+            }else {
+                holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+            }
         } else {
-            if (!multiselect) {
+            if (TextUtils.equals(selects.get(0), text)) {
+                holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
+                holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+            } else {
                 holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
                 holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
             }
@@ -74,14 +87,12 @@ public class AttributeAdapter extends BaseAdapter {
         return view;
     }
 
-    public void isMultiselect(boolean multiselect) {
-        this.multiselect = multiselect;
-    }
 
-    public void setSelect(String select) {
-        this.select = select;
+    public void selects(List<String> ss) {
+        selects = ss;
         notifyDataSetChanged();
     }
+
 
     private class ViewHolder {
         TextView text;

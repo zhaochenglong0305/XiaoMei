@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.RadioGroup;
 
 import com.blanke.xsocket.tcp.client.TcpConnConfig;
@@ -31,23 +32,26 @@ import bean.User;
 import fragment.InformationFragment;
 import fragment.MineFragment;
 import fragment.ReleaseFragment;
+import fragment.ServiceFragment;
 import fragment.TubeCarFragment;
 import manager.UseInfoManager;
 import utils.CreateSendMsg;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener, View.OnClickListener {
     private List<Fragment> fragments;
     private TubeCarFragment tubeCarFragment;
     private ReleaseFragment releaseFragment;
     private InformationFragment informationFragment;
+    private ServiceFragment serviceFragment;
     private MineFragment mineFragment;
-    private int currentIndex = 0;
-    private int oldIndex = 0;
+    private int currentIndex = 2;
+    private int oldIndex = 2;
     private XTcpClient xTcpClient;
     private String requestSave = "";
     private long time = 0;
     private boolean isClientFaile = false;
     private User.ListDataBean listDataBean = new User.ListDataBean();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,39 +65,50 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         listDataBean = UseInfoManager.getUser(this).getListData().get(0);
         initFragments();
         binding.bottomBarRg.setOnCheckedChangeListener(this);
+        binding.rlInformation.setOnClickListener(this);
     }
 
     private void initFragments() {
         tubeCarFragment = TubeCarFragment.newInstance();
         releaseFragment = ReleaseFragment.newInstance();
         informationFragment = InformationFragment.newInstance();
+        serviceFragment = ServiceFragment.newInstance();
         mineFragment = MineFragment.newInstance();
         fragments = new ArrayList<>();
-        fragments.add(tubeCarFragment);
         fragments.add(releaseFragment);
+        fragments.add(tubeCarFragment);
         fragments.add(informationFragment);
+        fragments.add(serviceFragment);
         fragments.add(mineFragment);
         getSupportFragmentManager().beginTransaction()
+                .add(R.id.frame_layout, releaseFragment)
                 .add(R.id.frame_layout, informationFragment)
-                .add(R.id.frame_layout, tubeCarFragment)
-                .show(tubeCarFragment)
+                .show(informationFragment)
                 .commit();
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.rb_tube_car:
-                currentIndex = 0;
-                break;
             case R.id.rb_release:
+                currentIndex = 0;
+                initInformation();
+                break;
+            case R.id.rb_tube_car:
                 currentIndex = 1;
+                initInformation();
                 break;
             case R.id.rb_information:
                 currentIndex = 2;
+                selectInformation();
+                break;
+            case R.id.rb_service:
+                currentIndex = 3;
+                initInformation();
                 break;
             case R.id.rb_mine:
-                currentIndex = 3;
+                currentIndex = 4;
+                initInformation();
                 break;
         }
         showCurrentFragment(currentIndex);
@@ -160,7 +175,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     public void onConnected(XTcpClient client) {
         Log.e("long", "连接成功");
         HeartBeat();
-        if (isClientFaile){
+        if (isClientFaile) {
             isClientFaile = false;
             String informationMsg = CreateSendMsg.createInformationMsg(this, listDataBean.getPR(), listDataBean.getCT());
             xTcpClient.sendMsg(informationMsg);
@@ -252,5 +267,25 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             }
         }.start();
 
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.rl_information:
+                binding.bottomBarRg.check(R.id.rb_information);
+                break;
+        }
+    }
+
+    private void initInformation() {
+        binding.ivInformation.setImageResource(R.mipmap.main_information_normal);
+        binding.tvInformation.setTextColor(getResources().getColor(R.color.c595a6e));
+    }
+
+    private void selectInformation() {
+        binding.ivInformation.setImageResource(R.mipmap.main_information_select);
+        binding.tvInformation.setTextColor(getResources().getColor(R.color.cFD933C));
     }
 }

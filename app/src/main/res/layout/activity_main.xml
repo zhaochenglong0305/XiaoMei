@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -26,34 +27,20 @@
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
-                android:elevation="20dp"/>
+                android:elevation="20dp" />
         </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/ce5e5e5"/>
+            android:background="@color/ce5e5e5" />
+
         <RadioGroup
             android:id="@+id/bottom_bar_rg"
             android:layout_width="match_parent"
             android:layout_height="43dp"
             android:background="@color/cfcfcfc"
             android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_tube_car"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:button="@null"
-                android:checked="true"
-                android:drawableTop="@drawable/selector_main_tube_car"
-                android:gravity="center"
-                android:paddingBottom="2dp"
-                android:paddingTop="5dp"
-                android:stateListAnimator="@drawable/selector_scale_press"
-                android:text="管车"
-                android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="11sp"/>
 
             <RadioButton
                 android:id="@+id/rb_release"
@@ -68,12 +55,70 @@
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="发布"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
 
+            <RadioButton
+                android:id="@+id/rb_tube_car"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableTop="@drawable/selector_main_tube_car"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="5dp"
+                android:stateListAnimator="@drawable/selector_scale_press"
+                android:text="找车"
+                android:textColor="@drawable/selector_bottom_text_color"
+                android:textSize="11sp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_information"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp">
+
+                <ImageView
+                    android:id="@+id/iv_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/main_information_select" />
+
+                <TextView
+                    android:id="@+id/tv_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="找货"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="11sp" />
+
+            </RelativeLayout>
 
 
             <RadioButton
                 android:id="@+id/rb_information"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+                android:drawableTop="@drawable/selector_main_information"
+                android:gravity="center"
+                android:paddingBottom="2dp"
+                android:paddingTop="5dp"
+                android:stateListAnimator="@drawable/selector_scale_press"
+                android:text="找货"
+                android:textColor="@drawable/selector_bottom_text_color"
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/rb_service"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -83,9 +128,9 @@
                 android:paddingBottom="2dp"
                 android:paddingTop="5dp"
                 android:stateListAnimator="@drawable/selector_scale_press"
-                android:text="信息"
+                android:text="服务"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
 
             <RadioButton
                 android:id="@+id/rb_mine"
@@ -100,7 +145,7 @@
                 android:stateListAnimator="@drawable/selector_scale_press"
                 android:text="我的"
                 android:textColor="@drawable/selector_bottom_text_color"
-                android:textSize="11sp"/>
+                android:textSize="11sp" />
         </RadioGroup>
     </LinearLayout>
 </layout>

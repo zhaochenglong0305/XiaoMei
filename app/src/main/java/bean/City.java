@@ -7,6 +7,13 @@ import utils.DataBaseUtils.Table;
  */
 @Table(name = "T_City")
 public class City {
+
+    public City(){
+
+    }
+    public City(String cityName){
+        this.setCityName(cityName);
+    }
     /**
      * 城市名
      */

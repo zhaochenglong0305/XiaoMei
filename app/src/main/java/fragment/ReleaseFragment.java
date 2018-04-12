@@ -65,6 +65,7 @@ public class ReleaseFragment extends BaseFragment<FragmentReleaseBinding> implem
             mTabEntities.add(new TabEntity(mTitle));
         }
         binding.tvTitleLeft.setOnClickListener(this);
+        binding.tvTitleRight.setOnClickListener(this);
         binding.viewPager.setAdapter(new ReleaseFragmentAdapter(getActivity().getSupportFragmentManager()));
         binding.viewPager.addOnPageChangeListener(this);
     }

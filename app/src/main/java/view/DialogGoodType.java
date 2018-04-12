@@ -33,7 +33,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
         super(context);
         this.context = context;
         View view = View.inflate(context, R.layout.dialog_good_type, null);
-        goodTypeAdapter = new AttributeAdapter(context, goodType);
+        goodTypeAdapter = new AttributeAdapter(context, true, goodType);
         goodTypeGrid = (GridView) view.findViewById(R.id.gv_good_type);
         cancel = (TextView) view.findViewById(R.id.tv_cancel);
         ok = (TextView) view.findViewById(R.id.tv_ok);
@@ -89,7 +89,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            goodTypeAdapter.setSelect(goodType[i]);
+//            goodTypeAdapter.setSelect(goodType[i]);
             goodTypeR = goodType[i];
         }
     }

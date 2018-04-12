@@ -59,7 +59,7 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
     private String selectCity = "";
     //所选的区
     private String selectZone = "";
-    private OnCitySeectListener selectListener;
+    private OnCitySeectListener onCitySeectListener;
 
     public DialogReleaseSelectCity(Activity context) {
         super(context);
@@ -133,9 +133,7 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
                 dismiss();
                 break;
             case R.id.tv_selected_city_ok:
-                if (selectListener != null) {
-                    selectListener.onClick(selectCity);
-                }
+                onCitySeectListener.onClick(selectCity);
                 dismiss();
                 break;
         }
@@ -148,8 +146,8 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
         void onClick(String city);
     }
 
-    public void setSelectCityListener(OnCitySeectListener onSelectListener) {
-        this.selectListener = selectListener;
+    public void setSelectCityListener(OnCitySeectListener onCitySeectListener) {
+        this.onCitySeectListener = onCitySeectListener;
     }
 
     @Override
@@ -164,6 +162,7 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
                         TextUtils.equals(selectProvince, "重庆")) {
                     cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
                     zones = zoneIBaseDao.query("CityID=?", new String[]{cities.get(0).getCitySort()});
+                    zones.add(0, new Zone(selectProvince));
                     cityGrid.setAdapter(zoneAdapter);
                     zoneAdapter.setDatas(3, zones);
                 } else {
@@ -188,6 +187,7 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
                     City city = cities.get(i);
                     selectCity = city.getCityName();
                     zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                    zones.add(0, new Zone(selectCity));
                     cityGrid.setAdapter(zoneAdapter);
                     zoneAdapter.setDatas(3, zones);
                     cityText.setText(cityText.getText().toString() + " — " + selectCity);
