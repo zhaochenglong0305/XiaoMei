@@ -62,21 +62,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <com.gongwen.marqueen.SimpleMarqueeView
-            android:id="@+id/simpleMarqueeView"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@color/cfcfcfc"
-            android:flipInterval="2500"
-            android:inAnimation="@anim/in_right"
-            android:outAnimation="@anim/out_left"
-            android:visibility="gone"
-            app:marqueeAnimDuration="2000"
-            app:smvTextColor="@color/white"
-            app:smvTextEllipsize="end"
-            app:smvTextGravity="center_vertical"
-            app:smvTextSingleLine="true"
-            app:smvTextSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"

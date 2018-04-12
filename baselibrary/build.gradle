@@ -53,6 +53,6 @@ dependencies {
     compile project(':pickerview')
     compile project(':switch_button')
     compile project(':dragwithflowlayout')
-    compile project(':jiaozivideoplayer')
+//    compile project(':jiaozivideoplayer')
     //    compile project(':SmallVideoLib2')
 }
