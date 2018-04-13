@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bean.ReleaseHistory;
 import bean.User;
 
 /**
@@ -63,6 +64,24 @@ public class UseInfoManager {
      */
     public static String getString(Context context, String key) {
         return getPreferneces(context).getString(key, "");
+    }
+
+    public static void putReleseaeHistoryArraylist(Context context, ArrayList<ReleaseHistory> releaseHistories) {
+        Gson gson = new Gson();
+        String json = gson.toJson(releaseHistories);
+        getPreferneces(context).edit().putString("ReleaseHistory", json).apply();
+    }
+
+    public static ArrayList<ReleaseHistory> getReleseaeHistoryArraylist(Context context) {
+        String json = getPreferneces(context).getString("ReleaseHistory", "");
+        ArrayList<ReleaseHistory> releaseHistories = new ArrayList<>();
+        if (json != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<ReleaseHistory>>() {
+            }.getType();
+            releaseHistories = gson.fromJson(json, type);
+        }
+        return releaseHistories;
     }
 
     /**

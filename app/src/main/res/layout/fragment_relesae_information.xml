@@ -471,7 +471,7 @@
                             android:layout_toLeftOf="@+id/iv_time_xia">
 
                             <EditText
-                                android:id="@+id/tv_time"
+                                android:id="@+id/et_again_time"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_toLeftOf="@+id/ll_company_time"
@@ -540,10 +540,9 @@
                             android:layout_toLeftOf="@+id/iv_frequency_xia">
 
                             <EditText
-                                android:id="@+id/tv_frequency"
+                                android:id="@+id/et_again_num"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
                                 android:layout_alignParentTop="true"
                                 android:background="@null"
                                 android:gravity="center_vertical"

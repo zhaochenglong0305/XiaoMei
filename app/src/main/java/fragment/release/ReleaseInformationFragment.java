@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fyjr.baselibrary.base.BaseFragment;
+import com.fyjr.baselibrary.utils.TimeUtil;
 import com.lit.xiaomei.EditReleaseMsgActivity;
 import com.lit.xiaomei.MainActivity;
 import com.lit.xiaomei.R;
@@ -24,7 +25,10 @@ import com.lit.xiaomei.databinding.FragmentRelesaeInformationBinding;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 import bean.GlobalVariable;
+import bean.ReleaseHistory;
 import bean.User;
 import manager.UseInfoManager;
 import utils.CreateSendMsg;
@@ -49,6 +53,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private String from = "", to = "", che = "", huo = "", shu = "", money = "";
     private boolean isLd = false;
     private String publishMsg = "";
+    private int againTime = 0;
+    private int againNum = 0;
 
     public ReleaseInformationFragment() {
     }
@@ -110,6 +116,12 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 break;
             case R.id.btn_publish:
                 publishMsg = binding.etContent.getText().toString();
+                if (!TextUtils.isEmpty(binding.etAgainTime.getText().toString())) {
+                    againTime = Integer.valueOf(binding.etAgainTime.getText().toString());
+                }
+                if (!TextUtils.isEmpty(binding.etAgainNum.getText().toString())) {
+                    againNum = Integer.valueOf(binding.etAgainNum.getText().toString());
+                }
                 if (TextUtils.isEmpty(publishMsg)) {
                     showMessage("信息不能为空！");
                     return;
@@ -175,9 +187,15 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
             if (msg.length() > 20) {
                 hideLoading();
                 showMessage("上报成功！");
-                publishMsg = "";
+                ArrayList<ReleaseHistory> releaseHistories = new ArrayList<>();
+                if (UseInfoManager.getReleseaeHistoryArraylist(getContext()) != null) {
+                    releaseHistories = UseInfoManager.getReleseaeHistoryArraylist(getContext());
+                }
+                releaseHistories.add(new ReleaseHistory(publishMsg, TimeUtil.currentTimeMillis(), againTime, againNum, type, binding.tvPublishFrom.getText().toString()));
+                UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
+                initRelease();
                 mainActivity.showInformationFragment();
-            }else {
+            } else {
                 hideLoading();
                 showMessage("网络异常！");
             }
@@ -240,12 +258,12 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private void setEdtext(String from, String to, String che, boolean isLd, String huo, String shu, String money) {
         String result = "";
         if (TextUtils.isEmpty(to)) {
-            to = "";
+            to = "出发";
         } else {
             to = "->" + to;
         }
         String cheR = "";
-        if (TextUtils.isEmpty(che) ) {
+        if (TextUtils.isEmpty(che)) {
             if (informationType == 1) {
                 cheR = "，求车";
             } else {
@@ -329,5 +347,29 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         public void afterTextChanged(Editable editable) {
 
         }
+    }
+
+    private void initRelease() {
+        from = bean.getCT();
+        binding.tvPublishFrom.setText(from);
+        to = "";
+        binding.tvPublishTo.setText("请选择到达地");
+        binding.tvPublishTo.setTextColor(getResources().getColor(R.color.cc1c1c1));
+        initMsgGoodsType();
+        isLd = false;
+        che = "";
+        binding.tvCarLongType.setText("请选择车长车型");
+        huo = "";
+        binding.tvGoodType.setText("请选择货物类型");
+        shu = "";
+        binding.etGoodsNum.setText("");
+        money = "";
+        binding.etGoodsMoney.setText("");
+        publishMsg = "";
+        binding.etContent.setText("");
+        againTime = 0;
+        binding.etAgainTime.setText("");
+        againNum = 0;
+        binding.etAgainNum.setText("");
     }
 }

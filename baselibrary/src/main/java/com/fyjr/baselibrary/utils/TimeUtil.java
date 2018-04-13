@@ -47,14 +47,13 @@ public class TimeUtil {
     /**
      * 返回文字描述的日期
      *
-     * @param date
      * @return
      */
-    public static String getTimeFormatText(Date date) {
-        if (date == null) {
+    public static String getTimeFormatText(long time) {
+        if (time == 0) {
             return null;
         }
-        long diff = new Date().getTime() - date.getTime();
+        long diff = new Date().getTime() - time;
         long r = 0;
         if (diff > year) {
             r = (diff / year);
