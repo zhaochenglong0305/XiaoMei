@@ -108,13 +108,12 @@ public class HttpUtil {
      * @param INCLASS
      * @param INPHONE
      * @param INFOR
-     * @param TextFormat
      * @param callBack
      */
     public void searchInformation(String USER, String PASS, String KEYY,
                                   String INXH, String PROV, String CITY,
                                   String INCITY, String INCLASS, String INPHONE,
-                                  String INFOR, String TextFormat, Callback callBack) {
+                                  String INFOR, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("USER", USER);
         map.put("PASS", PASS);
@@ -126,7 +125,7 @@ public class HttpUtil {
         map.put("INCLASS", INCLASS);
         map.put("INPHONE", INPHONE);
         map.put("INFOR", INFOR);
-        map.put("TextFormat", TextFormat);
+        map.put("TextFormat", "1");
         doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
     }
 
@@ -142,6 +141,161 @@ public class HttpUtil {
         map.put("LicensePlate", LicensePlate);
         map.put("CarID", CarID);
         doGet(HttpUrl.SEARCHDRIVERS + pinUrl(map), callBack);
+    }
+
+    /**
+     * 获得验证码
+     *
+     * @param phone    手机号
+     * @param callBack
+     */
+    public void getYZM(String phone, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", phone);
+        doGet(HttpUrl.GETYZM + pinUrl(map), callBack);
+    }
+
+    /**
+     * 核对验证码
+     *
+     * @param phone
+     * @param yzm
+     * @param callBack
+     */
+    public void checkYZM(String phone, String yzm, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("phone", phone);
+        map.put("yzm", yzm);
+        doGet(HttpUrl.CHECKYZM + pinUrl(map), callBack);
+    }
+
+
+    /**
+     * 修改密码
+     *
+     * @param NetID
+     * @param PWD
+     * @param callBack
+     */
+    public void updatePassword(String NetID, String PWD, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", NetID);
+        map.put("PWD", PWD);
+        doGet(HttpUrl.UPDATEPASSWORD + pinUrl(map), callBack);
+    }
+
+    /**
+     * 获得新闻信息
+     *
+     * @param ClassID
+     * @param callBack
+     */
+    public void getNews(String ClassID, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ClassID", ClassID);
+        doGet(HttpUrl.GETNEWS + pinUrl(map), callBack);
+    }
+
+    /**
+     * 获得个人信息
+     *
+     * @param NetID
+     * @param PWord
+     * @param key
+     * @param Type
+     * @param callBack
+     */
+    public void getUserInformation(String NetID, String PWord, String key, String Type, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", NetID);
+        map.put("PWord", PWord);
+        map.put("key", key);
+        map.put("Type", Type);
+        map.put("TextFormat", "1");
+        doGet(HttpUrl.GETUSERINFORMATION + pinUrl(map), callBack);
+    }
+
+    /**
+     * 核对推荐人
+     *
+     * @param TJRID
+     * @param Province
+     * @param City
+     * @param callBack
+     */
+    public void checkTJR(String TJRID, String Province, String City, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("TJRID", TJRID);
+        map.put("Province", Province);
+        map.put("City", City);
+        doGet(HttpUrl.CHECKTJR + pinUrl(map), callBack);
+    }
+
+    /**
+     * 获得各城市客服信息
+     *
+     * @param callBack
+     */
+    public void getCityPhone(Callback callBack) {
+        doGet(HttpUrl.CHECKTJR, callBack);
+    }
+
+    /**
+     * 检查用户权限
+     *
+     * @param NetID
+     * @param PWord
+     * @param key
+     * @param PR
+     * @param CT
+     * @param XH
+     * @param QC
+     * @param callBack
+     */
+    public void checkAuthority(String NetID, String PWord, String key, String PR, String CT, String XH, String QC, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", NetID);
+        map.put("PWord", PWord);
+        map.put("key", key);
+        map.put("PR", PR);
+        map.put("CT", CT);
+        map.put("XH", XH);
+        map.put("QC", QC);
+        doGet(HttpUrl.CHECKAUTHORITY + pinUrl(map), callBack);
+
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param user
+     * @param pwd
+     * @param name
+     * @param station
+     * @param phone
+     * @param sheng
+     * @param city
+     * @param key
+     * @param TJRID
+     * @param yzm
+     * @param callBack
+     */
+    public void doRegist(String user, String pwd, String name, String station, String phone,
+                         String sheng, String city, String key, String TJRID, String yzm, String ClassID, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", user);
+        map.put("PWord", pwd);
+        map.put("Name", name);
+        map.put("Tel1", user);
+        map.put("Tel2", phone);
+        map.put("Province", sheng);
+        map.put("City", city);
+        map.put("Caption", station);
+        map.put("key", key);
+        map.put("TJRID", TJRID);
+        map.put("yzm", yzm);
+        map.put("ClassID", ClassID);
+        doGet(HttpUrl.REGIST + pinUrl(map), callBack);
     }
 
     /**

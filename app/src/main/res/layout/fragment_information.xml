@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fragment.InformationFragment">
+    tools:context=".fragment.InformationFragment">
 
     <LinearLayout
         android:id="@+id/ll_information_main"
@@ -20,52 +20,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/cFD933C">
+            android:background="@color/cFD933C"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:gravity="center"
-                android:text="配货网"
+                android:text="找货"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
-            <LinearLayout
-                android:id="@+id/ll_input_key"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="7dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="7dp"
-                android:background="@drawable/fillet_informaton_search"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@mipmap/icon_information_search" />
-
-                <TextView
-                    android:id="@+id/tv_input_key"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center_vertical"
-                    android:text="请输入关键字"
-                    android:textColor="@color/cc1c1c1"
-                    android:textSize="14sp" />
-
-
-            </LinearLayout>
         </LinearLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="35dp"
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -139,7 +112,7 @@
                 android:background="@color/cE5E5E5" />
 
             <LinearLayout
-                android:id="@+id/ll_dedicated_line"
+                android:id="@+id/ll_search_lv2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -147,13 +120,22 @@
 
 
                 <TextView
+                    android:id="@+id/tv_search_lv2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="专线 >"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:text="二级搜索"
                     android:textColor="@color/cFD933C"
                     android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_search_biao_huang_lv2"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/select_xia_huang" />
             </LinearLayout>
 
         </LinearLayout>
@@ -163,6 +145,39 @@
             android:layout_height="1dp"
             android:background="@color/cE5E5E5" />
 
+        <RelativeLayout
+            android:id="@+id/rl_news"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#3385FF"
+            android:visibility="gone">
+
+            <com.lit.xiaomei.view.MyTextView
+                android:id="@+id/tv_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/iv_news_delete"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="滚动效果，里面有（none,start,middle,end,marquee）,其中none表示正常显示文字，即使一行显示不完全，也无任何效果。star，就是假如文字在一行显示不完全，在开头显示..."
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/iv_news_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@mipmap/icon_delete_news" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -425,6 +440,89 @@
                 android:textColor="@color/white"
                 android:textSize="15sp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_search_level_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="28dp"
+                android:layout_marginTop="10dp">
+
+                <Button
+                    android:id="@+id/btn_add_city_lv2_cancle"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/selector_btn"
+                    android:text="取消"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_add_city_lv2"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/btn_add_city_lv2_cancle"
+                    android:background="@drawable/selector_btn"
+                    android:text="搜索"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <EditText
+                    android:id="@+id/et_add_city_lv2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/btn_add_city_lv2"
+                    android:background="@drawable/boder_fillet_city"
+                    android:hint="请输入关键字（多个关键字以，隔开）"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:singleLine="true"
+                    android:textColor="@color/c888888"
+                    android:textSize="13sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="历史记录"
+                    android:textColor="@color/c888888"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_clear_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="清空"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <ListView
+                android:id="@+id/lv_search_lv3_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
         </LinearLayout>
 
 

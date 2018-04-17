@@ -32,7 +32,7 @@
                 android:maxLines="1"
                 android:text=""
                 android:textColor="@color/c181e2b"
-                android:textSize="15sp"/>
+                android:textSize="18sp"/>
 
             <TextView
                 android:id="@+id/tv_right"

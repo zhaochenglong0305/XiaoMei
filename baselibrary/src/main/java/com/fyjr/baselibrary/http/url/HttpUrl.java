@@ -34,6 +34,42 @@ public class HttpUrl {
      * 添加司机信息
      */
     public static String ADDDRIVERSMESSAGE = "webservice/Car/JSon/RegCar.aspx";
+    /**
+     * 获得验证码
+     */
+    public static String GETYZM = "webservice/Message/UpPhone.aspx";
+    /**
+     * 核对验证码
+     */
+    public static String CHECKYZM = "webservice/Message/UpPhone.aspx";
+    /**
+     * 修改密码
+     */
+    public static String UPDATEPASSWORD = "webservice/Json/ChangePass.aspx";
+    /**
+     * 获得新闻信息
+     */
+    public static String GETNEWS = "webservice/Json/ReturnBaseGuanggao.aspx";
+    /**
+     * 获得个人信息
+     */
+    public static String GETUSERINFORMATION = "webservice/search/GetUserReg.aspx";
+    /**
+     * 校验推荐人
+     */
+    public static String CHECKTJR = "webservice/Json/checkTJR.aspx";
+    /**
+     * 注册
+     */
+    public static String REGIST = "webservice/Json/RegUser.aspx";
+    /**
+     * 检查用户权限
+     */
+    public static String CHECKAUTHORITY = "webservice/search/GetInfoPhone.aspx";
+    /**
+     * 获得各城市的客服信息
+     */
+    public static String GETCITYPHONE = "webservice/Json/ReturnCityPhone.aspx";
 
 
 }

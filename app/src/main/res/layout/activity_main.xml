@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.lit.xiaomei.MainActivity">
+    tools:context="com.lit.xiaomei.activity.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,20 +72,24 @@
                 android:textColor="@drawable/selector_bottom_text_color"
                 android:textSize="11sp" />
 
+
             <RelativeLayout
                 android:id="@+id/rl_information"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
                 android:layout_weight="1"
                 android:paddingBottom="4dp"
-                android:paddingTop="4dp">
+                android:paddingTop="4dp"
+                android:stateListAnimator="@drawable/selector_scale_press">
 
                 <ImageView
                     android:id="@+id/iv_information"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_above="@+id/tv_information"
                     android:layout_centerHorizontal="true"
-                    android:src="@mipmap/main_information_select" />
+                    android:src="@mipmap/main_find_goods_select" />
 
                 <TextView
                     android:id="@+id/tv_information"

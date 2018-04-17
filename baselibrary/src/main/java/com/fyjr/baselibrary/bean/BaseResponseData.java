@@ -47,7 +47,8 @@ public class BaseResponseData {
     @Override
     public String toString() {
         return "BaseResponseData{" +
-                "state='" + Code + '\'' +
+                "Code='" + Code + '\'' +
+                ", status='" + status + '\'' +
                 ", msg='" + msg + '\'' +
                 '}';
     }

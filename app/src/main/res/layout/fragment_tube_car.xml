@@ -1,6 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fragment.TubeCarFragment">
+    tools:context=".fragment.TubeCarFragment">
 
     <LinearLayout
         android:id="@+id/ll_tube_car_main"
@@ -22,77 +22,44 @@
             android:background="@color/cFD933C">
 
             <LinearLayout
-                android:id="@+id/ll_search_dirver"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_search" />
+                android:layout_width="120dp"
+                android:layout_height="25dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/boder_fillet_release_title"
+                android:orientation="horizontal"
+                android:padding="1dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_title_left"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/fillet_release_title_left_select"
                     android:gravity="center"
-                    android:text="搜索"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
-            </LinearLayout>
+                    android:text="车源"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="13sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="管车"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/tv_tube_add"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
-                android:gravity="center"
-                android:text="添加"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_not_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@color/white"
-                android:text="没有数据"
-                android:textColor="@color/c888888"
-                android:textSize="20sp"
-                android:visibility="gone" />
-
-            <com.fyjr.baselibrary.views.RefreshLayout
-                android:id="@+id/re_refresh"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ListView
-                    android:id="@+id/lv_drivers"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_title_right"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:divider="@color/white"
-                    android:dividerHeight="5dp"
-                    android:scrollbars="none" />
-            </com.fyjr.baselibrary.views.RefreshLayout>
+                    android:layout_weight="1"
+                    android:background="@drawable/fillet_release_title_right_normal"
+                    android:gravity="center"
+                    android:text="专线"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
 
+            </LinearLayout>
         </RelativeLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
 
     </LinearLayout>
 

@@ -64,10 +64,11 @@
                     android:text="15944445555"
                     android:textColor="@color/red"
                     android:textSize="15sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_huozhan"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
