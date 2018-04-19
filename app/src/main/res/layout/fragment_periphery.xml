@@ -1,0 +1,333 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.lit.xiaomei.fragment.goods.PeripheryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_search_city"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/tv_search_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:text="搜索"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_search_city"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/select_xia_huang" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/cE5E5E5" />
+
+            <RelativeLayout
+                android:id="@+id/rl_search_key"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+
+                <TextView
+                    android:id="@+id/tv_search_key"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:maxLength="8"
+                    android:singleLine="true"
+                    android:text="二级搜索"
+                    android:textColor="@color/cFD933C"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_search_key"
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/select_xia_huang" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cE5E5E5" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_search_city"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已选择地区"
+                    android:textColor="@color/c595a6e"
+                    android:textSize="13sp" />
+
+
+                <am.widget.wraplayout.WrapLayout
+                    android:id="@+id/wl_add_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="5dp"
+                    app:wlyGravity="top"
+                    app:wlyHorizontalSpacing="5dp"
+                    app:wlyVerticalSpacing="5dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp">
+
+                    <Button
+                        android:id="@+id/btn_add_city"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/selector_btn"
+                        android:text="添加"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/et_add_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/btn_add_city"
+                        android:background="@drawable/boder_fillet_city"
+                        android:hint="请输入城市"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textColor="@color/c888888"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/ce5e5e5" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/tv_selected_city_level_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="选择省份"
+                        android:textColor="@color/c595a6e"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_city_back_level_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="返回上一级"
+                        android:textColor="@color/cFD933C"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <GridView
+                    android:id="@+id/gv_city_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:horizontalSpacing="10dp"
+                    android:listSelector="@android:color/transparent"
+                    android:numColumns="4"
+                    android:scrollbars="none"
+                    android:verticalSpacing="5dp" />
+
+                <Button
+                    android:id="@+id/btn_do_search"
+                    android:layout_width="300dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/selector_btn"
+                    android:text="确定"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_search_key"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="10dp">
+
+                    <Button
+                        android:id="@+id/btn_search_key_cancle"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/selector_btn"
+                        android:text="取消"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <Button
+                        android:id="@+id/btn_key_search"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/btn_search_key_cancle"
+                        android:background="@drawable/selector_btn"
+                        android:text="搜索"
+                        android:textColor="@color/white"
+                        android:textSize="13sp" />
+
+                    <EditText
+                        android:id="@+id/et_sarch_key"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/btn_key_search"
+                        android:background="@drawable/boder_fillet_city"
+                        android:hint="请输入关键字（多个关键字以，隔开）"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:textColor="@color/c888888"
+                        android:textSize="13sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:text="历史记录"
+                        android:textColor="@color/c888888"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_clear_record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:text="清空"
+                        android:textColor="@color/cFD933C"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/lv_search_key_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:divider="@color/white"
+                    android:dividerHeight="1dp"
+                    android:scrollbars="none" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_context_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_not_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/white"
+                    android:text="没有数据"
+                    android:textColor="@color/c888888"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+                <com.fyjr.baselibrary.views.RefreshLayout
+                    android:id="@+id/re_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <ListView
+                        android:id="@+id/lv_information"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="@color/ce5e5e5"
+                        android:dividerHeight="1dp"
+                        android:scrollbars="none" />
+                </com.fyjr.baselibrary.views.RefreshLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</layout>

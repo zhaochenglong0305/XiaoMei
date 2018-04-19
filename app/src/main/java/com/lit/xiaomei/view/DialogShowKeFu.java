@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.fyjr.baselibrary.utils.ToastUtil;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.bean.CityPhones;
 
 /**
  * Created by Administrator on 2018/3/3.
@@ -29,12 +30,18 @@ public class DialogShowKeFu extends PopupWindow implements View.OnClickListener 
     private TextView tv_dialog_cancle;
     private TextView tv_kefu_phone;
     private TextView tv_kefu_weixin;
+    private String phone = "";
+    private String weixin = "";
 
 
-    public DialogShowKeFu(Activity context, String phone, String weixin) {
+    public DialogShowKeFu(Activity context, CityPhones.OpratesBean ob) {
         super(context);
         this.context = context;
-        View view = View.inflate(context, R.layout.dialog_add_driver, null);
+        if (ob != null) {
+            phone = ob.getKefu();
+            weixin = ob.getWeixin();
+        }
+        View view = View.inflate(context, R.layout.dialog_show_kefu, null);
         tv_dialog_cancle = (TextView) view.findViewById(R.id.tv_dialog_cancle);
         tv_kefu_phone = (TextView) view.findViewById(R.id.tv_kefu_phone);
         tv_kefu_weixin = (TextView) view.findViewById(R.id.tv_kefu_weixin);

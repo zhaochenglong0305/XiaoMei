@@ -27,7 +27,7 @@ import java.util.List;
 
 import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.User;
-import com.lit.xiaomei.fragment.InformationFragment;
+import com.lit.xiaomei.fragment.GoodsFragment;
 import com.lit.xiaomei.fragment.MineFragment;
 import com.lit.xiaomei.fragment.ReleaseFragment;
 import com.lit.xiaomei.fragment.ServiceFragment;
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private List<Fragment> fragments;
     private TubeCarFragment tubeCarFragment;
     private ReleaseFragment releaseFragment;
-    private InformationFragment informationFragment;
+    private GoodsFragment goodsFragment;
     private ServiceFragment serviceFragment;
     private MineFragment mineFragment;
     private int currentIndex = 2;
@@ -69,19 +69,19 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private void initFragments() {
         tubeCarFragment = TubeCarFragment.newInstance();
         releaseFragment = ReleaseFragment.newInstance();
-        informationFragment = InformationFragment.newInstance();
+        goodsFragment = GoodsFragment.newInstance();
         serviceFragment = ServiceFragment.newInstance();
         mineFragment = MineFragment.newInstance();
         fragments = new ArrayList<>();
         fragments.add(releaseFragment);
         fragments.add(tubeCarFragment);
-        fragments.add(informationFragment);
+        fragments.add(goodsFragment);
         fragments.add(serviceFragment);
         fragments.add(mineFragment);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frame_layout, releaseFragment)
-                .add(R.id.frame_layout, informationFragment)
-                .show(informationFragment)
+                .add(R.id.frame_layout, goodsFragment)
+                .show(goodsFragment)
                 .commit();
     }
 

@@ -237,7 +237,7 @@ public class HttpUtil {
      * @param callBack
      */
     public void getCityPhone(Callback callBack) {
-        doGet(HttpUrl.CHECKTJR, callBack);
+        doGet(HttpUrl.GETCITYPHONE, callBack);
     }
 
     /**

@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.manager.UseInfoManager;
+import com.lit.xiaomei.view.DialogShowKeFu;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements View.OnClickListener {
     private static final int GETNETIPFAIL = 0;
@@ -84,6 +86,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 binding.etPassword.setText(user.getListData().get(0).getPW());
             }
         }
+        binding.tvKefu.setOnClickListener(this);
     }
 
     private void initEditBoder() {
@@ -131,6 +134,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 break;
             case R.id.tv_forget_pwd:
                 startActivity(new Intent(this, UpdatePasswordActivity.class));
+                break;
+            case R.id.tv_kefu:
+                getCityPhone();
                 break;
         }
     }
@@ -333,6 +339,17 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
             @Override
             public void onSuccess(CityPhones data, String msg) {
                 hideLoading();
+                CityPhones.OpratesBean opratesBean = null;
+                if (!TextUtils.isEmpty(userCity)) {
+                    for (CityPhones.OpratesBean ob : data.getOprates()) {
+                        if (TextUtils.equals(userCity, ob.getDName())) {
+                            opratesBean = ob;
+                            break;
+                        }
+                    }
+                }
+                DialogShowKeFu dialogShowKeFu = new DialogShowKeFu(LoginActivity.this, opratesBean);
+                dialogShowKeFu.showAtLocation(binding.rlLoginMain, Gravity.CENTER, 0, 0);
             }
 
             @Override

@@ -1,7 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.InformationFragment">
+    tools:context=".fragment.goods.InformationFragment">
 
     <LinearLayout
         android:id="@+id/ll_information_main"
@@ -10,18 +10,13 @@
         android:background="@color/white"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@color/cFD933C"
-            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/cFD933C"
-            android:gravity="center">
+            android:gravity="center"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,12 +36,11 @@
             android:background="@color/white"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_from"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -54,6 +48,7 @@
                     android:id="@+id/tv_from"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:gravity="center"
                     android:maxLength="8"
                     android:singleLine="true"
@@ -65,9 +60,10 @@
                     android:id="@+id/iv_from_biao_huang"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:src="@mipmap/select_xia_huang" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="1dp"
@@ -76,12 +72,11 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/cE5E5E5" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_search"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
@@ -89,6 +84,7 @@
                     android:id="@+id/tv_search"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:gravity="center"
                     android:maxLength="8"
                     android:singleLine="true"
@@ -100,9 +96,10 @@
                     android:id="@+id/iv_search_biao_huang"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:src="@mipmap/select_xia_huang" />
-            </LinearLayout>
+            </RelativeLayout>
 
             <View
                 android:layout_width="1dp"
@@ -111,18 +108,20 @@
                 android:layout_marginTop="8dp"
                 android:background="@color/cE5E5E5" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/ll_search_lv2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center">
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
 
                 <TextView
                     android:id="@+id/tv_search_lv2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:gravity="center"
                     android:maxLength="8"
                     android:singleLine="true"
@@ -134,9 +133,11 @@
                     android:id="@+id/iv_search_biao_huang_lv2"
                     android:layout_width="11dp"
                     android:layout_height="11dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:src="@mipmap/select_xia_huang" />
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 

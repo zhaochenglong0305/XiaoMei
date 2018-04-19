@@ -1,4 +1,4 @@
-package com.lit.xiaomei.fragment;
+package com.lit.xiaomei.fragment.goods;
 
 
 import android.content.BroadcastReceiver;
@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.fyjr.baselibrary.http.HttpUtil;
 import com.fyjr.baselibrary.http.callback.HttpCallBack;
-import com.fyjr.baselibrary.utils.ToastUtil;
 import com.fyjr.baselibrary.views.RefreshLayout;
 import com.lit.xiaomei.activity.InformationDetailsActivity;
 import com.lit.xiaomei.activity.MainActivity;
@@ -57,7 +56,6 @@ import com.lit.xiaomei.utils.FormatString;
 import com.lit.xiaomei.view.AdvertisementDialog;
 import com.lit.xiaomei.view.DialogADedicatedLine;
 import com.lit.xiaomei.view.DialogCall;
-import com.lit.xiaomei.view.DialogSearchLv2;
 
 /**
  * 信息Fragment
@@ -134,7 +132,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        space(binding.space);
         searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                 "", "", "");
         initDateBase();
@@ -590,7 +587,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.gvCitylevel1.setAdapter(fromProvinceAdapter);
         binding.gvCitylevel2.setAdapter(searchProvinceAdapter);
         fromProvinceAdapter.setDatas(1, provinces);
-        searchProvinceAdapter.setDatas(1, provinces);
+        searchProvinceAdapter.setDatas(1, searchProvinces);
     }
 
     private void initFromLayout() {
