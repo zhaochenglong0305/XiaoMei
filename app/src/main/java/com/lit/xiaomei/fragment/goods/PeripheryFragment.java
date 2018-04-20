@@ -1,6 +1,7 @@
 package com.lit.xiaomei.fragment.goods;
 
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,14 +19,18 @@ import com.fyjr.baselibrary.http.HttpUtil;
 import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.fyjr.baselibrary.views.RefreshLayout;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.activity.InformationDetailsActivity;
 import com.lit.xiaomei.adapter.CityAdapter;
 import com.lit.xiaomei.adapter.InformationAdapter;
+import com.lit.xiaomei.bean.CheckAuthority;
 import com.lit.xiaomei.bean.City;
 import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.Information;
 import com.lit.xiaomei.bean.Province;
+import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.bean.Zone;
 import com.lit.xiaomei.databinding.FragmentPeripheryBinding;
+import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.DataBaseUtils.CityDbHandler;
 import com.lit.xiaomei.utils.DataBaseUtils.DaoFactory;
 import com.lit.xiaomei.utils.DataBaseUtils.DbSqlite;
@@ -65,7 +70,11 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     private String searchSelectCity = "";
     private String searchSelectZone = "";
     private List<String> addCities = new ArrayList<>();
-    private List<String> searchEdits = new ArrayList<>();
+    private List<String> addKeys = new ArrayList<>();
+    private User.ListDataBean user = new User.ListDataBean();
+    private String doProvince = "";
+    private String doCity = "";
+    private ArrayList<String> keyTexts = new ArrayList<>();
 
     public PeripheryFragment() {
     }
@@ -90,6 +99,10 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     @Override
     public void initView() {
         super.initView();
+        user = UseInfoManager.getUser(getContext()).getListData().get(0);
+        keyTexts = UseInfoManager.getStringArraylist(getContext(), "Record");
+        doProvince = user.getPR();
+        doCity = user.getCT();
         handler = new InformationHandler();
         binding.rlSearchCity.setOnClickListener(this);
         binding.rlSearchKey.setOnClickListener(this);
@@ -104,7 +117,11 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         binding.reRefresh.setRefreshing(true);
         binding.gvCityList.setOnItemClickListener(new SearchOnItemClick());
         binding.btnAddCity.setOnClickListener(this);
+        binding.btnDoSearch.setOnClickListener(this);
+        binding.btnKeySearch.setOnClickListener(this);
+        binding.btnSearchKeyCancle.setOnClickListener(this);
         initDateBase();
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity, "", "", "");
     }
 
     @Override
@@ -119,7 +136,6 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                     binding.rlContextList.setVisibility(View.VISIBLE);
                     binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
                     binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
-
                 } else {
                     showAddCityView = true;
                     showAddKeyView = false;
@@ -129,12 +145,11 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                     binding.ivSearchCity.setImageResource(R.mipmap.select_shang_huang);
                     binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
                 }
-
                 break;
             case R.id.rl_search_key:
                 if (showAddKeyView) {
                     showAddKeyView = false;
-                    showAddCityView = true;
+                    showAddCityView = false;
                     binding.llSearchCity.setVisibility(View.GONE);
                     binding.llSearchKey.setVisibility(View.GONE);
                     binding.rlContextList.setVisibility(View.VISIBLE);
@@ -168,8 +183,108 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                 addCity();
                 binding.etAddCity.setText("");
                 break;
+            case R.id.btn_do_search:
+                showAddCityView = false;
+                showAddKeyView = false;
+                binding.llSearchCity.setVisibility(View.GONE);
+                binding.llSearchKey.setVisibility(View.GONE);
+                binding.rlContextList.setVisibility(View.VISIBLE);
+                binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
+                binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
+                binding.tvSearchCity.setText(showText(1, addCities));
+                filterText.clear();
+                filterText.addAll(addCities);
+                filterText.addAll(addKeys);
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(addKeys));
+                break;
+            case R.id.btn_key_search:
+                String keyText = binding.etSarchKey.getText().toString();
+                if (TextUtils.isEmpty(keyText)) {
+                    showMessage("内容不能为空");
+                    return;
+                }
+                if (keyText.contains(",")) {
+                    String[] keys = keyText.split(",");
+                    for (int i = 0; i < keys.length; i++) {
+                        addKeys.add(keys[i]);
+                    }
+                } else if (keyText.contains("，")) {
+                    String[] keys = keyText.split("，");
+                    for (int i = 0; i < keys.length; i++) {
+                        addKeys.add(keys[i]);
+                    }
+                } else {
+                    addKeys.add(keyText);
+                }
+                keyTexts.add(0, keyText);
+                UseInfoManager.putStringArraylist(getContext(), "Record", keyTexts);
+                showAddKeyView = false;
+                showAddCityView = false;
+                binding.llSearchCity.setVisibility(View.GONE);
+                binding.llSearchKey.setVisibility(View.GONE);
+                binding.rlContextList.setVisibility(View.VISIBLE);
+                binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
+                binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
+                binding.tvSearchKey.setText(keyText);
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(addKeys));
+                break;
+            case R.id.btn_search_key_cancle:
+                addKeys.clear();
+                binding.llSearchCity.setVisibility(View.GONE);
+                binding.llSearchKey.setVisibility(View.GONE);
+                binding.rlContextList.setVisibility(View.VISIBLE);
+                binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
+                binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
+                binding.tvSearchKey.setText("二级搜索");
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(addKeys));
+                break;
 
         }
+    }
+
+    private String CityListToString(List<String> list) {
+        String text = "";
+        for (int i = 0; i < list.size(); i++) {
+            if (i != list.size() - 1) {
+                text += list.get(i) + "~";
+            } else {
+                text += list.get(i);
+            }
+        }
+        return text;
+    }
+
+    /**
+     * 处理显示的城市
+     *
+     * @param type 类型：1为一级搜索，2为二级搜索
+     * @param list
+     * @return
+     */
+    private String showText(int type, List<String> list) {
+        String text = "";
+        if (list.size() != 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (i != list.size() - 1) {
+                    text += list.get(i) + "，";
+                } else {
+                    text += list.get(i);
+                }
+            }
+        } else {
+            switch (type) {
+                case 1:
+                    text = "搜索";
+                    break;
+                case 2:
+                    text = "搜索";
+                    break;
+            }
+        }
+        return text;
     }
 
     private void initDateBase() {
@@ -256,6 +371,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                         showMessage("该城市已存在");
                         return;
                     }
+
                     if (addCities.size() == 10) {
                         showMessage("最多只能添加10个城市");
                         return;
@@ -315,18 +431,53 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Information.SearchINFOBean bean = searchINFOBeans.get(position);
+        checkAuthority(user.getUS(), user.getPW(), user.getKY(),
+                user.getPR(), user.getCT(), bean.getXH(), AuthorityType, bean);
+    }
+
+    /**
+     * 检查用户权限
+     */
+    private void checkAuthority(String NetID, String PWord, String key, String PR, String CT, String XH, String QC, final Information.SearchINFOBean bean) {
+        showLoading();
+        HttpUtil.getInstance().checkAuthority(NetID, PWord, key, PR, CT, XH, QC, new HttpCallBack<CheckAuthority>() {
+            @Override
+            public void onSuccess(CheckAuthority data, String msg) {
+                hideLoading();
+                if (TextUtils.equals("1", data.getStatusId())) {
+                    Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
+                    intent.putExtra("Details", bean);
+                    startActivity(intent);
+                } else {
+                    showMessage(data.getStatus());
+                }
+            }
+
+            @Override
+            public void onFail(int errorCode, String msg) {
+                hideLoading();
+                showMessage("网络异常！");
+            }
+        });
 
     }
 
     @Override
     public void onRefresh() {
-
+        isLoad = false;
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                "", "", "");
     }
 
     @Override
     public void onLoad() {
-
+        isLoad = true;
+        binding.reRefresh.addFooterView();
+        binding.reRefresh.showLoading();
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(),
+                doProvince, doCity, "", "", "");
     }
 
     private class InformationHandler extends Handler {

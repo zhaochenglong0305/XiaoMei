@@ -1,6 +1,7 @@
 package com.lit.xiaomei.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.activity.CommonLineActivity;
 import com.lit.xiaomei.bean.TabEntity;
 import com.lit.xiaomei.databinding.FragmentGoodsBinding;
 import com.lit.xiaomei.fragment.goods.InformationFragment;
@@ -65,6 +67,7 @@ public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements
         binding.tvTitleRight.setOnClickListener(this);
         binding.viewPager.setAdapter(new GoodsFragmentAdapter(getChildFragmentManager()));
         binding.viewPager.addOnPageChangeListener(this);
+        binding.tvCommonLine.setOnClickListener(this);
     }
 
     @Override
@@ -108,8 +111,12 @@ public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements
             case R.id.tv_title_right:
                 switchTitle(1);
                 break;
+            case R.id.tv_common_line:
+                startActivity(new Intent(getContext(), CommonLineActivity.class));
+                break;
         }
     }
+
     private void switchTitle(int type) {
         switch (type) {
             case 0:

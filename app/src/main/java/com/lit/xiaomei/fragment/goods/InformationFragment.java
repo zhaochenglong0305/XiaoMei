@@ -150,7 +150,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         doProvince = listDataBean.getPR();
         doCity = listDataBean.getCT();
         String informationMsg = CreateSendMsg.createInformationMsg(getActivity(), listDataBean.getPR(), listDataBean.getCT());
-        mainActivity.sendMsgToSocket(informationMsg);
+//        mainActivity.sendMsgToSocket(informationMsg);
         intentFilter = new IntentFilter();
         intentFilter.addAction(GlobalVariable.ReceiverAction.REAL_TIME_MSG);
         receiveMsgReceiver = new ReceiveMsgReceiver();
@@ -423,7 +423,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     selectCity = city.getCityName();
                     doProvince = selectProvince;
                     doCity = selectCity;
-                    mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getActivity(), doProvince, doCity));
                     searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                             "", "", "");
                     isFromLayoutShow = false;
@@ -536,8 +535,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     private void searchInformation(String USER, String PASS, String KEYY,
                                    String INXH, String PROV, String CITY,
-                                   String INCITY, String INPHONE,
-                                   String INFOR) {
+                                   final String INCITY, String INPHONE,
+                                   final String INFOR) {
         if (TextUtils.isEmpty(INCITY) && TextUtils.isEmpty(INFOR)) {
             AuthorityType = "QB";
         } else {
@@ -547,6 +546,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
+                if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
+                    mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getActivity(), doProvince, doCity));
+                }
                 Message message = new Message();
                 message.what = 1;
                 message.obj = data;

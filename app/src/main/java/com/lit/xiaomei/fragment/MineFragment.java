@@ -13,6 +13,7 @@ import com.lit.xiaomei.activity.MineActivity;
 import com.lit.xiaomei.activity.MyIncomeInformationActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.activity.SteupActivity;
+import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.databinding.FragmentMineBinding;
 
 import com.lit.xiaomei.manager.UseInfoManager;
@@ -21,7 +22,7 @@ import com.lit.xiaomei.manager.UseInfoManager;
  * 我的Fragment
  */
 public class MineFragment extends BaseFragment<FragmentMineBinding> implements View.OnClickListener {
-
+    private User.ListDataBean user = new User.ListDataBean();
     private String uss = "", bds = "", eds = "", cps = "", ads = "", phs = "", prs = "", cts = "";
 
     public MineFragment() {
@@ -49,6 +50,8 @@ public class MineFragment extends BaseFragment<FragmentMineBinding> implements V
     @Override
     public void initView() {
         super.initView();
+        user = UseInfoManager.getUser(getContext()).getListData().get(0);
+        binding.tvUsername.setText(user.getUS());
         binding.rlGerenziliao.setOnClickListener(this);
         binding.tvIncomeAll.setOnClickListener(this);
         binding.rlSetup.setOnClickListener(this);

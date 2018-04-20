@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_city"
+        android:layout_width="60dp"
+        android:layout_height="28dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/boder_fillet_add_city1"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="沈阳"
+            android:textColor="@color/cFD933C"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_do"
+        android:layout_width="60dp"
+        android:layout_height="28dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/boder_fillet_add_city">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="+ 选择"
+            android:textColor="@color/c888888"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

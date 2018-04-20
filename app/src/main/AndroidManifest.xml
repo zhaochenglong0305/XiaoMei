@@ -41,7 +41,10 @@
         <activity android:name=".activity.UpdatePasswordActivity" />
         <activity android:name=".activity.MineActivity" />
         <activity android:name=".activity.SteupActivity" />
-        <activity android:name=".activity.AboutUsActivity"></activity>
+        <activity android:name=".activity.AboutUsActivity" />
+        <activity
+            android:name=".activity.CommonLineActivity"
+            android:label="@string/title_activity_common_line"></activity>
     </application>
 
 </manifest>
