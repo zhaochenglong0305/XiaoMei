@@ -19,12 +19,17 @@
         android:theme="@style/BaseTheme"
         tools:replace="android:icon,android:theme,android:allowBackup ">
         <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.LoginActivity">
+
         </activity>
         <activity
             android:name=".activity.EditReleaseMsgActivity"
@@ -44,7 +49,11 @@
         <activity android:name=".activity.AboutUsActivity" />
         <activity
             android:name=".activity.CommonLineActivity"
-            android:label="@string/title_activity_common_line"></activity>
+            android:label="@string/title_activity_common_line" />
+        <activity
+            android:name=".activity.InvitationFriendActivity"
+            android:label="@string/title_activity_invitation_friend" />
+
     </application>
 
 </manifest>

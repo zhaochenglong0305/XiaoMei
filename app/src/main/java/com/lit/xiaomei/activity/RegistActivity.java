@@ -241,6 +241,7 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
             public void onClick(String c, String p) {
                 city = c;
                 province = p;
+                binding.tvCity.setText(c);
             }
         });
         dialogRegistSelectCity.showAtLocation(binding.llRegistMain, Gravity.CENTER, 0, 0);

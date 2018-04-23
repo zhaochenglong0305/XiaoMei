@@ -118,6 +118,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:button="@null"
+                        android:checked="true"
                         android:drawableLeft="@drawable/checkbox_style"
                         android:drawablePadding="5dp"
                         android:gravity="center"
@@ -184,13 +185,13 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tv_kefu"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
                     android:text="联系客服"
                     android:textColor="@color/cFD933C"
                     android:textSize="11sp" />
@@ -198,8 +199,9 @@
                 <TextView
                     android:id="@+id/tv_forget_pwd"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
+                    android:gravity="center"
                     android:text="忘记密码？"
                     android:textColor="@color/cFD933C"
                     android:textSize="11sp" />

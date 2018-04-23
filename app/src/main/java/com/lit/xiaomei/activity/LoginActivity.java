@@ -34,10 +34,7 @@ import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.view.DialogShowKeFu;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements View.OnClickListener {
-    private static final int GETNETIPFAIL = 0;
-    private static final int GETNETIPSUCCESS = 1;
-    private static final int GETNETIPNOTFIND = 2;
-    private GetNetIPHandler getNetIPHandler;
+
     private String userCity = "";
     private String userName = "";
     private String passWord = "";
@@ -55,30 +52,16 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     public void initView() {
         super.initView();
         binding.tvAppName.setText(getAppName(this) + " " + getVersionName(this));
-        getNetIPHandler = new GetNetIPHandler();
         user = UseInfoManager.getUser(this);
         if (!TextUtils.isEmpty(UseInfoManager.getString(this, "userCity"))) {
             userCity = UseInfoManager.getString(this, "userCity");
         }
-        initNetIP();
         initEditBoder();
         binding.btnLogin.setOnClickListener(this);
         binding.btnRegister.setOnClickListener(this);
         binding.tvForgetPwd.setOnClickListener(this);
-        binding.cbRememberPassword.setChecked(UseInfoManager.getBoolean(this, "RememberPassword", false));
+        binding.cbRememberPassword.setChecked(UseInfoManager.getBoolean(this, "RememberPassword", true));
         binding.cbAutomaticLogon.setChecked(UseInfoManager.getBoolean(this, Constants.Tag.autoLogin, false));
-        binding.cbRememberPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                UseInfoManager.putBoolean(LoginActivity.this, "RememberPassword", isChecked);
-            }
-        });
-        binding.cbAutomaticLogon.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                UseInfoManager.putBoolean(LoginActivity.this, Constants.Tag.autoLogin, isChecked);
-            }
-        });
 
         if (UseInfoManager.getBoolean(this, "RememberPassword", false)) {
             if (user != null) {
@@ -87,6 +70,20 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
             }
         }
         binding.tvKefu.setOnClickListener(this);
+
+        if (UseInfoManager.getBoolean(LoginActivity.this, Constants.Tag.autoLogin, false)) {
+            userName = binding.etUsername.getText().toString();
+            passWord = binding.etPassword.getText().toString();
+            if (TextUtils.isEmpty(userName)) {
+                showMessage("账号不能为空！");
+                return;
+            }
+            if (TextUtils.isEmpty(passWord)) {
+                showMessage("密码不能为空！");
+                return;
+            }
+            doLogin(binding.etUsername.getText().toString(), binding.etPassword.getText().toString(), getANDROID_ID(), "0", "1", true);
+        }
     }
 
     private void initEditBoder() {
@@ -173,6 +170,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                         break;
                     case 1:
                         data.getListData().get(0).setPW(PWord);
+                        UseInfoManager.putBoolean(LoginActivity.this, "RememberPassword", binding.cbRememberPassword.isChecked());
+                        UseInfoManager.putBoolean(LoginActivity.this, Constants.Tag.autoLogin, binding.cbAutomaticLogon.isChecked());
                         UseInfoManager.saveUser(LoginActivity.this, data);
                         UseInfoManager.putString(LoginActivity.this, "userCity", data.getListData().get(0).getCT());
                         showMessage("登录成功！");
@@ -210,81 +209,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     }
 
-    private void initNetIP() {
-        showLoading();
-        new Thread() {
-            @Override
-            public void run() {
-                Message msg = new Message();
-                try {
-                    String serverURL = "http://blog.sina.com.cn/s/blog_1669867c40102x4m7.html";
-                    // String serverURL =
-                    // "http://blog.sina.com.cn/s/blog_1669867c40102x0mb.html";
-                    Document document = Jsoup.connect(serverURL).get();
-                    Elements elements = document.select("div");
-                    Element element = elements.get(15);
-                    if (!TextUtils.isEmpty(element.text())) {
-                        msg.what = GETNETIPSUCCESS;
-                        msg.obj = element.text();
-                    } else {
-                        msg.what = GETNETIPNOTFIND;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    msg.what = GETNETIPFAIL;
-                }
-                getNetIPHandler.sendMessage(msg);
-            }
-        }.start();
-    }
-
-    private class GetNetIPHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            hideLoading();
-            ArrayList<String> ips = new ArrayList<>();
-            switch (msg.what) {
-                case GETNETIPFAIL:
-//                    113.6.252.165
-                    ips.add("http://113.6.252.165:8081/");
-                    break;
-                case GETNETIPSUCCESS:
-                    String res = (String) msg.obj;
-                    if (res.contains("ABC") && res.contains("DEF")) {
-                        String sub = res.substring(res.indexOf("ABC") + 3, res.indexOf("DEF"));
-                        if (sub.contains(",")) {
-                            String[] subs = sub.split(",");
-                            for (int i = 0; i < subs.length; i++) {
-                                ips.add("http://" + subs[i] + ":8081/");
-                            }
-                        } else {
-                            ips.add(sub);
-                        }
-                    } else {
-                        ips.add("http://113.6.252.165:8081/");
-                    }
-                    if (UseInfoManager.getBoolean(LoginActivity.this, Constants.Tag.autoLogin, false)) {
-                        userName = binding.etUsername.getText().toString();
-                        passWord = binding.etPassword.getText().toString();
-                        if (TextUtils.isEmpty(userName)) {
-                            showMessage("账号不能为空！");
-                            return;
-                        }
-                        if (TextUtils.isEmpty(passWord)) {
-                            showMessage("密码不能为空！");
-                            return;
-                        }
-                        doLogin(binding.etUsername.getText().toString(), binding.etPassword.getText().toString(), getANDROID_ID(), "0", "1", true);
-                    }
-//                    initAutomaticLogon();
-                    break;
-                case GETNETIPNOTFIND:
-                    ips.add("http://113.6.252.165:8081/");
-                    break;
-            }
-            UseInfoManager.putStringArraylist(LoginActivity.this, "NetIPs", ips);
-        }
-    }
 
     public String getANDROID_ID() {
         return Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);

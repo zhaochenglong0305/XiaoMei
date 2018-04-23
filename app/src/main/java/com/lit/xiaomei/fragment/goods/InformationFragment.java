@@ -132,8 +132,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                "", "", "");
+
         initDateBase();
         return binding.getRoot();
     }
@@ -156,6 +155,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         receiveMsgReceiver = new ReceiveMsgReceiver();
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
         adapter = new InformationAdapter(getContext(), searchINFOBeans, this);
+        binding.tvFrom.setText(listDataBean.getCT());
         binding.lvInformation.setAdapter(adapter);
         binding.lvInformation.setOnItemClickListener(this);
         binding.reRefresh.setListView(binding.lvInformation);
@@ -185,14 +185,37 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCityLv2Cancle.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
         getNews("1");
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                "", "", "");
     }
 
 
     private class OnSearchLv2ItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        public void onItemClick(AdapterView<?> adapterView, View view, int positon, long l) {
+            String keyText = texts.get(positon);
+            isSearchLv2LayoutShow = false;
+            initSearchFromLv2Layout();
+            binding.tvSearchLv2.setText(keyText);
+            binding.etAddCityLv2.setText(keyText);
+            searchEdits.clear();
+            if (searchLv2.contains(",")) {
+                String[] keys = keyText.split(",");
+                for (int i = 0; i < keys.length; i++) {
+                    searchEdits.add(keys[i]);
+                }
+            } else if (searchLv2.contains("，")) {
+                String[] keys = keyText.split("，");
+                for (int i = 0; i < keys.length; i++) {
+                    searchEdits.add(keys[i]);
+                }
+            } else {
+                searchEdits.add(keyText);
+            }
+            isLoad = false;
+            searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                    CityListToString(addCities), "", CityListToString(searchEdits));
         }
     }
 
@@ -206,7 +229,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     public void onRefresh() {
         isLoad = false;
         searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                "", "", "");
+                CityListToString(addCities), "", CityListToString(searchEdits));
     }
 
     @Override
@@ -214,8 +237,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(),
-                doProvince, doCity, "", "", "");
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, doCity,
+                CityListToString(addCities), "", CityListToString(searchEdits));
     }
 
     @Override
@@ -315,6 +338,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 addCity();
                 break;
             case R.id.btn_do_search:
+                isLoad = false;
                 isSearchLayoutShow = false;
                 initSearchFromLayout();
                 binding.tvSearch.setText(showText(1, addCities));
@@ -339,12 +363,34 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
                 binding.tvSearchLv2.setText(searchLv2);
+                searchEdits.clear();
+                if (searchLv2.contains(",")) {
+                    String[] keys = searchLv2.split(",");
+                    for (int i = 0; i < keys.length; i++) {
+                        searchEdits.add(keys[i]);
+                    }
+                } else if (searchLv2.contains("，")) {
+                    String[] keys = searchLv2.split("，");
+                    for (int i = 0; i < keys.length; i++) {
+                        searchEdits.add(keys[i]);
+                    }
+                } else {
+                    searchEdits.add(searchLv2);
+                }
+                isLoad = false;
+                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
             case R.id.btn_add_city_lv2_cancle:
                 binding.tvSearchLv2.setText("二级搜索");
                 searchLv2 = "";
+                binding.etAddCityLv2.setText("");
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
+                searchEdits.clear();
+                isLoad = false;
+                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
             case R.id.tv_clear_record:
                 texts.clear();
@@ -362,31 +408,34 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Information.SearchINFOBean bean = searchINFOBeans.get(position);
-        checkAuthority(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(),
-                listDataBean.getPR(), listDataBean.getCT(), bean.getXH(), AuthorityType, bean);
+        if (UseInfoManager.getBoolean(getContext(), "checkAuthority", true)) {
+            Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
+            intent.putExtra("Details", bean);
+            startActivity(intent);
+            checkAuthority(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(),
+                    listDataBean.getPR(), listDataBean.getCT(), bean.getXH(), AuthorityType, bean);
+        } else {
+            showMessage(UseInfoManager.getString(getContext(), "checkAuthorityMsg"));
+        }
     }
 
     /**
      * 检查用户权限
      */
     private void checkAuthority(String NetID, String PWord, String key, String PR, String CT, String XH, String QC, final Information.SearchINFOBean bean) {
-        showLoading();
         HttpUtil.getInstance().checkAuthority(NetID, PWord, key, PR, CT, XH, QC, new HttpCallBack<CheckAuthority>() {
             @Override
             public void onSuccess(CheckAuthority data, String msg) {
-                hideLoading();
                 if (TextUtils.equals("1", data.getStatusId())) {
-                    Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
-                    intent.putExtra("Details", bean);
-                    startActivity(intent);
+                    UseInfoManager.putBoolean(getContext(), "checkAuthority", true);
                 } else {
-                    showMessage(data.getStatus());
+                    UseInfoManager.putBoolean(getContext(), "checkAuthority", false);
+                    UseInfoManager.putString(getContext(), "checkAuthorityMsg", data.getStatus());
                 }
             }
 
             @Override
             public void onFail(int errorCode, String msg) {
-                hideLoading();
                 showMessage("网络异常！");
             }
         });
@@ -405,28 +454,34 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             TextUtils.equals(selectProvince, "天津") ||
                             TextUtils.equals(selectProvince, "上海") ||
                             TextUtils.equals(selectProvince, "重庆")) {
-                        cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
-                        zones = zoneIBaseDao.query("CityID=?", new String[]{cities.get(0).getCitySort()});
-                        binding.gvCitylevel1.setAdapter(fromZoneAdapter);
-                        fromZoneAdapter.setDatas(3, zones);
+                        isFromLayoutShow = false;
+                        initFromLayout();
+                        selectCity = selectProvince;
+                        doProvince = selectProvince;
+                        doCity = selectCity;
+                        isLoad = false;
+                        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                                CityListToString(addCities), "", CityListToString(searchEdits));
+                        binding.tvFrom.setText(selectCity);
                     } else {
                         cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
                         binding.gvCitylevel1.setAdapter(fromCityAdapter);
                         fromCityAdapter.setDatas(2, cities);
+                        binding.tvSelectedCityLevel1.setText("当前所在：" + selectProvince);
+                        binding.tvCityBackLevel1.setVisibility(View.VISIBLE);
+                        cityType = 2;
                     }
-                    binding.tvSelectedCityLevel1.setText("当前所在：" + selectProvince);
-                    binding.tvCityBackLevel1.setVisibility(View.VISIBLE);
-                    cityType = 2;
                     break;
                 case 2:
+                    isFromLayoutShow = false;
+                    initFromLayout();
                     City city = cities.get(i);
                     selectCity = city.getCityName();
                     doProvince = selectProvince;
                     doCity = selectCity;
+                    isLoad = false;
                     searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                            "", "", "");
-                    isFromLayoutShow = false;
-                    initFromLayout();
+                            CityListToString(addCities), "", CityListToString(searchEdits));
                     binding.tvFrom.setText(selectCity);
                     break;
                 case 3:
@@ -450,6 +505,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             TextUtils.equals(searchSelectProvince, "重庆")) {
                         searchCities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
                         searchZones = zoneIBaseDao.query("CityID=?", new String[]{searchCities.get(0).getCitySort()});
+                        searchZones.add(0, new Zone(searchSelectProvince));
                         binding.gvCitylevel2.setAdapter(searchZoneAdapter);
                         searchZoneAdapter.setDatas(3, searchZones);
                     } else {
@@ -482,6 +538,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         City city = searchCities.get(i);
                         searchSelectCity = city.getCityName();
                         searchZones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                        searchZones.add(0, new Zone(searchSelectCity));
                         binding.gvCitylevel2.setAdapter(searchZoneAdapter);
                         searchZoneAdapter.setDatas(3, searchZones);
                         binding.tvSelectedCityLevel2.setText(binding.tvSelectedCityLevel2.getText().toString() + " — " + searchSelectCity);
@@ -542,6 +599,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         } else {
             AuthorityType = "SS";
         }
+        if (!isLoad) {
+            binding.reRefresh.setRefreshing(true);
+        }
         isStartReceive = false;
         HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
@@ -595,36 +655,42 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private void initFromLayout() {
         binding.llSearchLevel1.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
+        binding.tvFrom.setTextColor(getResources().getColor(R.color.c888888));
         binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
     }
 
     private void showFromLayout() {
         binding.llSearchLevel1.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
+        binding.tvFrom.setTextColor(getResources().getColor(R.color.cFD933C));
         binding.ivFromBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
     }
 
     private void initSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.GONE);
         binding.reRefresh.setVisibility(View.VISIBLE);
+        binding.tvSearch.setTextColor(getResources().getColor(R.color.c888888));
         binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_xia_huang);
     }
 
     private void showSearchFromLayout() {
         binding.llSearchLevel2.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
+        binding.tvSearch.setTextColor(getResources().getColor(R.color.cFD933C));
         binding.ivSearchBiaoHuang.setImageResource(R.mipmap.select_shang_huang);
     }
 
     private void initSearchFromLv2Layout() {
         binding.reRefresh.setVisibility(View.VISIBLE);
         binding.llSearchLevel3.setVisibility(View.GONE);
+        binding.tvSearchLv2.setTextColor(getResources().getColor(R.color.c888888));
         binding.ivSearchBiaoHuangLv2.setImageResource(R.mipmap.select_xia_huang);
     }
 
     private void showSearchFromLv2Layout() {
         binding.llSearchLevel3.setVisibility(View.VISIBLE);
         binding.reRefresh.setVisibility(View.GONE);
+        binding.tvSearchLv2.setTextColor(getResources().getColor(R.color.cFD933C));
         binding.ivSearchBiaoHuangLv2.setImageResource(R.mipmap.select_shang_huang);
     }
 
@@ -735,11 +801,13 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    binding.reRefresh.setRefreshing(false);
-                    showMessage("获取失败！");
-                    searchINFOBeans.clear();
-                    adapter.clear();
-                    binding.tvNotData.setVisibility(View.VISIBLE);
+                    if (isLoad) {
+                        showMessage("加载失败！");
+                        binding.reRefresh.removeFooterView();
+                    } else {
+                        showMessage("刷新失败！");
+                        binding.reRefresh.setRefreshing(false);
+                    }
                     break;
                 case 1:
                     Information data = (Information) msg.obj;
@@ -750,10 +818,13 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             adapter.addListMsg(data.getSearchINFO());
                         }
                     } else {
+                        binding.reRefresh.removeFooterView();
+                        binding.lvInformation.smoothScrollToPosition(0);
                         binding.tvNotData.setVisibility(View.GONE);
                         binding.reRefresh.setRefreshing(false);
                         searchINFOBeans.clear();
                         searchINFOBeans = data.getSearchINFO();
+                        adapter.clear();
                         adapter.setData(searchINFOBeans);
                         isStartReceive = true;
                     }

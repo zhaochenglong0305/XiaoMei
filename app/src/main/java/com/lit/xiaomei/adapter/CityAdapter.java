@@ -67,10 +67,24 @@ public class CityAdapter<T> extends BaseAdapter {
             case 1:
                 Province province = (Province) citys.get(position);
                 holder.text.setText(province.getProName());
+                if (TextUtils.equals(select, province.getProName())) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+                }else {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
                 break;
             case 2:
                 City city = (City) citys.get(position);
                 holder.text.setText(city.getCityName());
+                if (TextUtils.equals(select, city.getCityName())) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
+                }else {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
                 break;
             case 3:
                 Zone zone = (Zone) citys.get(position);

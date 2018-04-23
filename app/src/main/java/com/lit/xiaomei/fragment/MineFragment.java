@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import com.fyjr.baselibrary.base.BaseFragment;
+import com.lit.xiaomei.activity.InvitationFriendActivity;
 import com.lit.xiaomei.activity.MineActivity;
 import com.lit.xiaomei.activity.MyIncomeInformationActivity;
 import com.lit.xiaomei.R;
@@ -56,12 +57,7 @@ public class MineFragment extends BaseFragment<FragmentMineBinding> implements V
         binding.tvIncomeAll.setOnClickListener(this);
         binding.rlSetup.setOnClickListener(this);
         binding.rlAboutUs.setOnClickListener(this);
-        binding.llShareMa.setOnClickListener(this);
-        binding.llInvitingFriends.setOnClickListener(this);
-        binding.llCarLocation.setOnClickListener(this);
-        binding.llMileageQuery.setOnClickListener(this);
-        binding.llParkingLot.setOnClickListener(this);
-        binding.llGasStation.setOnClickListener(this);
+        binding.rlInvitationFriend.setOnClickListener(this);
     }
 
     @Override
@@ -76,6 +72,9 @@ public class MineFragment extends BaseFragment<FragmentMineBinding> implements V
                 break;
             case R.id.rl_setup:
                 startActivity(new Intent(getContext(), SteupActivity.class));
+                break;
+            case R.id.rl_invitation_friend:
+                startActivity(new Intent(getContext(), InvitationFriendActivity.class));
                 break;
         }
     }

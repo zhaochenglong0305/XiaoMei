@@ -5,9 +5,10 @@
     tools:context="com.lit.xiaomei.activity.CommonLineActivity">
 
     <LinearLayout
+        android:id="@+id/ll_common_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/ce5e5e5"
         android:orientation="vertical">
 
         <include
@@ -17,9 +18,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,24 +46,22 @@
                 android:id="@+id/gv_from_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:numColumns="5"
                 android:scrollbars="none" />
 
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/ce5e5e5" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,17 +86,26 @@
                 android:id="@+id/gv_to_city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:numColumns="5"
                 android:scrollbars="none" />
 
 
         </LinearLayout>
 
-        <View
+        <Button
+            android:id="@+id/btn_line_add"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:background="@color/ce5e5e5" />
+            android:layout_height="35dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/selector_login_btn"
+            android:stateListAnimator="@drawable/selector_scale_press"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
 
     </LinearLayout>
 

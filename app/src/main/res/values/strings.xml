@@ -9,4 +9,6 @@
     <string name="title_activity_regist">RegistActivity</string>
     <string name="title_activity_my_income_information">MyIncomeInformationActivity</string>
     <string name="title_activity_common_line">CommonLineActivity</string>
+    <string name="title_activity_invitation_friend">InvitationFriendActivity</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
 </resources>

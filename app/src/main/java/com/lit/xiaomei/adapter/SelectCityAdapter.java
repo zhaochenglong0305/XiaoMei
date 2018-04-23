@@ -20,10 +20,12 @@ import java.util.List;
 public class SelectCityAdapter extends BaseAdapter {
     private List<String> cities = new ArrayList<>();
     private Context context;
+    private View.OnClickListener listener;
 
-    public SelectCityAdapter(Context context, List<String> cities) {
+    public SelectCityAdapter(Context context, List<String> cities, View.OnClickListener listener) {
         this.context = context;
         this.cities = cities;
+        this.listener = listener;
     }
 
     @Override
@@ -56,12 +58,19 @@ public class SelectCityAdapter extends BaseAdapter {
                 cityLayout.setVisibility(View.VISIBLE);
                 doLayout.setVisibility(View.GONE);
                 cityName.setText(city);
+                cityLayout.setTag(city);
             }
         } else {
             cityLayout.setVisibility(View.GONE);
             doLayout.setVisibility(View.VISIBLE);
         }
-
+        cityLayout.setOnClickListener(listener);
+        doLayout.setOnClickListener(listener);
         return convertView;
+    }
+
+    public void setData(List<String> cities) {
+        this.cities = cities;
+        notifyDataSetChanged();
     }
 }

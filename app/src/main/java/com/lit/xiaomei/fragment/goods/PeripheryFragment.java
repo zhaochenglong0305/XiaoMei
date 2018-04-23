@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import com.lit.xiaomei.utils.DataBaseUtils.CityDbHandler;
 import com.lit.xiaomei.utils.DataBaseUtils.DaoFactory;
 import com.lit.xiaomei.utils.DataBaseUtils.DbSqlite;
 import com.lit.xiaomei.utils.DataBaseUtils.IBaseDao;
+import com.lit.xiaomei.view.DialogCall;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -142,7 +144,9 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                     binding.llSearchCity.setVisibility(View.VISIBLE);
                     binding.llSearchKey.setVisibility(View.GONE);
                     binding.rlContextList.setVisibility(View.GONE);
+                    binding.tvSearchCity.setTextColor(getResources().getColor(R.color.cFD933C));
                     binding.ivSearchCity.setImageResource(R.mipmap.select_shang_huang);
+                    binding.tvSearchKey.setTextColor(getResources().getColor(R.color.c888888));
                     binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
                 }
                 break;
@@ -241,10 +245,37 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                 searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(addKeys));
                 break;
+            case R.id.iv_call:
+                String phone = (String) view.getTag();
+                showPhone(phone);
+                break;
 
         }
     }
+    private void showPhone(String phoneString) {
+        List<String> phones = new ArrayList<>();
+        if (phoneString.contains("，")) {
+            String[] pds = phoneString.split("，");
+            for (int i = 0; i < pds.length; i++) {
+                phones.add(pds[i]);
+            }
 
+        } else if (phoneString.contains(",")) {
+            String[] pxs = phoneString.split(",");
+            for (int i = 0; i < pxs.length; i++) {
+                phones.add(pxs[i]);
+            }
+        } else if (phoneString.contains(" ")) {
+            String[] pks = phoneString.split(" ");
+            for (int i = 0; i < pks.length; i++) {
+                phones.add(pks[i]);
+            }
+        } else {
+            phones.add(phoneString);
+        }
+        DialogCall dialogCall = new DialogCall(getActivity(), phones);
+        dialogCall.showAtLocation(binding.llPeripheryMain, Gravity.CENTER, 0, 0);
+    }
     private String CityListToString(List<String> list) {
         String text = "";
         for (int i = 0; i < list.size(); i++) {
@@ -433,8 +464,15 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         Information.SearchINFOBean bean = searchINFOBeans.get(position);
-        checkAuthority(user.getUS(), user.getPW(), user.getKY(),
-                user.getPR(), user.getCT(), bean.getXH(), AuthorityType, bean);
+        if (UseInfoManager.getBoolean(getContext(), "checkAuthority", true)) {
+            Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
+            intent.putExtra("Details", bean);
+            startActivity(intent);
+            checkAuthority(user.getUS(), user.getPW(), user.getKY(),
+                    user.getPR(), user.getCT(), bean.getXH(), AuthorityType, bean);
+        } else {
+            showMessage(UseInfoManager.getString(getContext(), "checkAuthorityMsg"));
+        }
     }
 
     /**
@@ -445,19 +483,16 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         HttpUtil.getInstance().checkAuthority(NetID, PWord, key, PR, CT, XH, QC, new HttpCallBack<CheckAuthority>() {
             @Override
             public void onSuccess(CheckAuthority data, String msg) {
-                hideLoading();
                 if (TextUtils.equals("1", data.getStatusId())) {
-                    Intent intent = new Intent(getContext(), InformationDetailsActivity.class);
-                    intent.putExtra("Details", bean);
-                    startActivity(intent);
+                    UseInfoManager.putBoolean(getContext(), "checkAuthority", true);
                 } else {
-                    showMessage(data.getStatus());
+                    UseInfoManager.putBoolean(getContext(), "checkAuthority", false);
+                    UseInfoManager.putString(getContext(), "checkAuthorityMsg", data.getStatus());
                 }
             }
 
             @Override
             public void onFail(int errorCode, String msg) {
-                hideLoading();
                 showMessage("网络异常！");
             }
         });

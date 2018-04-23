@@ -12,10 +12,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fyjr.baselibrary.base.BaseActivity;
+import com.fyjr.baselibrary.http.HttpUtil;
+import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.bean.CheckAuthority;
+import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.databinding.ActivityInformationDetailsBinding;
 
 import com.lit.xiaomei.bean.Information;
+import com.lit.xiaomei.manager.UseInfoManager;
 
 public class InformationDetailsActivity extends BaseActivity<ActivityInformationDetailsBinding> implements AdapterView.OnItemClickListener {
     private Information.SearchINFOBean searchINFOBean = new Information.SearchINFOBean();
@@ -53,6 +58,7 @@ public class InformationDetailsActivity extends BaseActivity<ActivityInformation
         binding.tvDetailsTo.setText(searchINFOBean.getMD());
         binding.tvDetailsType.setText(searchINFOBean.getCH());
         binding.tvDetailsContext.setText(searchINFOBean.getMS());
+        binding.tvStationName.setText(searchINFOBean.getNA());
         binding.tvDetailsTime.setText(searchINFOBean.getDT());
         adapter = new ListPhonesAdapter();
         binding.lvDetailsPhones.setAdapter(adapter);
@@ -91,4 +97,5 @@ public class InformationDetailsActivity extends BaseActivity<ActivityInformation
             return convertView;
         }
     }
+
 }

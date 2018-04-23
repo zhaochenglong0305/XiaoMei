@@ -163,19 +163,17 @@ public class DialogRegistSelectCity extends PopupWindow implements View.OnClickL
                         TextUtils.equals(selectProvince, "天津") ||
                         TextUtils.equals(selectProvince, "上海") ||
                         TextUtils.equals(selectProvince, "重庆")) {
-                    cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
-                    zones = zoneIBaseDao.query("CityID=?", new String[]{cities.get(0).getCitySort()});
-                    zones.add(0, new Zone(selectProvince));
-                    cityGrid.setAdapter(zoneAdapter);
-                    zoneAdapter.setDatas(3, zones);
+                    selectCity = selectProvince;
+                    provinceAdapter.setSelect(selectCity);
+                    ok.setVisibility(View.VISIBLE);
                 } else {
                     cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
                     cityGrid.setAdapter(cityAdapter);
                     cityAdapter.setDatas(2, cities);
+                    cityText.setText("当前所在：" + selectProvince);
+                    cityBack.setVisibility(View.VISIBLE);
+                    searchCityType = 2;
                 }
-                cityText.setText("当前所在：" + selectProvince);
-                cityBack.setVisibility(View.VISIBLE);
-                searchCityType = 2;
                 break;
             case 2:
                 if (TextUtils.equals(selectProvince, "北京") ||
@@ -189,12 +187,8 @@ public class DialogRegistSelectCity extends PopupWindow implements View.OnClickL
                 } else {
                     City city = cities.get(i);
                     selectCity = city.getCityName();
-                    zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
-                    zones.add(0, new Zone(selectCity));
-                    cityGrid.setAdapter(zoneAdapter);
-                    zoneAdapter.setDatas(3, zones);
-                    cityText.setText(cityText.getText().toString() + " — " + selectCity);
-                    searchCityType = 3;
+                    cityAdapter.setSelect(selectCity);
+                    ok.setVisibility(View.VISIBLE);
                 }
                 break;
             case 3:
