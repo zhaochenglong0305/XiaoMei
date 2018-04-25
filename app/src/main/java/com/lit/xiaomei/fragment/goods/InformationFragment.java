@@ -1,8 +1,10 @@
 package com.lit.xiaomei.fragment.goods;
 
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
@@ -35,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.lit.xiaomei.adapter.CityAdapter;
@@ -46,6 +49,7 @@ import com.lit.xiaomei.bean.Information;
 import com.lit.xiaomei.bean.Province;
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.bean.Zone;
+import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
 import com.lit.xiaomei.utils.DataBaseUtils.CityDbHandler;
@@ -140,6 +144,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     @Override
     public void initView() {
         super.initView();
+        doLocation();
         ArrayList<String> records = UseInfoManager.getStringArraylist(getContext(), "Record");
         if (records != null) {
             texts = records;
@@ -342,9 +347,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isSearchLayoutShow = false;
                 initSearchFromLayout();
                 binding.tvSearch.setText(showText(1, addCities));
-                filterText.clear();
-                filterText.addAll(addCities);
-                filterText.addAll(searchEdits);
                 searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
@@ -436,7 +438,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
             @Override
             public void onFail(int errorCode, String msg) {
-                showMessage("网络异常！");
+//                showMessage("网络异常！");
             }
         });
 
@@ -510,6 +512,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         searchZoneAdapter.setDatas(3, searchZones);
                     } else {
                         searchCities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
+                        if (TextUtils.equals(searchSelectProvince, "辽宁")) {
+                            searchCities.add(new City("鲅鱼圈"));
+                            searchCities.add(new City("集装箱"));
+                        }
                         binding.gvCitylevel2.setAdapter(searchCityAdapter);
                         searchCityAdapter.setDatas(2, searchCities);
                     }
@@ -591,7 +597,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
     private void searchInformation(String USER, String PASS, String KEYY,
-                                   String INXH, String PROV, String CITY,
+                                   String INXH, final String PROV, final String CITY,
                                    final String INCITY, String INPHONE,
                                    final String INFOR) {
         if (TextUtils.isEmpty(INCITY) && TextUtils.isEmpty(INFOR)) {
@@ -600,6 +606,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             AuthorityType = "SS";
         }
         if (!isLoad) {
+            mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY));
             binding.reRefresh.setRefreshing(true);
         }
         isStartReceive = false;
@@ -607,7 +614,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             @Override
             public void onSuccess(Information data, String msg) {
                 if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
-                    mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getActivity(), doProvince, doCity));
+                    UseInfoManager.putBoolean(getContext(), "isStartReceive", true);
+                    filterText.clear();
+                    filterText.addAll(addCities);
+                    filterText.addAll(searchEdits);
                 }
                 Message message = new Message();
                 message.what = 1;
@@ -810,6 +820,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     }
                     break;
                 case 1:
+
                     Information data = (Information) msg.obj;
                     if (isLoad) {
                         if (data.getSearchINFO().size() == 0 || data == null) {
@@ -890,4 +901,49 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     }
 
+    private void doLocation() {
+
+        final LocationManager locationManager = new LocationManager(getContext());
+        locationManager.doLocation(new LocationManager.OnLocationSuccessListener() {
+
+            @Override
+            public void onSuccess(HashMap<String, Object> result) {
+                boolean isSuccess = false;
+                isSuccess = (Boolean) result.get("isSuccess");
+                if (isSuccess) {
+                    String province = (String) result.get("province");
+                    String city = (String) result.get("city");
+                    if (TextUtils.isEmpty(province) || TextUtils.isEmpty(city)) {
+                        return;
+                    }
+                    final String provinceRes = province.substring(0, province.length() - 1);
+                    final String cityRes = city.substring(0, city.length() - 1);
+                    if (TextUtils.equals(doCity, cityRes)) {
+                        return;
+                    }
+                    final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getContext());
+                    normalDialog.setTitle("定位成功");
+                    normalDialog.setMessage("是否切换到" + city + "?");
+                    normalDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            doProvince = provinceRes;
+                            doCity = cityRes;
+                            binding.tvFrom.setText(doCity);
+                            searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                                    "", "", "");
+                        }
+                    });
+                    normalDialog.setNegativeButton("关闭", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    // 显示
+                    normalDialog.show();
+                }
+            }
+        });
+    }
 }

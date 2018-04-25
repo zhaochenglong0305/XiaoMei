@@ -2,7 +2,9 @@ package com.lit.xiaomei.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -17,6 +19,8 @@ import com.lit.xiaomei.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.lit.xiaomei.bean.DetecatedInformation;
 import com.lit.xiaomei.bean.Information;
@@ -83,12 +87,12 @@ public class InformationAdapter extends BaseAdapter {
                 }
             }
         }
-        String information = StringUtil.formatString(searchINFOBean.getMS());
+        String information = searchINFOBean.getSF() + "出发：" + StringUtil.formatString(searchINFOBean.getMS());
         if (filters.size() != 0) {
-            SpannableStringBuilder spannableStringBuilder = matcherSearchText(Color.YELLOW, information, filters);
-            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + spannableStringBuilder);
+            SpannableString spannableString = matcherSearchText(Color.BLUE, information, filters);
+            holder.tv_information.setText(spannableString);
         } else {
-            holder.tv_information.setText(searchINFOBean.getSF() + "出发：" + information);
+            holder.tv_information.setText(information);
         }
         holder.tv_phone.setText("电话：" + searchINFOBean.getPH());
         if (!TextUtils.isEmpty(searchINFOBean.getNA())) {
@@ -151,16 +155,19 @@ public class InformationAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private SpannableStringBuilder matcherSearchText(int color, String string, List<String> keyWords) {
-        SpannableStringBuilder builder = new SpannableStringBuilder(string);
-        ForegroundColorSpan span = new ForegroundColorSpan(color);
-        for (String keyWord : keyWords) {
-            int indexOf = string.indexOf(keyWord);
-            if (indexOf != -1) {
-                builder.setSpan(span, indexOf, indexOf + keyWord.length(), SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+    public static SpannableString matcherSearchText(int color, String text, List<String> keyWords) {
+        SpannableString ss = new SpannableString(text);
+        for (String keyword : keyWords) {
+            Pattern pattern = Pattern.compile(keyword);
+            Matcher matcher = pattern.matcher(ss);
+            while (matcher.find()) {
+                int start = matcher.start();
+                int end = matcher.end();
+                ss.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
-        return builder;
+        return ss;
     }
 
 }

@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="BaseTheme" parent="FyjrAppTheme"/>
+    <style name="BaseTheme" parent="FyjrAppTheme" />
 
     <!-- Base application theme. -->
     <style name="FyjrAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -19,9 +19,14 @@
         <item name="spinBars">true</item>
         <item name="color">@android:color/white</item>
     </style>
+
     <style name="TRM_ANIM_STYLE">
         <item name="android:windowEnterAnimation">@anim/trm_popup_enter</item>
         <item name="android:windowExitAnimation">@anim/trm_popup_exit</item>
     </style>
 
+    <style name="CustomDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
 </resources>

@@ -159,7 +159,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         final ArrayList<String> ips = UseInfoManager.getStringArraylist(this, "NetIPs");
         HttpUrl.BASE_URL = ips.get(ipFre);
 //        key为90cf9e6c2544be04越过权限，正式上线时替换成key
-        HttpUtil.getInstance().login(NetID, PWord, "90cf9e6c2544be04", Type, TextFormat, new HttpCallBack<User>() {
+        HttpUtil.getInstance().login(NetID, PWord, getANDROID_ID(), Type, TextFormat, new HttpCallBack<User>() {
             @Override
             public void onSuccess(User data, String msg) {
                 hideLoading();

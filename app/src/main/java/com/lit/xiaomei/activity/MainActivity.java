@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void initView() {
         super.initView();
+        UseInfoManager.putBoolean(this, "isStartReceive", false);
         listDataBean = UseInfoManager.getUser(this).getListData().get(0);
         initFragments();
         binding.bottomBarRg.setOnCheckedChangeListener(this);
@@ -193,6 +194,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     @Override
     public void onReceive(XTcpClient client, TcpMsg tcpMsg) {
+        if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
+            return;
+        }
         byte[][] res = tcpMsg.getEndDecodeData();
         byte[] bytes = new byte[0];
         for (byte[] i : res) {

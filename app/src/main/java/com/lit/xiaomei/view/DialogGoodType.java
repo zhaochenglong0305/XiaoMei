@@ -23,7 +23,7 @@ import com.lit.xiaomei.adapter.AttributeAdapter;
  */
 
 public class DialogGoodType extends PopupWindow implements View.OnClickListener {
-    private String[] goodType = {"普货", "重货", "泡货", "设备", "配件", "百货", "建材", "食品", "饮料", "化工", "农药", "水果", "蔬菜", "木材", "煤炭", "石材", "瓷砖", "其他"};
+    private String[] goodType = {"普货", "重货", "泡货", "设备", "配件", "百货", "建材", "食品", "饮料", "化工", "农药", "水果", "蔬菜", "木材", "煤炭", "石材", "瓷砖", "粮食", "树苗", "其他"};
     private List<String> goodTypeSelects = new ArrayList<>();
     private Activity context;
     private AttributeAdapter goodTypeAdapter;
@@ -83,7 +83,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
             case R.id.tv_ok:
                 if (goodTypeSelects.size() != 0) {
                     listener.onClick(goodTypeSelects.get(0));
-                }else{
+                } else {
                     listener.onClick("");
                 }
                 dismiss();

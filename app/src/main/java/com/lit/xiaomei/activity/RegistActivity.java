@@ -11,6 +11,7 @@ import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.RadioGroup;
 
 import com.fyjr.baselibrary.base.BaseActivity;
@@ -56,6 +57,25 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
         binding.btnGetYzm.setOnClickListener(this);
         binding.btnRegist.setOnClickListener(this);
         binding.rgUserType.setOnCheckedChangeListener(this);
+        binding.sCitySelect.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] registCity = getResources().getStringArray(R.array.city);
+                if (position != 0) {
+                    province = "辽宁";
+                    city = registCity[position];
+                }else {
+                    province = "";
+                    city = "";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                province = "";
+                city = "";
+            }
+        });
     }
 
     @Override
@@ -122,7 +142,6 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
                     showMessage("推荐人不能为空！");
                     return;
                 }
-
                 checkTJR(use, pwd, "", "", "", province, city, getANDROID_ID(), tjrNum, yzm, userType);
                 break;
         }

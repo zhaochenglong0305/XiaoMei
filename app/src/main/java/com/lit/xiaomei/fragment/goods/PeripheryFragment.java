@@ -493,7 +493,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
 
             @Override
             public void onFail(int errorCode, String msg) {
-                showMessage("网络异常！");
+//                showMessage("网络异常！");
             }
         });
 

@@ -3,6 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.lit.xiaomei">
 
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -11,6 +21,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
+        android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/tiger"
         android:label="@string/app_name"
@@ -18,6 +29,15 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:replace="android:icon,android:theme,android:allowBackup ">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="oXQ1gMuHf3XGbElTYvZDQr4oFPeOcEyE" />
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.WelcomeActivity"
@@ -28,9 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity">
-
-        </activity>
+        <activity android:name=".activity.LoginActivity"></activity>
         <activity
             android:name=".activity.EditReleaseMsgActivity"
             android:label="@string/title_activity_edit_release_msg" />
@@ -53,7 +71,9 @@
         <activity
             android:name=".activity.InvitationFriendActivity"
             android:label="@string/title_activity_invitation_friend" />
-
+        <activity
+            android:name=".activity.ShowMapActivity"
+            android:label="@string/title_activity_show_map"></activity>
     </application>
 
 </manifest>

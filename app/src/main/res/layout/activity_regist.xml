@@ -298,6 +298,14 @@
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
+                        <Spinner
+                            android:id="@+id/s_city_select"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:textSize="15sp"
+                            android:entries="@array/city"></Spinner>
+
                         <TextView
                             android:id="@+id/tv_city"
                             android:layout_width="0dp"
@@ -308,7 +316,8 @@
                             android:padding="5dp"
                             android:text="请点击选择城市"
                             android:textColor="#80000000"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <View
@@ -495,14 +504,13 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="left|center_vertical"
-                            android:text="推荐人："
+                            android:text="推荐人"
                             android:textColor="#000000"
                             android:textSize="18sp" />
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_alignParentRight="true"
                             android:layout_margin="5dp"
                             android:layout_weight="2"
                             android:orientation="horizontal">

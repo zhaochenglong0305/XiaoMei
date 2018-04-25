@@ -1,8 +1,10 @@
 package com.lit.xiaomei.fragment.release;
 
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -23,10 +25,12 @@ import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.FragmentRelesaeInformationBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.ReleaseHistory;
 import com.lit.xiaomei.bean.User;
+import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
 import com.lit.xiaomei.view.DialogCarLongType;
@@ -372,4 +376,5 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         againNum = 0;
         binding.etAgainNum.setText("");
     }
+
 }
