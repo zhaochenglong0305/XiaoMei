@@ -1,6 +1,7 @@
 package com.lit.xiaomei.fragment.goods;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -60,6 +61,9 @@ import com.lit.xiaomei.utils.FormatString;
 import com.lit.xiaomei.view.AdvertisementDialog;
 import com.lit.xiaomei.view.DialogADedicatedLine;
 import com.lit.xiaomei.view.DialogCall;
+import com.yxp.permission.util.lib.PermissionInfo;
+import com.yxp.permission.util.lib.PermissionUtil;
+import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
 
 /**
  * 信息Fragment
@@ -136,15 +140,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         initDateBase();
+        requestPermission();
         return binding.getRoot();
     }
 
     @Override
     public void initView() {
         super.initView();
-        doLocation();
         ArrayList<String> records = UseInfoManager.getStringArraylist(getContext(), "Record");
         if (records != null) {
             texts = records;
@@ -902,7 +905,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
     private void doLocation() {
-
         final LocationManager locationManager = new LocationManager(getContext());
         locationManager.doLocation(new LocationManager.OnLocationSuccessListener() {
 
@@ -945,5 +947,21 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 }
             }
         });
+        locationManager.mLocationClient.start();
+    }
+
+    /**
+     * 请求权限
+     */
+    private void requestPermission() {
+        PermissionUtil.getInstance().request(getActivity(), new String[]{
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionOriginResultCallBack() {
+                    @Override
+                    public void onResult(List<PermissionInfo> acceptList, List<PermissionInfo> rationalList, List<PermissionInfo> deniedList) {
+                        doLocation();
+                    }
+                }
+        );
     }
 }

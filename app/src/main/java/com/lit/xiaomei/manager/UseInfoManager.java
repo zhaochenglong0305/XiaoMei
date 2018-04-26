@@ -14,6 +14,7 @@ import com.lit.xiaomei.activity.MainActivity;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import com.lit.xiaomei.bean.Line;
 import com.lit.xiaomei.bean.ReleaseHistory;
 import com.lit.xiaomei.bean.User;
 
@@ -77,6 +78,24 @@ public class UseInfoManager {
             releaseHistories = gson.fromJson(json, type);
         }
         return releaseHistories;
+    }
+
+    public static void putLineArraylist(Context context, ArrayList<Line> lines) {
+        Gson gson = new Gson();
+        String json = gson.toJson(lines);
+        getPreferneces(context).edit().putString("lines", json).apply();
+    }
+
+    public static ArrayList<Line> getLineArraylist(Context context) {
+        String json = getPreferneces(context).getString("lines", "");
+        ArrayList<Line> lines = new ArrayList<>();
+        if (json != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<ArrayList<ReleaseHistory>>() {
+            }.getType();
+            lines = gson.fromJson(json, type);
+        }
+        return lines;
     }
 
     /**

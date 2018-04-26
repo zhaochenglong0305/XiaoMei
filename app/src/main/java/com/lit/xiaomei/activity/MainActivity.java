@@ -1,5 +1,6 @@
 package com.lit.xiaomei.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.blanke.xsocket.tcp.client.helper.stickpackage.BaseStickPackageHelper;
 import com.blanke.xsocket.tcp.client.listener.TcpClientListener;
 import com.fyjr.baselibrary.base.BaseActivity;
 import com.fyjr.baselibrary.http.url.HttpUrl;
+import com.fyjr.baselibrary.utils.JsonUtils;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.ActivityMainBinding;
 
@@ -34,6 +36,9 @@ import com.lit.xiaomei.fragment.ServiceFragment;
 import com.lit.xiaomei.fragment.TubeCarFragment;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
+import com.yxp.permission.util.lib.PermissionInfo;
+import com.yxp.permission.util.lib.PermissionUtil;
+import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener, View.OnClickListener {
     private List<Fragment> fragments;
@@ -290,4 +295,5 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         binding.ivInformation.setImageResource(R.mipmap.main_find_goods_select);
         binding.tvInformation.setTextColor(getResources().getColor(R.color.cFD933C));
     }
+
 }

@@ -39,7 +39,6 @@ public class LocationManager implements BDLocationListener {
         mLocationClient.registerLocationListener(this);
         // 初始化定位
         initLocation();
-        mLocationClient.start();
     }
 
 
