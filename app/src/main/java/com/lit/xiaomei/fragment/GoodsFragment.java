@@ -1,12 +1,16 @@
 package com.lit.xiaomei.fragment;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,20 +20,26 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.activity.CommonLineActivity;
+import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.TabEntity;
 import com.lit.xiaomei.databinding.FragmentGoodsBinding;
 import com.lit.xiaomei.fragment.goods.InformationFragment;
 import com.lit.xiaomei.fragment.goods.PeripheryFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements View.OnClickListener, ViewPager.OnPageChangeListener {
-    private String[] mTitles = {"货源", "周边沿线"};
-    private ArrayList<CustomTabEntity> mTabEntities;
-    private ArrayList<Fragment> mFragments;
+public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements View.OnClickListener {
+    //    private ArrayList<CustomTabEntity> mTabEntities;
+    private List<Fragment> fragments;
+    private InformationFragment informationFragment;
+    private PeripheryFragment peripheryFragment;
+    private int currentIndex = 0;
+    private int oldIndex = 0;
+    private ChangeFragmentReceiver changeFragmentReceiver;
 
     public GoodsFragment() {
         // Required empty public constructor
@@ -44,7 +54,6 @@ public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        space(binding.space);
         return binding.getRoot();
     }
 
@@ -56,82 +65,58 @@ public class GoodsFragment extends BaseFragment<FragmentGoodsBinding> implements
     @Override
     public void initView() {
         super.initView();
-        mFragments = new ArrayList<>();
-        mFragments.add(InformationFragment.newInstance());
-        mFragments.add(PeripheryFragment.newInstance());
-        mTabEntities = new ArrayList<>();
-        for (String mTitle : mTitles) {
-            mTabEntities.add(new TabEntity(mTitle));
-        }
-        binding.tvTitleLeft.setOnClickListener(this);
-        binding.tvTitleRight.setOnClickListener(this);
-        binding.viewPager.setAdapter(new GoodsFragmentAdapter(getChildFragmentManager()));
-        binding.viewPager.addOnPageChangeListener(this);
-        binding.tvCommonLine.setOnClickListener(this);
+        changeFragmentReceiver = new ChangeFragmentReceiver();
+        getContext().registerReceiver(changeFragmentReceiver, new IntentFilter(GlobalVariable.ReceiverAction.CHANGE_FRAGMENT));
+        initFragment();
     }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+    private void initFragment() {
+        informationFragment = InformationFragment.newInstance();
+        peripheryFragment = PeripheryFragment.newInstance();
+        fragments = new ArrayList<>();
+        fragments.add(informationFragment);
+        fragments.add(peripheryFragment);
+        getFragmentManager().beginTransaction()
+                .add(R.id.frame_layout, peripheryFragment)
+                .add(R.id.frame_layout, informationFragment)
+                .show(informationFragment)
+                .commit();
     }
 
-    @Override
-    public void onPageSelected(int position) {
-        switchTitle(position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
-    private class GoodsFragmentAdapter extends FragmentPagerAdapter {
-
-        public GoodsFragmentAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-    }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_title_left:
-                switchTitle(0);
-                break;
-            case R.id.tv_title_right:
-                switchTitle(1);
-                break;
-            case R.id.tv_common_line:
-                startActivity(new Intent(getContext(), CommonLineActivity.class));
-                break;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getContext().unregisterReceiver(changeFragmentReceiver);
+    }
+
+    /**
+     * 展示当前选中的Fragment
+     *
+     * @param currentIndex
+     */
+    public void showCurrentFragment(int currentIndex) {
+        if (currentIndex != oldIndex) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.hide(fragments.get(oldIndex));
+            if (!fragments.get(currentIndex).isAdded()) {
+                ft.add(R.id.frame_layout, fragments.get(currentIndex));
+            }
+            ft.show(fragments.get(currentIndex)).commit();
+            oldIndex = currentIndex;
         }
     }
 
-    private void switchTitle(int type) {
-        switch (type) {
-            case 0:
-                binding.tvTitleLeft.setTextColor(getResources().getColor(R.color.cFD933C));
-                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_select);
-                binding.tvTitleRight.setTextColor(Color.WHITE);
-                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_normal);
-                break;
-            case 1:
-                binding.tvTitleLeft.setTextColor(Color.WHITE);
-                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_normal);
-                binding.tvTitleRight.setTextColor(getResources().getColor(R.color.cFD933C));
-                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_select);
-                break;
+    private class ChangeFragmentReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int type = intent.getIntExtra("fragmentType", 0);
+            showCurrentFragment(type);
         }
-        binding.viewPager.setCurrentItem(type);
     }
 }

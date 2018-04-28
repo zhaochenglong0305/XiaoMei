@@ -13,19 +13,35 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.CityInfo;
+import com.baidu.mapapi.search.core.PoiInfo;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
+import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiDetailSearchOption;
+import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
+import com.baidu.mapapi.search.poi.PoiResult;
+import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.fyjr.baselibrary.base.BaseActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.databinding.ActivityShowMapBinding;
 import com.lit.xiaomei.manager.LocationManager;
+import com.lit.xiaomei.utils.map.PoiOverlay;
 
 import java.util.HashMap;
 
-public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
+public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implements OnGetPoiSearchResultListener {
     private BaiduMap baiduMap;
     private LocationClient mLocationClient;
     private LatLng latLng;
     private boolean isFirstLoc = true; // 是否首次定位
     private BDLocationListener myListener = new MyLocationListener();
+    private PoiSearch mPoiSearch = null;
+    private int radius = 1000;
+    private String key = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,26 +55,36 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
         switch (getIntent().getIntExtra("mapType", 0)) {
             case 1:
                 setTitle("附近加油站");
+                key = "加油站";
                 break;
             case 2:
                 setTitle("附近加气站");
+                key = "加气站";
                 break;
             case 3:
                 setTitle("附近停车场");
+                key = "停车场";
                 break;
             case 4:
                 setTitle("附近物流园");
+                key = "物流园";
                 break;
             case 5:
                 setTitle("附近餐馆");
+                key = "餐馆";
                 break;
             case 6:
                 setTitle("附近酒店");
+                key = "酒店";
                 break;
             case 7:
                 setTitle("附近维修站");
+                key = "维修站";
                 break;
         }
+        // 初始化搜索模块，注册搜索事件监听
+        mPoiSearch = PoiSearch.newInstance();
+        mPoiSearch.setOnGetPoiSearchResultListener(this);
         setTitleTextColor("#ffffff");
         baiduMap = binding.map.getMap();
         baiduMap.setMyLocationEnabled(true);
@@ -72,6 +98,7 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
         mLocationClient.start();
         //图片点击事件，回到定位点
         mLocationClient.requestLocation();
+
     }
 
     //配置定位SDK参数
@@ -97,6 +124,48 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
         mLocationClient.setLocOption(option);
     }
 
+    @Override
+    public void onGetPoiResult(PoiResult result) {
+        if (result == null || result.error == SearchResult.ERRORNO.RESULT_NOT_FOUND) {
+            showMessage("未找到结果");
+            return;
+        }
+        if (result.error == SearchResult.ERRORNO.NO_ERROR) {
+            baiduMap.clear();
+            PoiOverlay overlay = new MyPoiOverlay(baiduMap);
+            baiduMap.setOnMarkerClickListener(overlay);
+            overlay.setData(result);
+            overlay.addToMap();
+            overlay.zoomToSpan();
+            return;
+        }
+        if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
+
+            // 当输入关键字在本市没有找到，但在其他城市找到时，返回包含该关键字信息的城市列表
+            String strInfo = "在";
+            for (CityInfo cityInfo : result.getSuggestCityList()) {
+                strInfo += cityInfo.city;
+                strInfo += ",";
+            }
+            strInfo += "找到结果";
+            showMessage(strInfo);
+        }
+    }
+
+    @Override
+    public void onGetPoiDetailResult(PoiDetailResult result) {
+        if (result.error != SearchResult.ERRORNO.NO_ERROR) {
+            showMessage("抱歉，未找到结果");
+        } else {
+            showMessage(result.getName() + ": " + result.getAddress());
+        }
+    }
+
+    @Override
+    public void onGetPoiIndoorResult(PoiIndoorResult poiIndoorResult) {
+
+    }
+
     //实现BDLocationListener接口,BDLocationListener为结果监听接口，异步获取定位结果
     public class MyLocationListener implements BDLocationListener {
 
@@ -113,6 +182,11 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
             baiduMap.setMyLocationData(locData);
             // 当不需要定位图层时关闭定位图层
             //mBaiduMap.setMyLocationEnabled(false);
+            PoiNearbySearchOption nearbySearchOption = new PoiNearbySearchOption().keyword("加油站").sortType(PoiSortType.distance_from_near_to_far).location(latLng)
+                    .radius(radius).pageNum(1);
+//            mPoiSearch.searchNearby(nearbySearchOption);
+            mPoiSearch.searchInCity((new PoiCitySearchOption())
+                    .city(location.getCity()).keyword(key).pageNum(1));
             if (isFirstLoc) {
                 isFirstLoc = false;
                 LatLng ll = new LatLng(location.getLatitude(),
@@ -144,35 +218,11 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
     }
 
 
-    private void doLocation() {
-        final LocationManager locationManager = new LocationManager(this);
-        locationManager.doLocation(new LocationManager.OnLocationSuccessListener() {
-            @Override
-            public void onSuccess(HashMap<String, Object> result) {
-                boolean isSuccess = false;
-                isSuccess = (Boolean) result.get("isSuccess");
-                if (isSuccess) {
-                    double lat = 0.0;
-                    double lon = 0.0;
-                    if (result.get("nlatitude") != null && result.get("nlontitude") != null) {
-                        lat = (Double) result.get("nlatitude");
-                        lon = (Double) result.get("nlontitude");
-                    }
-                    MyLocationData.Builder locationBuilder = new MyLocationData.Builder();
-                    locationBuilder.latitude(lat);
-                    locationBuilder.longitude(lon);
-                    MyLocationData locationData = locationBuilder.build();
-                    baiduMap.setMyLocationData(locationData);
-                }
-            }
-        });
-        locationManager.mLocationClient.start();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         binding.map.onDestroy();
+        mPoiSearch.destroy();
     }
 
     @Override
@@ -187,4 +237,21 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> {
         binding.map.onPause();
     }
 
+    private class MyPoiOverlay extends PoiOverlay {
+
+        public MyPoiOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public boolean onPoiClick(int index) {
+            super.onPoiClick(index);
+            PoiInfo poi = getPoiResult().getAllPoi().get(index);
+            // if (poi.hasCaterDetails) {
+            mPoiSearch.searchPoiDetail((new PoiDetailSearchOption())
+                    .poiUid(poi.uid));
+            // }
+            return true;
+        }
+    }
 }

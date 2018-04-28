@@ -37,6 +37,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
     private boolean isLoad = false;
     private boolean isDo = true;
     private String key = "";
+
     public FindCarsFragment() {
     }
 
@@ -54,6 +55,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        space(binding.space);
         return binding.getRoot();
     }
 
@@ -77,7 +79,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
                                    String INXH, String PROV, String CITY,
                                    String INCITY, String INPHONE,
                                    String INFOR) {
-        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(false, USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();
@@ -123,7 +125,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
             case R.id.tv_find_cars:
                 if (isDo) {
                     key = binding.etDoSearch.getText().toString();
-                    if (TextUtils.isEmpty(key)){
+                    if (TextUtils.isEmpty(key)) {
                         showMessage("搜索内容不能为空！");
                         return;
                     }
@@ -137,6 +139,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
         }
 
     }
+
     private void initSearchBtn() {
         if (isDo) {
             isDo = false;
@@ -149,6 +152,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
                 listDataBean.getPR(), listDataBean.getCT(),
                 "", "", key);
     }
+
     private void showPhone(String phoneString) {
         List<String> phones = new ArrayList<>();
         if (phoneString.contains("，")) {
@@ -179,11 +183,11 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    binding.reRefresh.setRefreshing(false);
-                    showMessage("没有数据！");
-                    searchINFOBeans.clear();
-                    adapter.clear();
-                    binding.tvNotData.setVisibility(View.VISIBLE);
+                    if (isLoad) {
+                        binding.reRefresh.removeFooterView();
+                    } else {
+                        binding.reRefresh.setRefreshing(false);
+                    }
                     break;
                 case 1:
                     Information data = (Information) msg.obj;

@@ -33,6 +33,7 @@ import com.lit.xiaomei.fragment.GoodsFragment;
 import com.lit.xiaomei.fragment.MineFragment;
 import com.lit.xiaomei.fragment.ReleaseFragment;
 import com.lit.xiaomei.fragment.ServiceFragment;
+import com.lit.xiaomei.fragment.TubeCar.FindCarsFragment;
 import com.lit.xiaomei.fragment.TubeCarFragment;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
@@ -42,7 +43,8 @@ import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener, View.OnClickListener {
     private List<Fragment> fragments;
-    private TubeCarFragment tubeCarFragment;
+//    private TubeCarFragment tubeCarFragment;
+    private FindCarsFragment findCarsFragment;
     private ReleaseFragment releaseFragment;
     private GoodsFragment goodsFragment;
     private ServiceFragment serviceFragment;
@@ -73,14 +75,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     }
 
     private void initFragments() {
-        tubeCarFragment = TubeCarFragment.newInstance();
+//        tubeCarFragment = TubeCarFragment.newInstance();
+        findCarsFragment = FindCarsFragment.newInstance();
         releaseFragment = ReleaseFragment.newInstance();
         goodsFragment = GoodsFragment.newInstance();
         serviceFragment = ServiceFragment.newInstance();
         mineFragment = MineFragment.newInstance();
         fragments = new ArrayList<>();
         fragments.add(releaseFragment);
-        fragments.add(tubeCarFragment);
+        fragments.add(findCarsFragment);
         fragments.add(goodsFragment);
         fragments.add(serviceFragment);
         fragments.add(mineFragment);

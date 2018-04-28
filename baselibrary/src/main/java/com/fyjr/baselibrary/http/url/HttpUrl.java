@@ -26,6 +26,11 @@ public class HttpUrl {
      * 信息搜索
      */
     public static String SEARCHINFORMATION = "webservice/search/GetSearData.aspx";
+
+    /**
+     * 周边信息搜索
+     */
+    public static String SEARCHNEARBYINFORMATION = "webservice/search/GetSearchDataYx.aspx";
     /**
      * 根据货站网号得到司机信息
      */

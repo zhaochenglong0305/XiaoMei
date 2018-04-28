@@ -40,10 +40,11 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
     @Override
     public void initView() {
         super.initView();
-        setTitle("常用线路");
+        setTitle("常用路线");
         setTitleTextColor("#ffffff");
         fromAdapter = new SelectCityAdapter(this, fromSelect, new OnFromCityClickListener());
         toAdapter = new SelectCityAdapter(this, toSelect, new OnToCityClickListener());
+        lineListAdapter = new LineListAdapter();
         if (UseInfoManager.getLineArraylist(this) != null) {
             lines = UseInfoManager.getLineArraylist(this);
         }
@@ -51,35 +52,66 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
             binding.llAddLine.setVisibility(View.GONE);
             binding.llLineList.setVisibility(View.VISIBLE);
         }
-        binding.tvLineNum.setText(lines.size());
+        binding.tvLineNum.setText(lines.size() + "");
         binding.gvFromCity.setAdapter(fromAdapter);
         binding.gvToCity.setAdapter(toAdapter);
+        binding.lvLineList.setAdapter(lineListAdapter);
         binding.btnLineAdd.setOnClickListener(this);
         binding.tvUpdate.setOnClickListener(this);
         binding.btnSelectLineCity.setOnClickListener(this);
-        lineListAdapter = new LineListAdapter();
-        binding.lvLineList.setAdapter(lineListAdapter);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_line_add:
-                lines.add(new Line(fromSelect, toSelect));
-                UseInfoManager.putLineArraylist(this, lines);
-                binding.llAddLine.setVisibility(View.GONE);
-                binding.llLineList.setVisibility(View.VISIBLE);
-                binding.tvLineNum.setText(lines.size());
+                if (lines.size() == 0) {
+                    addLine();
+                } else {
+                    if (fromSelect.size() != 0 || toSelect.size() != 0) {
+                        addLine();
+                    } else {
+                        binding.llAddLine.setVisibility(View.GONE);
+                        binding.llLineList.setVisibility(View.VISIBLE);
+                    }
+                }
                 break;
             case R.id.tv_update:
                 isShowUpdate = true;
                 lineListAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_select_line_city:
+                if (lines.size() == 5) {
+                    showMessage("最多添加5条线路");
+                    return;
+                }
                 binding.llAddLine.setVisibility(View.VISIBLE);
                 binding.llLineList.setVisibility(View.GONE);
                 break;
         }
+    }
+
+    private void addLine() {
+        if (fromSelect.size() == 0) {
+            showMessage("出发城市不能为空！");
+            return;
+        }
+        if (toSelect.size() == 0) {
+            showMessage("到达城市不能为空！");
+            return;
+        }
+        lines.add(new Line(fromSelect, toSelect));
+        UseInfoManager.putLineArraylist(this, lines);
+        binding.llAddLine.setVisibility(View.GONE);
+        binding.llLineList.setVisibility(View.VISIBLE);
+        binding.tvLineNum.setText(lines.size() + "");
+        fromSelect.clear();
+        toSelect.clear();
+        fromAdapter.notifyDataSetChanged();
+        toAdapter.notifyDataSetChanged();
+        lines = UseInfoManager.getLineArraylist(this);
+        lineListAdapter.notifyDataSetChanged();
     }
 
     private class OnFromCityClickListener implements View.OnClickListener {
@@ -204,7 +236,8 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
                 public void onClick(View v) {
                     lines.remove(lines.get(position));
                     UseInfoManager.putLineArraylist(CommonLineActivity.this, lines);
-                    binding.tvLineNum.setText(lines.size());
+                    binding.tvLineNum.setText(lines.size() + "");
+                    isShowUpdate = false;
                     notifyDataSetChanged();
                 }
             });

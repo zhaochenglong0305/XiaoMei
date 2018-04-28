@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 
 import com.fyjr.baselibrary.utils.DataCleanManager;
 import com.fyjr.baselibrary.utils.JsonUtils;
@@ -71,7 +72,7 @@ public class UseInfoManager {
     public static ArrayList<ReleaseHistory> getReleseaeHistoryArraylist(Context context) {
         String json = getPreferneces(context).getString("ReleaseHistory", "");
         ArrayList<ReleaseHistory> releaseHistories = new ArrayList<>();
-        if (json != null) {
+        if (!TextUtils.isEmpty(json)) {
             Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<ReleaseHistory>>() {
             }.getType();
@@ -89,9 +90,9 @@ public class UseInfoManager {
     public static ArrayList<Line> getLineArraylist(Context context) {
         String json = getPreferneces(context).getString("lines", "");
         ArrayList<Line> lines = new ArrayList<>();
-        if (json != null) {
+        if (!TextUtils.isEmpty(json)) {
             Gson gson = new Gson();
-            Type type = new TypeToken<ArrayList<ReleaseHistory>>() {
+            Type type = new TypeToken<ArrayList<Line>>() {
             }.getType();
             lines = gson.fromJson(json, type);
         }

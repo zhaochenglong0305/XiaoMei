@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import com.fyjr.baselibrary.base.BaseFragment;
 import com.fyjr.baselibrary.http.HttpUtil;
 import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.fyjr.baselibrary.views.RefreshLayout;
+import com.lit.xiaomei.activity.CommonLineActivity;
 import com.lit.xiaomei.activity.InformationDetailsActivity;
 import com.lit.xiaomei.activity.MainActivity;
 import com.lit.xiaomei.R;
@@ -50,6 +52,7 @@ import com.lit.xiaomei.bean.Information;
 import com.lit.xiaomei.bean.Province;
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.bean.Zone;
+import com.lit.xiaomei.fragment.GoodsFragment;
 import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
@@ -122,6 +125,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private RecordAdapter recordAdapter;
     private String searchLv2 = "";
     private String AuthorityType = "QB";
+    private boolean isnearby = false;
 
     public InformationFragment() {
     }
@@ -142,6 +146,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         super.onCreateView(inflater, container, savedInstanceState);
         initDateBase();
         requestPermission();
+        space(binding.space);
         return binding.getRoot();
     }
 
@@ -180,6 +185,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         searchProvinceAdapter = new CityAdapter(getContext(), 1, provinces);
         searchCityAdapter = new CityAdapter(getContext(), 2, cities);
         searchZoneAdapter = new CityAdapter(getContext(), 3, zones);
+        binding.tvTitleLeft.setOnClickListener(this);
+        binding.tvTitleRight.setOnClickListener(this);
+        binding.tvCommonLine.setOnClickListener(this);
         binding.tvCityBackLevel1.setOnClickListener(this);
         binding.tvCityBackLevel2.setOnClickListener(this);
         binding.btnAddCity.setOnClickListener(this);
@@ -193,7 +201,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCityLv2Cancle.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
         getNews("1");
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                 "", "", "");
     }
 
@@ -222,7 +230,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 searchEdits.add(keyText);
             }
             isLoad = false;
-            searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+            searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                     CityListToString(addCities), "", CityListToString(searchEdits));
         }
     }
@@ -236,7 +244,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     @Override
     public void onRefresh() {
         isLoad = false;
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                 CityListToString(addCities), "", CityListToString(searchEdits));
     }
 
@@ -245,7 +253,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, doCity,
+        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, doCity,
                 CityListToString(addCities), "", CityListToString(searchEdits));
     }
 
@@ -350,7 +358,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isSearchLayoutShow = false;
                 initSearchFromLayout();
                 binding.tvSearch.setText(showText(1, addCities));
-                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
             case R.id.iv_call:
@@ -383,7 +391,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     searchEdits.add(searchLv2);
                 }
                 isLoad = false;
-                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
             case R.id.btn_add_city_lv2_cancle:
@@ -394,7 +402,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 initSearchFromLv2Layout();
                 searchEdits.clear();
                 isLoad = false;
-                searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(searchEdits));
                 break;
             case R.id.tv_clear_record:
@@ -404,6 +412,23 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 break;
             case R.id.iv_news_delete:
                 binding.rlNews.setVisibility(View.GONE);
+                break;
+            case R.id.tv_title_left:
+                switchTitle(0);
+                isnearby = false;
+                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(searchEdits));
+                getContext().sendBroadcast(new Intent().putExtra("fragmentType", 0));
+                break;
+            case R.id.tv_title_right:
+                switchTitle(1);
+                isnearby = true;
+                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        CityListToString(addCities), "", CityListToString(searchEdits));
+                break;
+            case R.id.tv_common_line:
+                startActivity(new Intent(getContext(), CommonLineActivity.class));
+                getContext().sendBroadcast(new Intent().putExtra("fragmentType", 0));
                 break;
 
         }
@@ -465,7 +490,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         doProvince = selectProvince;
                         doCity = selectCity;
                         isLoad = false;
-                        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                                 CityListToString(addCities), "", CityListToString(searchEdits));
                         binding.tvFrom.setText(selectCity);
                     } else {
@@ -485,7 +510,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     doProvince = selectProvince;
                     doCity = selectCity;
                     isLoad = false;
-                    searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                    searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                             CityListToString(addCities), "", CityListToString(searchEdits));
                     binding.tvFrom.setText(selectCity);
                     break;
@@ -599,7 +624,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         getContext().unregisterReceiver(receiveMsgReceiver);
     }
 
-    private void searchInformation(String USER, String PASS, String KEYY,
+    private void searchInformation(boolean isNearby, String USER, String PASS, String KEYY,
                                    String INXH, final String PROV, final String CITY,
                                    final String INCITY, String INPHONE,
                                    final String INFOR) {
@@ -613,7 +638,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             binding.reRefresh.setRefreshing(true);
         }
         isStartReceive = false;
-        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(isNearby, USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
@@ -635,6 +660,11 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 handler.sendMessage(message);
             }
         });
+    }
+
+
+    private void searchNearbyInformation() {
+
     }
 
     private void initDateBase() {
@@ -932,7 +962,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             doProvince = provinceRes;
                             doCity = cityRes;
                             binding.tvFrom.setText(doCity);
-                            searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
+                            searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
                                     "", "", "");
                         }
                     });
@@ -948,6 +978,23 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             }
         });
         locationManager.mLocationClient.start();
+    }
+
+    private void switchTitle(int type) {
+        switch (type) {
+            case 0:
+                binding.tvTitleLeft.setTextColor(getResources().getColor(R.color.cFD933C));
+                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_select);
+                binding.tvTitleRight.setTextColor(Color.WHITE);
+                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_normal);
+                break;
+            case 1:
+                binding.tvTitleLeft.setTextColor(Color.WHITE);
+                binding.tvTitleLeft.setBackgroundResource(R.drawable.fillet_release_title_left_normal);
+                binding.tvTitleRight.setTextColor(getResources().getColor(R.color.cFD933C));
+                binding.tvTitleRight.setBackgroundResource(R.drawable.fillet_release_title_right_select);
+                break;
+        }
     }
 
     /**

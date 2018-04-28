@@ -10,6 +10,31 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <View
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/cFD933C"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/cFD933C">
+
+
+            <TextView
+                android:id="@+id/tv_common_line"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:text="常用线路"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="45dp"

@@ -87,7 +87,7 @@ public class InformationAdapter extends BaseAdapter {
                 }
             }
         }
-        String information = searchINFOBean.getSF() + "出发：" + StringUtil.formatString(searchINFOBean.getMS());
+        String information = searchINFOBean.getSF() + "出发：" + searchINFOBean.getMS();
         if (filters.size() != 0) {
             SpannableString spannableString = matcherSearchText(Color.BLUE, information, filters);
             holder.tv_information.setText(spannableString);

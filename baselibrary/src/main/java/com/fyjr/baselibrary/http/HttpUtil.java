@@ -110,7 +110,7 @@ public class HttpUtil {
      * @param INFOR
      * @param callBack
      */
-    public void searchInformation(String USER, String PASS, String KEYY,
+    public void searchInformation(boolean isNearby, String USER, String PASS, String KEYY,
                                   String INXH, String PROV, String CITY,
                                   String INCITY, String INCLASS, String INPHONE,
                                   String INFOR, Callback callBack) {
@@ -126,8 +126,13 @@ public class HttpUtil {
         map.put("INPHONE", INPHONE);
         map.put("INFOR", INFOR);
         map.put("TextFormat", "1");
-        doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
+        if (isNearby){
+            doGet(HttpUrl.SEARCHNEARBYINFORMATION + pinUrl(map), callBack);
+        }else {
+            doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
+        }
     }
+
 
     /**
      * 根据货站网号得到司机信息

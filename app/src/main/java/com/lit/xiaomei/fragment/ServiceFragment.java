@@ -74,6 +74,12 @@ public class ServiceFragment extends BaseFragment<FragmentServiceBinding> implem
         binding.banner.setImages(imgs);
         binding.banner.start();
         binding.llJiayou.setOnClickListener(this);
+        binding.llJiaqi.setOnClickListener(this);
+        binding.llTingche.setOnClickListener(this);
+        binding.llWuliuyuan.setOnClickListener(this);
+        binding.llCanguan.setOnClickListener(this);
+        binding.llZhusu.setOnClickListener(this);
+        binding.llWeixiuzhan.setOnClickListener(this);
 
     }
 
@@ -88,8 +94,25 @@ public class ServiceFragment extends BaseFragment<FragmentServiceBinding> implem
         Intent intent = new Intent(getContext(), ShowMapActivity.class);
         switch (v.getId()) {
             case R.id.ll_jiayou:
-//                doPoiSearch("沈阳","加油站");
                 intent.putExtra("mapType", 1);
+                break;
+            case R.id.ll_jiaqi:
+                intent.putExtra("mapType", 2);
+                break;
+            case R.id.ll_tingche:
+                intent.putExtra("mapType", 3);
+                break;
+            case R.id.ll_wuliuyuan:
+                intent.putExtra("mapType", 4);
+                break;
+            case R.id.ll_canguan:
+                intent.putExtra("mapType", 5);
+                break;
+            case R.id.ll_zhusu:
+                intent.putExtra("mapType", 6);
+                break;
+            case R.id.ll_weixiuzhan:
+                intent.putExtra("mapType", 7);
                 break;
         }
         startActivity(intent);

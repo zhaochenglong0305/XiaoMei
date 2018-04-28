@@ -9,6 +9,7 @@ public class GlobalVariable {
         public static final String REAL_TIME_MSG = "com.lit.xiaomei.REAL_TIME_MSG";
         public static final String RELEASE_RESULT = "com.lit.xiaomei.RELEASE_RESULT";
         public static final String UPDATE_HISTORY = "com.lit.xiaomei.UPDATE_HISTORY";
+        public static final String CHANGE_FRAGMENT = "com.lit.xiaomei.CHANGE_FRAGMENT";
     }
 
     public static class DateBaseMsg{
