@@ -1,5 +1,6 @@
 package com.lit.xiaomei.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +8,9 @@ import java.util.List;
  * Created by Adminis on 2018/4/26.
  */
 
-public class Line {
+public class Line implements Serializable {
 
+    private static final long serialVersionUID = -3945085619445684382L;
     private List<String> fromCities = new ArrayList<>();
     private List<String> toCities = new ArrayList<>();
 

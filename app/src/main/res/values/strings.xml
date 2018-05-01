@@ -12,4 +12,5 @@
     <string name="title_activity_invitation_friend">InvitationFriendActivity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_show_map">ShowMapActivity</string>
+    <string name="title_activity_information_for_line">InformationForLineActivity</string>
 </resources>

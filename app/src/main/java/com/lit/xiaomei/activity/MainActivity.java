@@ -35,6 +35,7 @@ import com.lit.xiaomei.fragment.ReleaseFragment;
 import com.lit.xiaomei.fragment.ServiceFragment;
 import com.lit.xiaomei.fragment.TubeCar.FindCarsFragment;
 import com.lit.xiaomei.fragment.TubeCarFragment;
+import com.lit.xiaomei.fragment.goods.InformationFragment;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
 import com.yxp.permission.util.lib.PermissionInfo;
@@ -46,7 +47,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 //    private TubeCarFragment tubeCarFragment;
     private FindCarsFragment findCarsFragment;
     private ReleaseFragment releaseFragment;
-    private GoodsFragment goodsFragment;
+//    private GoodsFragment goodsFragment;
+    private InformationFragment informationFragment;
     private ServiceFragment serviceFragment;
     private MineFragment mineFragment;
     private int currentIndex = 2;
@@ -78,19 +80,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 //        tubeCarFragment = TubeCarFragment.newInstance();
         findCarsFragment = FindCarsFragment.newInstance();
         releaseFragment = ReleaseFragment.newInstance();
-        goodsFragment = GoodsFragment.newInstance();
+//        goodsFragment = GoodsFragment.newInstance();
+        informationFragment = InformationFragment.newInstance();
         serviceFragment = ServiceFragment.newInstance();
         mineFragment = MineFragment.newInstance();
         fragments = new ArrayList<>();
         fragments.add(releaseFragment);
         fragments.add(findCarsFragment);
-        fragments.add(goodsFragment);
+        fragments.add(informationFragment);
         fragments.add(serviceFragment);
         fragments.add(mineFragment);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame_layout, releaseFragment)
-                .add(R.id.frame_layout, goodsFragment)
-                .show(goodsFragment)
+//                .add(R.id.frame_layout, findCarsFragment)
+                .add(R.id.frame_layout, informationFragment)
+                .show(informationFragment)
                 .commit();
     }
 
@@ -205,12 +208,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
             return;
         }
-        byte[][] res = tcpMsg.getEndDecodeData();
-        byte[] bytes = new byte[0];
-        for (byte[] i : res) {
-            bytes = i;
-            break;
-        }
+//        byte[][] res = tcpMsg.getEndDecodeData();
+//        byte[] bytes = new byte[0];
+//        for (byte[] i : res) {
+//            bytes = i;
+//            break;
+//        }
         String re = "";
         if (tcpMsg.getSourceDataString().contains("Qkc=") && (tcpMsg.getSourceDataString().substring(tcpMsg.getSourceDataString().length() - 1).equals("|"))) {
             re = tcpMsg.getSourceDataString();

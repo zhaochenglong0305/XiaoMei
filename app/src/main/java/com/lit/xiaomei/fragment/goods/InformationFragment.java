@@ -352,6 +352,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 }
                 addCities.add(city);
                 addCity();
+                binding.etAddCity.setText("");
                 break;
             case R.id.btn_do_search:
                 isLoad = false;
@@ -845,7 +846,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             switch (msg.what) {
                 case 0:
                     if (isLoad) {
-                        showMessage("加载失败！");
+                        showMessage("没有更多了！");
                         binding.reRefresh.removeFooterView();
                     } else {
                         showMessage("刷新失败！");

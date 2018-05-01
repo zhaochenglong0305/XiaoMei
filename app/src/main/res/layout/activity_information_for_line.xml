@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.lit.xiaomei.activity.InformationForLineActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_line_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_base" />
+
+        <com.fyjr.baselibrary.views.RefreshLayout
+            android:id="@+id/re_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <ListView
+                android:id="@+id/lv_information"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/ce5e5e5"
+                android:dividerHeight="1dp"
+                android:scrollbars="none" />
+        </com.fyjr.baselibrary.views.RefreshLayout>
+    </LinearLayout>
+
+</layout>

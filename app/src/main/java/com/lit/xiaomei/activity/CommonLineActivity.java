@@ -1,11 +1,13 @@
 package com.lit.xiaomei.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ import com.lit.xiaomei.view.DialogReleaseSelectCity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> implements View.OnClickListener {
+public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> implements View.OnClickListener, AdapterView.OnItemClickListener {
     private SelectCityAdapter fromAdapter;
     private SelectCityAdapter toAdapter;
     private List<String> fromSelect = new ArrayList<>();
@@ -56,6 +58,7 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         binding.gvFromCity.setAdapter(fromAdapter);
         binding.gvToCity.setAdapter(toAdapter);
         binding.lvLineList.setAdapter(lineListAdapter);
+        binding.lvLineList.setOnItemClickListener(this);
         binding.btnLineAdd.setOnClickListener(this);
         binding.tvUpdate.setOnClickListener(this);
         binding.btnSelectLineCity.setOnClickListener(this);
@@ -112,6 +115,13 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         toAdapter.notifyDataSetChanged();
         lines = UseInfoManager.getLineArraylist(this);
         lineListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Intent intent = new Intent(this, InformationForLineActivity.class);
+        intent.putExtra("line", lines.get(position));
+        startActivity(intent);
     }
 
     private class OnFromCityClickListener implements View.OnClickListener {
