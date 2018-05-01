@@ -71,7 +71,7 @@ public class CityAdapter<T> extends BaseAdapter {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
                 }else {
-                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
                 }
                 break;
@@ -82,7 +82,7 @@ public class CityAdapter<T> extends BaseAdapter {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
                 }else {
-                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
                 }
                 break;
@@ -94,7 +94,7 @@ public class CityAdapter<T> extends BaseAdapter {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
                 }else {
-                    holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
+                    holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
                 }
                 break;

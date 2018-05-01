@@ -71,38 +71,44 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:padding="15dp">
 
                 <TextView
                     android:id="@+id/tv_details_context"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/tv_station_name"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:gravity="top"
+                    android:minHeight="100dp"
                     android:text="sljdflkjslkdjflksjdlkjflksjdlkfjlsjdflksjldjf"
                     android:textColor="@color/c595a6e"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/tv_station_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/tv_details_time"
-                    android:layout_marginBottom="5dp"
-                    android:text="货站"
-                    android:textColor="@color/cFD933C"
-                    android:textSize="15sp" />
+                    android:layout_below="@+id/tv_details_context"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_details_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:text="2018-3-1 20:17:02"
-                    android:textColor="@color/c888888"
-                    android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/tv_station_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:text="货站"
+                        android:textColor="@color/cFD933C"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_details_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2018-3-1 20:17:02"
+                        android:textColor="@color/c888888"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
 
             </RelativeLayout>
 

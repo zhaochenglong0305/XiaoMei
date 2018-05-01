@@ -75,7 +75,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="bottom"
                     android:text="高升配货中心"
-                    android:textColor="@color/cFD933C"
+                    android:textColor="@color/red"
                     android:textSize="15sp"
                     android:visibility="gone" />
             </LinearLayout>

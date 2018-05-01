@@ -437,7 +437,7 @@
                     android:hint="请输入城市"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textColor="@color/c888888"
+                    android:textColor="@color/black"
                     android:textSize="13sp" />
 
             </RelativeLayout>
