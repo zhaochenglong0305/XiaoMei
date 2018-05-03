@@ -13,4 +13,5 @@
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="title_activity_show_map">ShowMapActivity</string>
     <string name="title_activity_information_for_line">InformationForLineActivity</string>
+    <string name="title_activity_poi_list">PoiListActivity</string>
 </resources>

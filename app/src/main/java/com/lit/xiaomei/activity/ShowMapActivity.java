@@ -1,7 +1,9 @@
 package com.lit.xiaomei.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -12,6 +14,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -31,7 +34,9 @@ import com.lit.xiaomei.databinding.ActivityShowMapBinding;
 import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.utils.map.PoiOverlay;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implements OnGetPoiSearchResultListener {
     private BaiduMap baiduMap;
@@ -42,6 +47,9 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
     private PoiSearch mPoiSearch = null;
     private int radius = 1000;
     private String key = "";
+    private boolean isClick = false;
+    private ArrayList<PoiInfo> poiInfos = new ArrayList<>();
+    private int num = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
     @Override
     public void initView() {
         super.initView();
+        setRightImg(R.mipmap.icon_more);
         switch (getIntent().getIntExtra("mapType", 0)) {
             case 1:
                 setTitle("附近加油站");
@@ -101,6 +110,13 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
 
     }
 
+    @Override
+    public void onRightClick(View view) {
+        Intent intent = new Intent(this, PoiListActivity.class);
+        intent.putExtra("Pois", poiInfos);
+        startActivity(intent);
+    }
+
     //配置定位SDK参数
     private void initLocation() {
         LocationClientOption option = new LocationClientOption();
@@ -132,11 +148,15 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
             baiduMap.clear();
+            poiInfos = (ArrayList<PoiInfo>) result.getAllPoi();
             PoiOverlay overlay = new MyPoiOverlay(baiduMap);
             baiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(result);
             overlay.addToMap();
             overlay.zoomToSpan();
+            if (!isClick) {
+                showPoi(1, result.getAllPoi().get(0).name, result.getAllPoi().get(0).address);
+            }
             return;
         }
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
@@ -157,7 +177,8 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
         if (result.error != SearchResult.ERRORNO.NO_ERROR) {
             showMessage("抱歉，未找到结果");
         } else {
-            showMessage(result.getName() + ": " + result.getAddress());
+            showPoi(num, result.getName(), result.getAddress());
+//            showMessage(result.getName() + ": " + result.getAddress());
         }
     }
 
@@ -246,12 +267,20 @@ public class ShowMapActivity extends BaseActivity<ActivityShowMapBinding> implem
         @Override
         public boolean onPoiClick(int index) {
             super.onPoiClick(index);
+            num = index + 1;
             PoiInfo poi = getPoiResult().getAllPoi().get(index);
             // if (poi.hasCaterDetails) {
             mPoiSearch.searchPoiDetail((new PoiDetailSearchOption())
                     .poiUid(poi.uid));
+            isClick = true;
             // }
             return true;
         }
+    }
+
+    private void showPoi(int postion, String name, String address) {
+        binding.llBoom.setVisibility(View.VISIBLE);
+        binding.tvPoiName.setText(postion + ", " + name);
+        binding.tvPoiAddress.setText(address);
     }
 }

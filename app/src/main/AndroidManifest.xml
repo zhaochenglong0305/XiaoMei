@@ -76,7 +76,10 @@
             android:label="@string/title_activity_show_map" />
         <activity
             android:name=".activity.InformationForLineActivity"
-            android:label="@string/title_activity_information_for_line"></activity>
+            android:label="@string/title_activity_information_for_line" />
+        <activity
+            android:name=".activity.PoiListActivity"
+            android:label="@string/title_activity_poi_list"></activity>
     </application>
 
 </manifest>

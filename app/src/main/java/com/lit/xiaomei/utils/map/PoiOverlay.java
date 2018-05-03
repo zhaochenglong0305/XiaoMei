@@ -11,6 +11,7 @@ import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.lit.xiaomei.utils.map.OverlayManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +19,9 @@ import java.util.List;
  * Created by Adminis on 2018/4/27.
  */
 
-public class PoiOverlay extends OverlayManager {
+public class PoiOverlay extends OverlayManager implements Serializable {
     private static final int MAX_POI_SIZE = 10;
+    private static final long serialVersionUID = -1161206245649079407L;
 
     private PoiResult mPoiResult = null;
 

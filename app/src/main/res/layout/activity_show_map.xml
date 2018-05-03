@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.lit.xiaomei.activity.ShowMapActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -16,8 +16,41 @@
         <com.baidu.mapapi.map.TextureMapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_boom"
+            android:layout_below="@+id/toolbar" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_boom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_poi_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="1"
+                android:textColor="@color/c595a6e"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_poi_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:text="1"
+                android:textColor="@color/c888888"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </layout>
