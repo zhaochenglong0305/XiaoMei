@@ -252,6 +252,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
 
         }
     }
+
     private void showPhone(String phoneString) {
         List<String> phones = new ArrayList<>();
         if (phoneString.contains("，")) {
@@ -276,6 +277,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         DialogCall dialogCall = new DialogCall(getActivity(), phones);
         dialogCall.showAtLocation(binding.llPeripheryMain, Gravity.CENTER, 0, 0);
     }
+
     private String CityListToString(List<String> list) {
         String text = "";
         for (int i = 0; i < list.size(); i++) {
@@ -443,7 +445,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         } else {
             AuthorityType = "SS";
         }
-        HttpUtil.getInstance().searchInformation(false,USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();

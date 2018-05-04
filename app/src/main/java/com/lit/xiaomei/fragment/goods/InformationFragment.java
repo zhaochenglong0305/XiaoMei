@@ -639,7 +639,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             binding.reRefresh.setRefreshing(true);
         }
         isStartReceive = false;
-        HttpUtil.getInstance().searchInformation(isNearby, USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
@@ -664,8 +664,22 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
 
-    private void searchNearbyInformation() {
+    private void searchNearbyInformation(String USER, String PASS, String KEYY,
+                                         String INXH, String PROV, String BeginCITY,
+                                         String EndCITY, String INCLASS, String INPHONE,
+                                         String INFOR, String StatusFormat) {
+        HttpUtil.getInstance().searchNearbyInformation(USER, PASS, KEYY, INXH, PROV, BeginCITY,
+                EndCITY, INCLASS, INPHONE, INFOR, StatusFormat, new HttpCallBack<Information>() {
+                    @Override
+                    public void onSuccess(Information data, String msg) {
 
+                    }
+
+                    @Override
+                    public void onFail(int errorCode, String msg) {
+
+                    }
+                });
     }
 
     private void initDateBase() {
@@ -849,7 +863,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         showMessage("没有更多了！");
                         binding.reRefresh.removeFooterView();
                     } else {
-                        showMessage("刷新失败！");
+                        showMessage("没有数据！");
+                        searchINFOBeans.clear();
+                        adapter.clear();
                         binding.reRefresh.setRefreshing(false);
                     }
                     break;

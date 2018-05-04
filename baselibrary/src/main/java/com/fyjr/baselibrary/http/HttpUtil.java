@@ -110,7 +110,7 @@ public class HttpUtil {
      * @param INFOR
      * @param callBack
      */
-    public void searchInformation(boolean isNearby, String USER, String PASS, String KEYY,
+    public void searchInformation(String USER, String PASS, String KEYY,
                                   String INXH, String PROV, String CITY,
                                   String INCITY, String INCLASS, String INPHONE,
                                   String INFOR, Callback callBack) {
@@ -126,11 +126,27 @@ public class HttpUtil {
         map.put("INPHONE", INPHONE);
         map.put("INFOR", INFOR);
         map.put("TextFormat", "1");
-        if (isNearby){
-            doGet(HttpUrl.SEARCHNEARBYINFORMATION + pinUrl(map), callBack);
-        }else {
-            doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
-        }
+        doGet(HttpUrl.SEARCHINFORMATION + pinUrl(map), callBack);
+    }
+
+    public void searchNearbyInformation(String USER, String PASS, String KEYY,
+                                        String INXH, String PROV, String BeginCITY,
+                                        String EndCITY, String INCLASS, String INPHONE,
+                                        String INFOR, String StatusFormat, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("USER", USER);
+        map.put("PASS", PASS);
+        map.put("KEYY", KEYY);
+        map.put("INXH", INXH);
+        map.put("PROV", PROV);
+        map.put("BeginCITY", BeginCITY);
+        map.put("EndCITY", EndCITY);
+        map.put("INCLASS", INCLASS);
+        map.put("INPHONE", INPHONE);
+        map.put("INFOR", INFOR);
+        map.put("TextFormat", "1");
+        map.put("StatusFormat", StatusFormat);
+        doGet(HttpUrl.SEARCHNEARBYINFORMATION + pinUrl(map), callBack);
     }
 
 

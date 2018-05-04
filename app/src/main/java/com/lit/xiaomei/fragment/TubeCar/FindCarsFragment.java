@@ -79,7 +79,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
                                    String INXH, String PROV, String CITY,
                                    String INCITY, String INPHONE,
                                    String INFOR) {
-        HttpUtil.getInstance().searchInformation(false, USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();

@@ -78,15 +78,15 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         binding.reRefresh.setListView(binding.lvInformation);
         binding.reRefresh.setOnLoadListener(this);
         binding.reRefresh.setRefreshing(true);
-        searchInformation(true, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
                 CityListString(line.getToCities()), "", "");
     }
 
-    private void searchInformation(boolean isNearby, String USER, String PASS, String KEYY,
+    private void searchInformation(String USER, String PASS, String KEYY,
                                    String INXH, final String PROV, final String CITY,
                                    final String INCITY, String INPHONE,
                                    final String INFOR) {
-        HttpUtil.getInstance().searchInformation(isNearby, USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();
@@ -154,7 +154,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     @Override
     public void onRefresh() {
         isLoad = false;
-        searchInformation(true, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
                 CityListString(line.getToCities()), "", "");
     }
 
@@ -163,7 +163,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(true, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, CityListString(line.getFromCities()),
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, CityListString(line.getFromCities()),
                 CityListString(line.getToCities()), "", "");
     }
 
