@@ -442,6 +442,7 @@
 
             </RelativeLayout>
 
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -508,7 +509,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="10dp">
 
 
@@ -516,12 +517,25 @@
                     android:id="@+id/et_add_city_lv2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="10dp"
+                    android:layout_toLeftOf="@+id/btn_add_city_lv2_cancle"
                     android:background="@drawable/boder_fillet_city"
                     android:hint="请输入关键字（多个关键字以，隔开）"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
                     android:singleLine="true"
                     android:textColor="@color/c888888"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/btn_add_city_lv2_cancle"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_btn"
+                    android:text="取消"
+                    android:textColor="@color/white"
                     android:textSize="13sp" />
 
             </RelativeLayout>
@@ -551,52 +565,33 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <ListView
                     android:id="@+id/lv_search_lv3_record"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/ll_caozuo"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/btn_add_city_lv2"
                     android:layout_marginBottom="5dp"
                     android:layout_marginTop="10dp"
                     android:divider="@color/white"
                     android:dividerHeight="1dp"
                     android:scrollbars="none" />
 
-                <LinearLayout
-                    android:id="@+id/ll_caozuo"
+                <Button
+                    android:id="@+id/btn_add_city_lv2"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentBottom="true"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btn_add_city_lv2_cancle"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn"
-                        android:text="取消"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
-
-                    <Button
-                        android:id="@+id/btn_add_city_lv2"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_toLeftOf="@+id/btn_add_city_lv2_cancle"
-                        android:layout_weight="1"
-                        android:background="@drawable/selector_btn"
-                        android:text="搜索"
-                        android:textColor="@color/white"
-                        android:textSize="13sp" />
-                </LinearLayout>
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/selector_btn"
+                    android:text="搜索"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
             </RelativeLayout>
 
         </LinearLayout>

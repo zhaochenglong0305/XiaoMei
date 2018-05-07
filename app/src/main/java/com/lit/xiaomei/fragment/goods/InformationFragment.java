@@ -125,7 +125,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private RecordAdapter recordAdapter;
     private String searchLv2 = "";
     private String AuthorityType = "QB";
-    private boolean isnearby = false;
+    private boolean isNear = false;
+    private boolean isShowTitle = false;
+    private boolean isLeft = true;
+
 
     public InformationFragment() {
     }
@@ -201,8 +204,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCityLv2Cancle.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
         getNews("1");
-        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                "", "", "");
+        doSearch("", doProvince, doCity, "", "");
     }
 
 
@@ -230,8 +232,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 searchEdits.add(keyText);
             }
             isLoad = false;
-            searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                    CityListToString(addCities), "", CityListToString(searchEdits));
+            isNear = false;
+            doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
         }
     }
 
@@ -243,9 +245,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     @Override
     public void onRefresh() {
+        isNear = false;
+        isShowTitle = false;
         isLoad = false;
-        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                CityListToString(addCities), "", CityListToString(searchEdits));
+        doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
     }
 
     @Override
@@ -253,8 +256,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, doCity,
-                CityListToString(addCities), "", CityListToString(searchEdits));
+        doSearch(searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, doCity,
+                CityListToString(addCities), CityListToString(searchEdits));
     }
 
     @Override
@@ -359,8 +362,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isSearchLayoutShow = false;
                 initSearchFromLayout();
                 binding.tvSearch.setText(showText(1, addCities));
-                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), "", CityListToString(searchEdits));
+                isNear = false;
+                doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.iv_call:
                 String phone = (String) v.getTag();
@@ -374,6 +377,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 }
                 texts.add(0, searchLv2);
                 UseInfoManager.putStringArraylist(getContext(), "Record", texts);
+                recordAdapter.notifyDataSetChanged();
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
                 binding.tvSearchLv2.setText(searchLv2);
@@ -392,8 +396,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     searchEdits.add(searchLv2);
                 }
                 isLoad = false;
-                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), "", CityListToString(searchEdits));
+                isNear = false;
+                doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.btn_add_city_lv2_cancle:
                 binding.tvSearchLv2.setText("二级搜索");
@@ -403,8 +407,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 initSearchFromLv2Layout();
                 searchEdits.clear();
                 isLoad = false;
-                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), "", CityListToString(searchEdits));
+                isNear = false;
+                doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.tv_clear_record:
                 texts.clear();
@@ -415,17 +419,17 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 binding.rlNews.setVisibility(View.GONE);
                 break;
             case R.id.tv_title_left:
+                isLeft = true;
+                isNear = false;
                 switchTitle(0);
-                isnearby = false;
-                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), "", CityListToString(searchEdits));
+                doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 getContext().sendBroadcast(new Intent().putExtra("fragmentType", 0));
                 break;
             case R.id.tv_title_right:
+                isNear = true;
+                isLeft = false;
                 switchTitle(1);
-                isnearby = true;
-                searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                        CityListToString(addCities), "", CityListToString(searchEdits));
+                doSearch("", doProvince, doCity, "", CityListToString(searchEdits));
                 break;
             case R.id.tv_common_line:
                 startActivity(new Intent(getContext(), CommonLineActivity.class));
@@ -491,11 +495,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         doProvince = selectProvince;
                         doCity = selectCity;
                         isLoad = false;
-                        searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                                CityListToString(addCities), "", CityListToString(searchEdits));
+                        doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                         binding.tvFrom.setText(selectCity);
                     } else {
                         cities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
+                        if (TextUtils.equals(selectProvince, "辽宁")) {
+                            cities.add(new City("鲅鱼圈"));
+                            cities.add(new City("集装箱"));
+                        }
                         binding.gvCitylevel1.setAdapter(fromCityAdapter);
                         fromCityAdapter.setDatas(2, cities);
                         binding.tvSelectedCityLevel1.setText("当前所在：" + selectProvince);
@@ -511,8 +518,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     doProvince = selectProvince;
                     doCity = selectCity;
                     isLoad = false;
-                    searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                            CityListToString(addCities), "", CityListToString(searchEdits));
+                    isNear = false;
+                    doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                     binding.tvFrom.setText(selectCity);
                     break;
                 case 3:
@@ -541,10 +548,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         searchZoneAdapter.setDatas(3, searchZones);
                     } else {
                         searchCities = cityIBaseDao.query("ProID=?", new String[]{province.getProSort()});
-                        if (TextUtils.equals(searchSelectProvince, "辽宁")) {
-                            searchCities.add(new City("鲅鱼圈"));
-                            searchCities.add(new City("集装箱"));
-                        }
                         binding.gvCitylevel2.setAdapter(searchCityAdapter);
                         searchCityAdapter.setDatas(2, searchCities);
                     }
@@ -625,11 +628,18 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         getContext().unregisterReceiver(receiveMsgReceiver);
     }
 
-    private void searchInformation(boolean isNearby, String USER, String PASS, String KEYY,
-                                   String INXH, final String PROV, final String CITY,
-                                   final String INCITY, String INPHONE,
-                                   final String INFOR) {
-        if (TextUtils.isEmpty(INCITY) && TextUtils.isEmpty(INFOR)) {
+
+    private void doSearch(String INXH, final String PROV, final String CITY,
+                          final String endCity, final String INFOR) {
+        filterText.clear();
+        if (!isNear && (!TextUtils.isEmpty(endCity) || !TextUtils.isEmpty(INFOR))) {
+            UseInfoManager.putBoolean(getContext(), "isStartReceive", true);
+            filterText.addAll(addCities);
+            filterText.addAll(searchEdits);
+        }else {
+            UseInfoManager.putBoolean(getContext(), "isStartReceive", false);
+        }
+        if (TextUtils.isEmpty(endCity) && TextUtils.isEmpty(INFOR)) {
             AuthorityType = "QB";
         } else {
             AuthorityType = "SS";
@@ -639,15 +649,22 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             binding.reRefresh.setRefreshing(true);
         }
         isStartReceive = false;
+        if (isNear) {
+            searchNearbyInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "",
+                    PROV, CITY, endCity, "", INFOR, "0");
+        } else {
+            searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "",
+                    PROV, CITY, endCity, "", INFOR);
+        }
+    }
+
+    private void searchInformation(String USER, String PASS, String KEYY,
+                                   String INXH, final String PROV, final String CITY,
+                                   final String INCITY, String INPHONE,
+                                   final String INFOR) {
         HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
-                if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
-                    UseInfoManager.putBoolean(getContext(), "isStartReceive", true);
-                    filterText.clear();
-                    filterText.addAll(addCities);
-                    filterText.addAll(searchEdits);
-                }
                 Message message = new Message();
                 message.what = 1;
                 message.obj = data;
@@ -666,18 +683,23 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     private void searchNearbyInformation(String USER, String PASS, String KEYY,
                                          String INXH, String PROV, String BeginCITY,
-                                         String EndCITY, String INCLASS, String INPHONE,
-                                         String INFOR, String StatusFormat) {
+                                         final String EndCITY, String INPHONE,
+                                         final String INFOR, String StatusFormat) {
         HttpUtil.getInstance().searchNearbyInformation(USER, PASS, KEYY, INXH, PROV, BeginCITY,
-                EndCITY, INCLASS, INPHONE, INFOR, StatusFormat, new HttpCallBack<Information>() {
+                EndCITY, "货", INPHONE, INFOR, StatusFormat, new HttpCallBack<Information>() {
                     @Override
                     public void onSuccess(Information data, String msg) {
-
+                        Message message = new Message();
+                        message.what = 1;
+                        message.obj = data;
+                        handler.sendMessage(message);
                     }
 
                     @Override
                     public void onFail(int errorCode, String msg) {
-
+                        Message message = new Message();
+                        message.what = 0;
+                        handler.sendMessage(message);
                     }
                 });
     }
@@ -860,22 +882,48 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             switch (msg.what) {
                 case 0:
                     if (isLoad) {
-                        showMessage("没有更多了！");
-                        binding.reRefresh.removeFooterView();
+                        if (isLeft && (!isNear)) {
+                            showMessage("手慢了，货都定了！");
+                            isNear = true;
+                            doSearch("", doProvince, doCity, "", "");
+                        } else {
+                            showMessage("没有更多了！");
+                            binding.reRefresh.removeFooterView();
+                        }
                     } else {
-                        showMessage("没有数据！");
-                        searchINFOBeans.clear();
-                        adapter.clear();
-                        binding.reRefresh.setRefreshing(false);
+                        if (isLeft && (!isNear)) {
+                            showMessage("手慢了，货都定了！");
+                            isNear = true;
+                            doSearch("", doProvince, doCity, "", "");
+                        } else {
+                            showMessage("没有数据！");
+                            searchINFOBeans.clear();
+                            adapter.clear();
+                            binding.reRefresh.setRefreshing(false);
+
+                        }
+
                     }
                     break;
                 case 1:
-
                     Information data = (Information) msg.obj;
                     if (isLoad) {
                         if (data.getSearchINFO().size() == 0 || data == null) {
-                            binding.reRefresh.setNoMoreData();
+                            if (isNear) {
+                                showMessage("没有更多了！");
+                                binding.reRefresh.setNoMoreData();
+                            } else {
+                                showMessage("手慢了，货都定了！");
+                                isNear = true;
+                                doSearch("", doProvince, doCity, "", "");
+                            }
                         } else {
+                            if (isLeft && isNear && (!isShowTitle)) {
+                                isShowTitle = true;
+                                adapter.setLine(searchINFOBeans.size());
+                            } else {
+                                adapter.setLine(-1);
+                            }
                             adapter.addListMsg(data.getSearchINFO());
                         }
                     } else {
@@ -884,6 +932,12 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         binding.tvNotData.setVisibility(View.GONE);
                         binding.reRefresh.setRefreshing(false);
                         searchINFOBeans.clear();
+                        if (isLeft && isNear && (!isShowTitle)) {
+                            isShowTitle = true;
+                            adapter.setLine(searchINFOBeans.size());
+                        } else {
+                            adapter.setLine(-1);
+                        }
                         searchINFOBeans = data.getSearchINFO();
                         adapter.clear();
                         adapter.setData(searchINFOBeans);
@@ -979,8 +1033,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             doProvince = provinceRes;
                             doCity = cityRes;
                             binding.tvFrom.setText(doCity);
-                            searchInformation(isnearby, listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, doCity,
-                                    "", "", "");
+                            doSearch("", doProvince, doCity, "", "");
                         }
                     });
                     normalDialog.setNegativeButton("关闭", new DialogInterface.OnClickListener() {

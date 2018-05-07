@@ -37,6 +37,7 @@ public class InformationAdapter extends BaseAdapter {
     private View.OnClickListener listener;
     private List<String> filters = new ArrayList<>();
     private List<DetecatedInformation> detecatedInformations = new ArrayList<>();
+    private int num = -1;
 
     public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans, View.OnClickListener listener) {
         mInflater = LayoutInflater.from(context);
@@ -67,6 +68,7 @@ public class InformationAdapter extends BaseAdapter {
         if (view == null) {
             view = mInflater.inflate(R.layout.adapter_information, viewGroup, false);//加载布局
             holder = new ViewHolder();
+            holder.tv_title = (TextView) view.findViewById(R.id.tv_zhoubian_title);
             holder.tv_time = (TextView) view.findViewById(R.id.tv_time);
             holder.tv_information = (TextView) view.findViewById(R.id.tv_information);
             holder.tv_phone = (TextView) view.findViewById(R.id.tv_phone);
@@ -77,6 +79,9 @@ public class InformationAdapter extends BaseAdapter {
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
+        }
+        if (num == position) {
+//            holder.tv_title.setVisibility(View.VISIBLE);
         }
         Information.SearchINFOBean searchINFOBean = searchINFOBeans.get(position);
         if (detecatedInformations.size() != 0) {
@@ -139,13 +144,17 @@ public class InformationAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void setLine(int num) {
+        this.num = num;
+    }
+
     public void addListMsg(List<Information.SearchINFOBean> searchINFOBeans) {
         this.searchINFOBeans.addAll(searchINFOBeans);
         notifyDataSetChanged();
     }
 
     private class ViewHolder {
-        TextView tv_time, tv_information, tv_huozhan, tv_phone, dedicatedIcon;
+        TextView tv_title, tv_time, tv_information, tv_huozhan, tv_phone, dedicatedIcon;
         ImageView iv_call;
         LinearLayout ll_information;
     }

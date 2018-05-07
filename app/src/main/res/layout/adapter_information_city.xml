@@ -13,6 +13,6 @@
         android:paddingTop="5dp"
         android:text="沈阳"
         android:textColor="@color/c888888"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
 </LinearLayout>
