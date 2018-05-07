@@ -421,9 +421,9 @@
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
                     android:background="@null"
                     android:gravity="top"
+                    android:padding="10dp"
                     android:textColor="@color/c595a6e"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -460,65 +460,16 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
+                        android:layout_weight="1">
 
-                        <RelativeLayout
+                        <Spinner
+                            android:id="@+id/s_again_time"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/iv_time_xia">
-
-                            <EditText
-                                android:id="@+id/et_again_time"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_toLeftOf="@+id/ll_company_time"
-                                android:background="@null"
-                                android:gravity="center_vertical"
-                                android:inputType="numberSigned"
-                                android:hint="不自动重发"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <LinearLayout
-                                android:id="@+id/ll_company_time"
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:gravity="right">
-
-
-                                <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
-                                    android:layout_marginTop="8dp"
-                                    android:background="@color/ce5e5e5" />
-
-                                <TextView
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginRight="5dp"
-                                    android:gravity="center_vertical|right"
-                                    android:text="分"
-                                    android:textColor="@color/c4A9EFE"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-
-                        <ImageView
-                            android:id="@+id/iv_time_xia"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@mipmap/icon_biao_xia" />
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2"
+                            android:entries="@array/again_time"
+                            android:textSize="15sp" />
                     </RelativeLayout>
 
                     <View
@@ -529,65 +480,16 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="10dp">
+                        android:layout_weight="1">
 
-                        <RelativeLayout
+                        <Spinner
+                            android:id="@+id/s_again_num"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/iv_frequency_xia">
-
-                            <EditText
-                                android:id="@+id/et_again_num"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentTop="true"
-                                android:background="@null"
-                                android:gravity="center_vertical"
-                                android:hint="不自动重发"
-                                android:inputType="numberSigned"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <LinearLayout
-                                android:id="@+id/ll_company_frequency"
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentRight="true"
-                                android:gravity="right">
-
-
-                                <View
-                                    android:layout_width="1dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_marginLeft="5dp"
-                                    android:layout_marginRight="5dp"
-                                    android:layout_marginTop="8dp"
-                                    android:background="@color/ce5e5e5" />
-
-                                <TextView
-                                    android:layout_width="40dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginRight="5dp"
-                                    android:gravity="center_vertical|right"
-                                    android:text="次"
-                                    android:textColor="@color/c4A9EFE"
-                                    android:textSize="15sp" />
-                            </LinearLayout>
-
-                        </RelativeLayout>
-
-
-                        <ImageView
-                            android:id="@+id/iv_frequency_xia"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@mipmap/icon_biao_xia" />
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="2"
+                            android:entries="@array/again_num"
+                            android:textSize="15sp" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -205,9 +205,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     @Override
     public void onReceive(XTcpClient client, TcpMsg tcpMsg) {
-        if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
-            return;
-        }
+
 //        byte[][] res = tcpMsg.getEndDecodeData();
 //        byte[] bytes = new byte[0];
 //        for (byte[] i : res) {
@@ -237,6 +235,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         }
         Log.e("long", "获得数据：解密后===" + receive);
         if (receive.contains("DATA")) {
+            if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
+                return;
+            }
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
         }
         if (receive.contains("SJSB")) {

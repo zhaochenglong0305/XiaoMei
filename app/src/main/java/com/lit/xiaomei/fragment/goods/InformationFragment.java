@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +35,7 @@ import com.lit.xiaomei.activity.InformationDetailsActivity;
 import com.lit.xiaomei.activity.MainActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.bean.CheckAuthority;
+import com.lit.xiaomei.bean.Constants;
 import com.lit.xiaomei.bean.News;
 import com.lit.xiaomei.databinding.FragmentInformationBinding;
 
@@ -618,6 +622,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         }
                     }
                 }
+                //播放提示音
+                if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
+                    if (UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
+                        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        Ringtone ringtone = RingtoneManager.getRingtone(getContext(), uri);
+                        ringtone.play();
+                    }
+                }
             }
         }
     }
@@ -636,7 +648,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             UseInfoManager.putBoolean(getContext(), "isStartReceive", true);
             filterText.addAll(addCities);
             filterText.addAll(searchEdits);
-        }else {
+        } else {
             UseInfoManager.putBoolean(getContext(), "isStartReceive", false);
         }
         if (TextUtils.isEmpty(endCity) && TextUtils.isEmpty(INFOR)) {

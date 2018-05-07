@@ -14,10 +14,12 @@ import android.widget.TextView;
 
 import com.fyjr.baselibrary.base.BaseActivity;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.adapter.AttributeAdapter;
 import com.lit.xiaomei.adapter.SelectCityAdapter;
 import com.lit.xiaomei.bean.Line;
 import com.lit.xiaomei.databinding.ActivityCommonLineBinding;
 import com.lit.xiaomei.manager.UseInfoManager;
+import com.lit.xiaomei.utils.CreateSendMsg;
 import com.lit.xiaomei.view.DialogReleaseSelectCity;
 
 import java.util.ArrayList;
@@ -32,6 +34,12 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
     private ArrayList<Line> lines = new ArrayList<>();
     private LineListAdapter lineListAdapter;
     private boolean isShowUpdate = false;
+    private AttributeAdapter carLongAdapter;
+    private AttributeAdapter carTypeAdapter;
+    private String[] carLong = {"不限", "4.2米", "4.5米", "6.2米", "6.8米", "7.2米", "8.2米", "8.6米", "9.6米", "11.7米", "12.5米", "13米", "13.5米", "14米", "17米", "17.5米", "18米"};
+    private List<String> carLongSelects = new ArrayList<>();
+    private String[] carType = {"不限", "平板", "高栏", "厢式", "高低板", "保温", "冷藏", "危险品"};
+    private List<String> carTypeSelects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,12 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         fromAdapter = new SelectCityAdapter(this, fromSelect, new OnFromCityClickListener());
         toAdapter = new SelectCityAdapter(this, toSelect, new OnToCityClickListener());
         lineListAdapter = new LineListAdapter();
+        carLongAdapter = new AttributeAdapter(this, true, carLong);
+        carLongSelects.add(carLong[0]);
+        carLongAdapter.selects(carLongSelects);
+        carTypeAdapter = new AttributeAdapter(this, true, carType);
+        carTypeSelects.add(carType[0]);
+        carTypeAdapter.selects(carTypeSelects);
         if (UseInfoManager.getLineArraylist(this) != null) {
             lines = UseInfoManager.getLineArraylist(this);
         }
@@ -62,7 +76,10 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         binding.btnLineAdd.setOnClickListener(this);
         binding.tvUpdate.setOnClickListener(this);
         binding.btnSelectLineCity.setOnClickListener(this);
-
+        binding.gvCarLong.setAdapter(carLongAdapter);
+        binding.gvCarType.setAdapter(carTypeAdapter);
+        binding.gvCarLong.setOnItemClickListener(new OnCarLongItemClickListener());
+        binding.gvCarType.setOnItemClickListener(new OnCarTypeItemClickListener());
     }
 
     @Override
@@ -104,7 +121,7 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
             showMessage("到达城市不能为空！");
             return;
         }
-        lines.add(new Line(fromSelect, toSelect));
+        lines.add(new Line(fromSelect, toSelect, carLongSelects, carTypeSelects));
         UseInfoManager.putLineArraylist(this, lines);
         binding.llAddLine.setVisibility(View.GONE);
         binding.llLineList.setVisibility(View.VISIBLE);
@@ -122,6 +139,9 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         Intent intent = new Intent(this, InformationForLineActivity.class);
         intent.putExtra("line", lines.get(position));
         startActivity(intent);
+//        MainActivity mainActivity = new MainActivity();
+//        mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(this, UseInfoManager.getUser(this).getListData().get(0).getPR(),
+//                UseInfoManager.getUser(this).getListData().get(0).getCT()));
     }
 
     private class OnFromCityClickListener implements View.OnClickListener {
@@ -217,25 +237,46 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
             convertView = LayoutInflater.from(CommonLineActivity.this).inflate(R.layout.adapter_line_list, parent, false);
             TextView from = convertView.findViewById(R.id.tv_from);
             TextView to = convertView.findViewById(R.id.tv_to);
+            TextView clong = convertView.findViewById(R.id.tv_car_long);
+            TextView ctype = convertView.findViewById(R.id.tv_car_type);
             ImageView del = convertView.findViewById(R.id.iv_lines_del);
             String fromText = "";
             String toText = "";
-            for (int i = 0; i < lines.get(position).getFromCities().size(); i++) {
-                if (i != lines.get(position).getFromCities().size() - 1) {
-                    fromText = fromText + lines.get(position).getFromCities().get(i) + "/";
+            String carLong = "";
+            String carType = "";
+            Line line = lines.get(position);
+            for (int i = 0; i < line.getFromCities().size(); i++) {
+                if (i != line.getFromCities().size() - 1) {
+                    fromText = fromText + line.getFromCities().get(i) + "/";
                 } else {
-                    fromText = fromText + lines.get(position).getFromCities().get(i);
+                    fromText = fromText + line.getFromCities().get(i);
                 }
             }
-            for (int i = 0; i < lines.get(position).getToCities().size(); i++) {
-                if (i != lines.get(position).getToCities().size() - 1) {
-                    toText = toText + lines.get(position).getToCities().get(i) + "/";
+            for (int i = 0; i < line.getToCities().size(); i++) {
+                if (i != line.getToCities().size() - 1) {
+                    toText = toText + line.getToCities().get(i) + "/";
                 } else {
-                    toText = toText + lines.get(position).getToCities().get(i);
+                    toText = toText + line.getToCities().get(i);
+                }
+            }
+            for (int i = 0; i < line.getCarLong().size(); i++) {
+                if (i != line.getCarLong().size() - 1) {
+                    carLong = carLong + line.getCarLong().get(i) + "/";
+                } else {
+                    carLong = carLong + line.getCarLong().get(i);
+                }
+            }
+            for (int i = 0; i < line.getCarType().size(); i++) {
+                if (i != line.getCarType().size() - 1) {
+                    carType = carType + line.getCarType().get(i) + "/";
+                } else {
+                    carType = carType + line.getCarType().get(i);
                 }
             }
             from.setText(fromText);
             to.setText(toText);
+            clong.setText(carLong);
+            ctype.setText(carType);
             if (isShowUpdate) {
                 del.setVisibility(View.VISIBLE);
             } else {
@@ -255,4 +296,51 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         }
     }
 
+    private class OnCarLongItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                carLongSelects.clear();
+                carLongSelects.add(carLong[i]);
+            } else {
+                if (carLongSelects.contains(carLong[0])) {
+                    carLongSelects.remove(carLong[0]);
+                    carLongSelects.add(carLong[i]);
+                } else if (carLongSelects.contains(carLong[i])) {
+                    carLongSelects.remove(carLong[i]);
+                    if (carLongSelects.size() == 0) {
+                        carLongSelects.add(carLong[0]);
+                    }
+                } else {
+                    carLongSelects.add(carLong[i]);
+                }
+            }
+            carLongAdapter.selects(carLongSelects);
+        }
+    }
+
+    private class OnCarTypeItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                carTypeSelects.clear();
+                carTypeSelects.add(carType[i]);
+            } else {
+                if (carTypeSelects.contains(carType[0])) {
+                    carTypeSelects.remove(carType[0]);
+                    carTypeSelects.add(carType[i]);
+                } else if (carTypeSelects.contains(carType[i])) {
+                    carTypeSelects.remove(carType[i]);
+                    if (carTypeSelects.size() == 0) {
+                        carTypeSelects.add(carType[0]);
+                    }
+                } else {
+                    carTypeSelects.add(carType[i]);
+                }
+            }
+            carTypeAdapter.selects(carTypeSelects);
+        }
+    }
 }

@@ -8,4 +8,26 @@
         <item>鞍山</item>
         <item>鲅鱼圈</item>
     </string-array>
+    <string-array name="again_time">
+        <item>不自动重发</item>
+        <item>每 3分钟自动重发一次</item>
+        <item>每10分钟自动重发一次</item>
+        <item>每15分钟自动重发一次</item>
+        <item>每20分钟自动重发一次</item>
+        <item>每25分钟自动重发一次</item>
+        <item>每30分钟自动重发一次</item>
+    </string-array>
+    <string-array name="again_num">
+        <item>不自动重发</item>
+        <item>一共重发 3次</item>
+        <item>一共重发 4次</item>
+        <item>一共重发 5次</item>
+        <item>一共重发 6次</item>
+        <item>一共重发 7次</item>
+        <item>一共重发 8次</item>
+        <item>一共重发 9次</item>
+        <item>一共重发10次</item>
+        <item>一共重发20次</item>
+        <item>一共重发30次</item>
+    </string-array>
 </resources>

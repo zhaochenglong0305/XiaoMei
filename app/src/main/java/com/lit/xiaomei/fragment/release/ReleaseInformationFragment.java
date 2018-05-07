@@ -17,6 +17,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.fyjr.baselibrary.utils.TimeUtil;
@@ -56,6 +58,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private String publishMsg = "";
     private int againTime = 0;
     private int againNum = 0;
+    private int[] times = {0, 3, 10, 15, 20, 25, 30};
+    private int[] nums = {0, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30};
 
     public ReleaseInformationFragment() {
     }
@@ -92,6 +96,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
         bean = UseInfoManager.getUser(getContext()).getListData().get(0);
         from = bean.getCT();
+        againTime = times[0];
+        againNum = nums[0];
         binding.tvPublishFrom.setText(from);
         binding.rlPublishFrom.setOnClickListener(this);
         binding.rlPublishTo.setOnClickListener(this);
@@ -102,6 +108,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         binding.rlGoodType.setOnClickListener(this);
         binding.etGoodsNum.addTextChangedListener(new GoodNumEditChangeListener());
         binding.etGoodsMoney.addTextChangedListener(new FreightEditChangeListener());
+        binding.sAgainTime.setOnItemSelectedListener(new OnAgainTimeItemSelectedListener());
+        binding.sAgainNum.setOnItemSelectedListener(new OnAgainNumItemSelectedListener());
     }
 
     @Override
@@ -117,12 +125,6 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 break;
             case R.id.btn_publish:
                 publishMsg = binding.etContent.getText().toString();
-                if (!TextUtils.isEmpty(binding.etAgainTime.getText().toString())) {
-                    againTime = Integer.valueOf(binding.etAgainTime.getText().toString());
-                }
-                if (!TextUtils.isEmpty(binding.etAgainNum.getText().toString())) {
-                    againNum = Integer.valueOf(binding.etAgainNum.getText().toString());
-                }
                 if (TextUtils.isEmpty(publishMsg)) {
                     showMessage("信息不能为空！");
                     return;
@@ -195,7 +197,7 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 releaseHistories.add(new ReleaseHistory(publishMsg, TimeUtil.currentTimeMillis(), againTime, againNum, type, binding.tvPublishFrom.getText().toString()));
                 UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
                 getContext().sendBroadcast(new Intent(GlobalVariable.ReceiverAction.UPDATE_HISTORY));
-                initRelease();
+//                initRelease();
                 mainActivity.showInformationFragment();
             } else {
                 hideLoading();
@@ -353,6 +355,34 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         }
     }
 
+    private class OnAgainTimeItemSelectedListener implements OnItemSelectedListener {
+
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            againTime = times[i];
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            againTime = times[0];
+        }
+    }
+
+    private class OnAgainNumItemSelectedListener implements OnItemSelectedListener {
+
+
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            againNum = nums[i];
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            againNum = nums[0];
+        }
+    }
+
     private void initRelease() {
         from = bean.getCT();
         binding.tvPublishFrom.setText(from);
@@ -371,10 +401,10 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         binding.etGoodsMoney.setText("");
         publishMsg = "";
         binding.etContent.setText("");
-        againTime = 0;
-        binding.etAgainTime.setText("");
-        againNum = 0;
-        binding.etAgainNum.setText("");
+        againTime = times[0];
+        binding.sAgainTime.setGravity(0);
+        againNum = nums[0];
+        binding.sAgainNum.setGravity(0);
     }
 
 }

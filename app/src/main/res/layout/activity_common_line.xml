@@ -8,204 +8,213 @@
         android:id="@+id/ll_common_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/ce5e5e5"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar_base" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical">
+            android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/ll_add_line"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:paddingBottom="10dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_add_line"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp">
+                    android:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <View
-                            android:layout_width="5dp"
-                            android:layout_height="16dp"
-                            android:background="@color/green" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="选择出发地(最多5个)"
-                            android:textColor="@color/c595a6e"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <GridView
-                        android:id="@+id/gv_from_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:numColumns="5"
-                        android:scrollbars="none" />
-
-
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:paddingBottom="15dp"
-                    android:paddingTop="15dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <View
-                            android:layout_width="5dp"
-                            android:layout_height="16dp"
-                            android:background="@color/red" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="选择目的地(最多5个)"
-                            android:textColor="@color/c595a6e"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <GridView
-                        android:id="@+id/gv_to_city"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:numColumns="5"
-                        android:scrollbars="none" />
-
-
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_line_add"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/selector_login_btn"
-                    android:stateListAnimator="@drawable/selector_scale_press"
-                    android:text="确定"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_line_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/cefefef"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/green" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="我的线路"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="（"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/tv_line_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="/"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="5"
-                                android:textColor="@color/c888888"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="）"
-                                android:textColor="@color/c888888"
+                                android:layout_marginLeft="20dp"
+                                android:text="选择出发地(最多5个)"
+                                android:textColor="@color/c595a6e"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/tv_update"
-                            android:layout_width="wrap_content"
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_from_city"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="编辑"
-                            android:textColor="@color/cFD933C"
-                            android:textSize="15sp" />
-                    </RelativeLayout>
+                            android:layout_marginTop="10dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:visibility="visible" />
 
-                    <ListView
-                        android:id="@+id/lv_line_list"
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbars="none" />
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/red" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="选择目的地(最多5个)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_to_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/c7E64EE" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="车长(可多选)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_car_long"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:horizontalSpacing="5dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:verticalSpacing="5dp"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/c7CCD7C" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="车型(可多选)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_car_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:horizontalSpacing="5dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:verticalSpacing="5dp"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
 
                     <Button
-                        android:id="@+id/btn_select_line_city"
+                        android:id="@+id/btn_line_add"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginLeft="15dp"
@@ -213,14 +222,112 @@
                         android:layout_marginTop="20dp"
                         android:background="@drawable/selector_login_btn"
                         android:stateListAnimator="@drawable/selector_scale_press"
-                        android:text="添加线路"
+                        android:text="确定"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_line_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/cefefef"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="我的线路"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="（"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_line_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="/"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="5"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="）"
+                                    android:textColor="@color/c888888"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_update"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="编辑"
+                                android:textColor="@color/cFD933C"
+                                android:textSize="15sp" />
+                        </RelativeLayout>
+
+                        <com.fyjr.baselibrary.views.ListViewForScrollView
+                            android:id="@+id/lv_line_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:scrollbars="none" />
+
+                        <Button
+                            android:id="@+id/btn_select_line_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/selector_login_btn"
+                            android:stateListAnimator="@drawable/selector_scale_press"
+                            android:text="添加线路"
+                            android:textColor="@color/white"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
-
-        </LinearLayout>
-
+        </ScrollView>
     </LinearLayout>
 
 </layout>

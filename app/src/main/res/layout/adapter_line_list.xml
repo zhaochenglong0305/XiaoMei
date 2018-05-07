@@ -8,40 +8,91 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:gravity="center_vertical">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_from"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="沈阳"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical">
 
-        <ImageView
+            <TextView
+                android:id="@+id/tv_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="沈阳"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@mipmap/icon_zhi_black" />
+
+            <TextView
+                android:id="@+id/tv_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="沈阳"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:src="@mipmap/icon_zhi_black" />
+            android:layout_marginTop="5dp">
 
-        <TextView
-            android:id="@+id/tv_to"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="车长:"
+                android:textColor="@color/c888888"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_car_long"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="不限"
+                android:textColor="@color/c888888"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="沈阳"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="车型:"
+                android:textColor="@color/c888888"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tv_car_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="不限"
+                android:textColor="@color/c888888"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_lines_del"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:src="@mipmap/add_city_del"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </RelativeLayout>
