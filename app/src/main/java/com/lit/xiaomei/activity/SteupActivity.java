@@ -76,7 +76,7 @@ public class SteupActivity extends BaseActivity<ActivitySteupBinding> implements
             }
         });
 
-        if (UseInfoManager.getBoolean(this, Constants.Tag.MSGSONG, false)) {
+        if (UseInfoManager.getBoolean(this, Constants.Tag.SONG, false)) {
             binding.msgsong.setChecked(true);
         } else {
             binding.msgsong.setChecked(false);

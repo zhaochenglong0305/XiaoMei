@@ -1,7 +1,10 @@
 package com.lit.xiaomei.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -44,10 +47,10 @@ import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener, View.OnClickListener {
     private List<Fragment> fragments;
-//    private TubeCarFragment tubeCarFragment;
+    //    private TubeCarFragment tubeCarFragment;
     private FindCarsFragment findCarsFragment;
     private ReleaseFragment releaseFragment;
-//    private GoodsFragment goodsFragment;
+    //    private GoodsFragment goodsFragment;
     private InformationFragment informationFragment;
     private ServiceFragment serviceFragment;
     private MineFragment mineFragment;
@@ -58,6 +61,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private long time = 0;
     private boolean isClientFaile = false;
     private User.ListDataBean listDataBean = new User.ListDataBean();
+    private LineDataReceiver lineDataReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void initView() {
         super.initView();
+        lineDataReceiver = new LineDataReceiver();
+        registerReceiver(lineDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.LINE_MSG));
         UseInfoManager.putBoolean(this, "isStartReceive", false);
         listDataBean = UseInfoManager.getUser(this).getListData().get(0);
         initFragments();
@@ -175,6 +181,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(lineDataReceiver);
         if (xTcpClient != null) {
             xTcpClient.removeTcpClientListener(this);
             xTcpClient.disconnect();//activity销毁时断开tcp连接
@@ -238,7 +245,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
                 return;
             }
-            sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
+            if (UseInfoManager.getBoolean(this, "isLineData", false)) {
+                sendBroadcast(new Intent(GlobalVariable.ReceiverAction.GET_LINE_MSG).putExtra("Msg", receive));
+            } else {
+                sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
+            }
         }
         if (receive.contains("SJSB")) {
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
@@ -250,6 +261,16 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     public void onValidationFail(XTcpClient client, TcpMsg tcpMsg) {
 
     }
+
+    private class LineDataReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("msg");
+            sendMsgToSocket(msg);
+        }
+    }
+
 
     public void sendMsgToSocket(String msg) {
         if (TextUtils.isEmpty(msg)) {

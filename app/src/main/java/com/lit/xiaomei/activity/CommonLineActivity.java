@@ -16,6 +16,7 @@ import com.fyjr.baselibrary.base.BaseActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.adapter.AttributeAdapter;
 import com.lit.xiaomei.adapter.SelectCityAdapter;
+import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.Line;
 import com.lit.xiaomei.databinding.ActivityCommonLineBinding;
 import com.lit.xiaomei.manager.UseInfoManager;
@@ -136,12 +137,20 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        String toText = "";
+        for (int i = 0; i < lines.get(position).getToCities().size(); i++) {
+            if (i != lines.get(position).getToCities().size() - 1) {
+                toText = toText + lines.get(position).getToCities().get(i) + "~";
+            } else {
+                toText = toText + lines.get(position).getToCities().get(i);
+            }
+        }
+        String sendMsg = CreateSendMsg.createInformationMsg(this,
+                UseInfoManager.getUser(this).getListData().get(0).getPR(), toText);
+        sendBroadcast(new Intent(GlobalVariable.ReceiverAction.LINE_MSG).putExtra("msg", sendMsg));
         Intent intent = new Intent(this, InformationForLineActivity.class);
         intent.putExtra("line", lines.get(position));
         startActivity(intent);
-//        MainActivity mainActivity = new MainActivity();
-//        mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(this, UseInfoManager.getUser(this).getListData().get(0).getPR(),
-//                UseInfoManager.getUser(this).getListData().get(0).getCT()));
     }
 
     private class OnFromCityClickListener implements View.OnClickListener {

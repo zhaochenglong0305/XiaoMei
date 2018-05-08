@@ -1,11 +1,18 @@
 package com.lit.xiaomei.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,16 +24,21 @@ import com.fyjr.baselibrary.views.RefreshLayout;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.adapter.InformationAdapter;
 import com.lit.xiaomei.bean.CheckAuthority;
+import com.lit.xiaomei.bean.Constants;
+import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.Information;
 import com.lit.xiaomei.bean.Line;
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.databinding.ActivityInformationForLineBinding;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
+import com.lit.xiaomei.utils.FormatString;
 import com.lit.xiaomei.view.DialogCall;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.baidu.mapapi.BMapManager.getContext;
 
 public class InformationForLineActivity extends BaseActivity<ActivityInformationForLineBinding> implements View.OnClickListener,
         AdapterView.OnItemClickListener, RefreshLayout.OnLoadListener {
@@ -41,6 +53,8 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     private String doProvince = "";
     private String doCity = "";
     private String AuthorityType = "QB";
+    private GetLineDataReceiver getLineDataReceiver;
+    private List<String> filterText = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +65,11 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     @Override
     public void initView() {
         super.initView();
+        getLineDataReceiver = new GetLineDataReceiver();
+        registerReceiver(getLineDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.RECEIVER_LINE_MSG));
+        UseInfoManager.putBoolean(this, "isLineData", true);
+        UseInfoManager.putBoolean(this, "isStartReceive", true);
+        UseInfoManager.putBoolean(this, Constants.Tag.MSGSONG, true);
         handler = new InformationHandler();
         line = (Line) getIntent().getSerializableExtra("line");
         listDataBean = UseInfoManager.getUser(this).getListData().get(0);
@@ -72,6 +91,12 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         }
         setTitle(fromText + " — " + toText);
         setTitleTextColor("#ffffff");
+        if (line.getCarLong().size() != 0) {
+            filterText.addAll(line.getCarLong());
+        }
+        if (line.getCarType().size() != 0) {
+            filterText.addAll(line.getCarType());
+        }
         adapter = new InformationAdapter(this, searchINFOBeans, this);
         binding.lvInformation.setAdapter(adapter);
         binding.lvInformation.setOnItemClickListener(this);
@@ -112,6 +137,12 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                 showPhone(phone);
                 break;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(getLineDataReceiver);
     }
 
     @Override
@@ -238,5 +269,29 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         }
         DialogCall dialogCall = new DialogCall(this, phones);
         dialogCall.showAtLocation(binding.llLineMain, Gravity.CENTER, 0, 0);
+    }
+
+    private class GetLineDataReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String msg = intent.getStringExtra("Msg");
+            Log.e("ting", "InformationForLineActivity获得数据：" + msg);
+            Information.SearchINFOBean bean = FormatString.formatInformation(msg);
+            if (bean != null) {
+                if (filterText.size() == 0) {
+                    adapter.addMsg(bean);
+                } else {
+                    for (String filter : filterText) {
+                        if (bean.getMS().contains(filter)) {
+                            adapter.addMsg(bean);
+                        }
+                    }
+                }
+                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                Ringtone ringtone = RingtoneManager.getRingtone(getContext(), uri);
+                ringtone.play();
+            }
+        }
     }
 }

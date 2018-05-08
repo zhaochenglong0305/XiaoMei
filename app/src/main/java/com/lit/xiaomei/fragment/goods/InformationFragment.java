@@ -121,6 +121,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private String selectZone = "";
     private String searchSelectZone = "";
     private List<String> addCities = new ArrayList<>();
+    private List<String> cityHistory = new ArrayList<>();
     private List<String> searchEdits = new ArrayList<>();
     private List<String> filterText = new ArrayList<>();
 
@@ -166,10 +167,12 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         }
         handler = new InformationHandler();
         listDataBean = UseInfoManager.getUser(getContext()).getListData().get(0);
+        if (UseInfoManager.getStringArraylist(getContext(), "SearchCityHistory") != null) {
+            cityHistory = UseInfoManager.getStringArraylist(getContext(), "SearchCityHistory");
+        }
+        addCityHistory();
         doProvince = listDataBean.getPR();
         doCity = listDataBean.getCT();
-        String informationMsg = CreateSendMsg.createInformationMsg(getActivity(), listDataBean.getPR(), listDataBean.getCT());
-//        mainActivity.sendMsgToSocket(informationMsg);
         intentFilter = new IntentFilter();
         intentFilter.addAction(GlobalVariable.ReceiverAction.REAL_TIME_MSG);
         receiveMsgReceiver = new ReceiveMsgReceiver();
@@ -207,6 +210,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCityLv2.setOnClickListener(this);
         binding.btnAddCityLv2Cancle.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
+        binding.tvSearchCityClear.setOnClickListener(this);
         getNews("1");
         doSearch("", doProvince, doCity, "", "");
     }
@@ -349,16 +353,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     showMessage("没有输入城市");
                     return;
                 }
-                if (addCities.contains(city)) {
-                    showMessage("该城市已存在");
-                    return;
-                }
-                if (addCities.size() == 10) {
-                    showMessage("最多只能添加10个城市");
-                    return;
-                }
-                addCities.add(city);
-                addCity();
+                addCity(city);
                 binding.etAddCity.setText("");
                 break;
             case R.id.btn_do_search:
@@ -368,6 +363,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 binding.tvSearch.setText(showText(1, addCities));
                 isNear = false;
                 doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
+                addCityHistory();
                 break;
             case R.id.iv_call:
                 String phone = (String) v.getTag();
@@ -427,7 +423,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isNear = false;
                 switchTitle(0);
                 doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
-                getContext().sendBroadcast(new Intent().putExtra("fragmentType", 0));
                 break;
             case R.id.tv_title_right:
                 isNear = true;
@@ -436,12 +431,23 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 doSearch("", doProvince, doCity, "", CityListToString(searchEdits));
                 break;
             case R.id.tv_common_line:
-                startActivity(new Intent(getContext(), CommonLineActivity.class));
-                getContext().sendBroadcast(new Intent().putExtra("fragmentType", 0));
+                startActivityForResult(new Intent(getContext(), CommonLineActivity.class), 101);
+                break;
+            case R.id.tv_search_city_clear:
+                addCityHistory();
                 break;
 
         }
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 101) {
+            UseInfoManager.putBoolean(getContext(), "isLineData", false);
+            UseInfoManager.putBoolean(getContext(), Constants.Tag.MSGSONG, false);
+            doSearch("", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
+        }
     }
 
     @Override
@@ -566,16 +572,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             TextUtils.equals(searchSelectProvince, "重庆")) {
                         Zone zone = searchZones.get(i);
                         searchSelectCity = zone.getZoneName();
-                        if (addCities.contains(searchSelectCity)) {
-                            showMessage("该城市已存在");
-                            return;
-                        }
-                        if (addCities.size() == 10) {
-                            showMessage("最多只能添加10个城市");
-                            return;
-                        }
-                        addCities.add(searchSelectCity);
-                        addCity();
+                        addCity(searchSelectCity);
                     } else {
                         City city = searchCities.get(i);
                         searchSelectCity = city.getCityName();
@@ -590,16 +587,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 case 3:
                     Zone zone = searchZones.get(i);
                     searchSelectCity = zone.getZoneName();
-                    if (addCities.contains(searchSelectCity)) {
-                        showMessage("该城市已存在");
-                        return;
-                    }
-                    if (addCities.size() == 10) {
-                        showMessage("最多只能添加10个城市");
-                        return;
-                    }
-                    addCities.add(searchSelectCity);
-                    addCity();
+                    addCity(searchSelectCity);
                     break;
             }
         }
@@ -624,7 +612,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 }
                 //播放提示音
                 if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
-                    if (UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
+                    if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
                         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                         Ringtone ringtone = RingtoneManager.getRingtone(getContext(), uri);
                         ringtone.play();
@@ -787,7 +775,18 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
 
-    private void addCity() {
+    private void addCity(String city) {
+        if (!TextUtils.isEmpty(city)) {
+            if (addCities.contains(city)) {
+                showMessage("该城市已存在");
+                return;
+            }
+            if (addCities.size() == 10) {
+                showMessage("最多只能添加10个城市");
+                return;
+            }
+            addCities.add(city);
+        }
         binding.wlAddCity.removeAllViews();
         // 循环添加TextView到容器
         for (int i = 0; i < addCities.size(); i++) {
@@ -800,11 +799,57 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 public void onClick(View view) {
                     String city = (String) view.getTag();
                     addCities.remove(city);
-                    addCity();
+                    addCity("");
                 }
             });
             binding.wlAddCity.addView(view);
         }
+    }
+
+    private void addCityHistory() {
+        if (cityHistory.size() == 0 && addCities.size() == 0) {
+            binding.llSearchCityHistory.setVisibility(View.GONE);
+            return;
+        } else {
+            binding.llSearchCityHistory.setVisibility(View.VISIBLE);
+        }
+        initCityHistoryList();
+        binding.wlHistorySearchCity.removeAllViews();
+        // 循环添加TextView到容器
+        for (int i = 0; i < cityHistory.size(); i++) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_information_city_history, null, false);
+            TextView text = (TextView) view.findViewById(R.id.tv_city);
+            text.setText(cityHistory.get(i));
+            text.setTag(cityHistory.get(i));
+            text.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String city = (String) view.getTag();
+                    addCity(city);
+                }
+            });
+            binding.wlHistorySearchCity.addView(view);
+        }
+    }
+
+    private void initCityHistoryList() {
+        if (addCities.size() == 0) {
+            return;
+        }
+        List<String> five = new ArrayList<>();
+        five.addAll(cityHistory);
+        for (String city : addCities) {
+            five.add(0, city);
+        }
+        cityHistory.clear();
+        if (five.size() > 5) {
+            for (int i = 0; i < 5; i++) {
+                cityHistory.add(five.get(i));
+            }
+        } else {
+            cityHistory.addAll(five);
+        }
+        UseInfoManager.putStringArraylist(getContext(), "SearchCityHistory", (ArrayList<String>) cityHistory);
     }
 
     private String CityListToString(List<String> list) {

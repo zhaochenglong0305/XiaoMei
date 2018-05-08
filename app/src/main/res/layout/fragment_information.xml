@@ -387,117 +387,174 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_search_level_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
             android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已选择地区"
-                android:textColor="@color/c595a6e"
-                android:textSize="13sp" />
-
-
-            <am.widget.wraplayout.WrapLayout
-                android:id="@+id/wl_add_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:padding="5dp"
-                app:wlyGravity="top"
-                app:wlyHorizontalSpacing="5dp"
-                app:wlyVerticalSpacing="5dp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="28dp">
-
-                <Button
-                    android:id="@+id/btn_add_city"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/selector_btn"
-                    android:text="添加"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
-
-                <EditText
-                    android:id="@+id/et_add_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/btn_add_city"
-                    android:background="@drawable/boder_fillet_city"
-                    android:hint="请输入城市"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
-
-            </RelativeLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/ce5e5e5" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/tv_selected_city_level_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="选择省份"
-                    android:textColor="@color/c595a6e"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/tv_city_back_level_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="返回上一级"
-                    android:textColor="@color/cFD933C"
-                    android:textSize="13sp"
-                    android:visibility="gone" />
-            </RelativeLayout>
-
-            <GridView
-                android:id="@+id/gv_citylevel_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center"
-                android:horizontalSpacing="10dp"
-                android:listSelector="@android:color/transparent"
-                android:numColumns="4"
+            <ScrollView
                 android:scrollbars="none"
-                android:verticalSpacing="5dp" />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="已选择地区"
+                        android:textColor="@color/c595a6e"
+                        android:textSize="13sp" />
+
+
+                    <am.widget.wraplayout.WrapLayout
+                        android:id="@+id/wl_add_city"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="5dp"
+                        app:wlyGravity="top"
+                        app:wlyHorizontalSpacing="5dp"
+                        app:wlyVerticalSpacing="5dp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="28dp">
+
+                        <Button
+                            android:id="@+id/btn_add_city"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/selector_btn"
+                            android:text="添加"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/et_add_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@+id/btn_add_city"
+                            android:background="@drawable/boder_fillet_city"
+                            android:hint="请输入城市"
+                            android:paddingLeft="10dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="13sp" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_search_city_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="搜索历史"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tv_search_city_clear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:text="清空"
+                                android:textColor="@color/red"
+                                android:textSize="13sp"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+
+                        <am.widget.wraplayout.WrapLayout
+                            android:id="@+id/wl_history_search_city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:padding="5dp"
+                            app:wlyGravity="top"
+                            app:wlyHorizontalSpacing="5dp"
+                            app:wlyVerticalSpacing="5dp" />
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/tv_selected_city_level_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="选择省份"
+                            android:textColor="@color/c595a6e"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_city_back_level_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="返回上一级"
+                            android:textColor="@color/cFD933C"
+                            android:textSize="13sp"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <com.fyjr.baselibrary.views.GridViewForScrollView
+                        android:id="@+id/gv_citylevel_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:horizontalSpacing="10dp"
+                        android:listSelector="@android:color/transparent"
+                        android:numColumns="4"
+                        android:scrollbars="none"
+                        android:verticalSpacing="5dp" />
+                </LinearLayout>
+
+            </ScrollView>
 
             <Button
                 android:id="@+id/btn_do_search"
                 android:layout_width="300dp"
                 android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/selector_btn"
                 android:text="确定"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/ll_search_level_3"
