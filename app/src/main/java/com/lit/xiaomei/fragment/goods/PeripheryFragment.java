@@ -123,7 +123,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         binding.btnKeySearch.setOnClickListener(this);
         binding.btnSearchKeyCancle.setOnClickListener(this);
         initDateBase();
-        searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity, "", "", "");
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), "0", doProvince, doCity, "", "", "");
     }
 
     @Override
@@ -199,7 +199,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                 filterText.clear();
                 filterText.addAll(addCities);
                 filterText.addAll(addKeys);
-                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "0", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(addKeys));
                 break;
             case R.id.btn_key_search:
@@ -231,7 +231,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                 binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
                 binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
                 binding.tvSearchKey.setText(keyText);
-                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "0", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(addKeys));
                 break;
             case R.id.btn_search_key_cancle:
@@ -242,7 +242,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
                 binding.ivSearchCity.setImageResource(R.mipmap.select_xia_huang);
                 binding.ivSearchKey.setImageResource(R.mipmap.select_xia_huang);
                 binding.tvSearchKey.setText("二级搜索");
-                searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+                searchInformation(user.getUS(), user.getPW(), user.getKY(), "0", doProvince, doCity,
                         CityListToString(addCities), "", CityListToString(addKeys));
                 break;
             case R.id.iv_call:
@@ -437,7 +437,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     }
 
     private void searchInformation(String USER, String PASS, String KEYY,
-                                   String INXH, String PROV, String CITY,
+                                   String ID, String PROV, String CITY,
                                    String INCITY, String INPHONE,
                                    String INFOR) {
         if (TextUtils.isEmpty(INCITY) && TextUtils.isEmpty(INFOR)) {
@@ -445,7 +445,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         } else {
             AuthorityType = "SS";
         }
-        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, ID, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();
@@ -504,7 +504,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
     @Override
     public void onRefresh() {
         isLoad = false;
-        searchInformation(user.getUS(), user.getPW(), user.getKY(), "", doProvince, doCity,
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), "0", doProvince, doCity,
                 "", "", "");
     }
 
@@ -513,7 +513,7 @@ public class PeripheryFragment extends BaseFragment<FragmentPeripheryBinding> im
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(user.getUS(), user.getPW(), user.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(),
+        searchInformation(user.getUS(), user.getPW(), user.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getID(),
                 doProvince, doCity, "", "", "");
     }
 

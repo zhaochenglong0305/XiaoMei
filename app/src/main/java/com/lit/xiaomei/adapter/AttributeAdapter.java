@@ -20,12 +20,12 @@ import java.util.List;
 public class AttributeAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity context;
-    private String[] attributes = {};
+    private List<String> attributes = new ArrayList<>();
     private boolean isMuchSelect = false;
     private List<String> selects = new ArrayList<>();
 
 
-    public AttributeAdapter(Activity context, boolean isMuchSelect, String[] attributes) {
+    public AttributeAdapter(Activity context, boolean isMuchSelect, List<String> attributes) {
         mInflater = LayoutInflater.from(context);
         this.context = context;
         this.isMuchSelect = isMuchSelect;
@@ -34,12 +34,12 @@ public class AttributeAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return attributes.length;
+        return attributes.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return attributes[position];
+        return attributes.get(0);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AttributeAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        String text = attributes[position];
+        String text = attributes.get(position);
         holder.text.setText(text);
         if (isMuchSelect) {
             if (selects.contains(text)){

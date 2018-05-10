@@ -64,7 +64,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
         super.initView();
         handler = new InformationHandler();
         listDataBean = UseInfoManager.getUser(getContext()).getListData().get(0);
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "",
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0",
                 listDataBean.getPR(), listDataBean.getCT(),
                 "", "", "");
         adapter = new TubeCarAdapter(getContext(), searchINFOBeans, this);
@@ -76,10 +76,10 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
     }
 
     private void searchInformation(String USER, String PASS, String KEYY,
-                                   String INXH, String PROV, String CITY,
+                                   String ID, String PROV, String CITY,
                                    String INCITY, String INPHONE,
                                    String INFOR) {
-        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY,  ID, PROV, CITY, INCITY, "车", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();
@@ -100,7 +100,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
     @Override
     public void onRefresh() {
         isLoad = false;
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "",
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0",
                 listDataBean.getPR(), listDataBean.getCT(),
                 "", "", "");
     }
@@ -110,7 +110,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(),
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getID(),
                 listDataBean.getPR(), listDataBean.getCT(),
                 "", "", "");
     }
@@ -148,7 +148,7 @@ public class FindCarsFragment extends BaseFragment<FragmentFindCarsBinding> impl
             isDo = true;
             binding.tvFindCars.setText("搜索");
         }
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "",
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0",
                 listDataBean.getPR(), listDataBean.getCT(),
                 "", "", key);
     }

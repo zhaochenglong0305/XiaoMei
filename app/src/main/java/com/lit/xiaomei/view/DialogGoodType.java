@@ -23,7 +23,7 @@ import com.lit.xiaomei.adapter.AttributeAdapter;
  */
 
 public class DialogGoodType extends PopupWindow implements View.OnClickListener {
-    private String[] goodType = {"普货", "重货", "泡货", "设备", "配件", "百货", "建材", "食品", "饮料", "化工", "农药", "水果", "蔬菜", "木材", "煤炭", "石材", "瓷砖", "粮食", "树苗", "其他"};
+    private List<String> goodType = new ArrayList<>();
     private List<String> goodTypeSelects = new ArrayList<>();
     private Activity context;
     private AttributeAdapter goodTypeAdapter;
@@ -35,6 +35,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
 
     public DialogGoodType(Activity context) {
         super(context);
+        initData();
         this.context = context;
         View view = View.inflate(context, R.layout.dialog_good_type, null);
         goodTypeAdapter = new AttributeAdapter(context, true, goodType);
@@ -74,6 +75,29 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
         this.setBackgroundDrawable(null);
     }
 
+    private void initData(){
+        goodType.add("普货");
+        goodType.add("重货");
+        goodType.add("泡货");
+        goodType.add("设备");
+        goodType.add("配件");
+        goodType.add("百货");
+        goodType.add("建材");
+        goodType.add("食品");
+        goodType.add("饮料");
+        goodType.add("化工");
+        goodType.add("农药");
+        goodType.add("水果");
+        goodType.add("蔬菜");
+        goodType.add("木材");
+        goodType.add("煤炭");
+        goodType.add("石材");
+        goodType.add("瓷砖");
+        goodType.add("粮食");
+        goodType.add("树苗");
+        goodType.add("其他");
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -98,7 +122,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             goodTypeSelects.clear();
-            goodTypeSelects.add(goodType[i]);
+            goodTypeSelects.add(goodType.get(i));
             goodTypeAdapter.selects(goodTypeSelects);
             ok.setVisibility(View.VISIBLE);
         }

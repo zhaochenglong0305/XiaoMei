@@ -101,7 +101,6 @@ public class HttpUtil {
      * @param USER
      * @param PASS
      * @param KEYY
-     * @param INXH
      * @param PROV
      * @param CITY
      * @param INCITY
@@ -111,14 +110,14 @@ public class HttpUtil {
      * @param callBack
      */
     public void searchInformation(String USER, String PASS, String KEYY,
-                                  String INXH, String PROV, String CITY,
+                                  String ID, String PROV, String CITY,
                                   String INCITY, String INCLASS, String INPHONE,
                                   String INFOR, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("USER", USER);
         map.put("PASS", PASS);
         map.put("KEYY", KEYY);
-        map.put("INXH", INXH);
+        map.put("ID", ID);
         map.put("PROV", PROV);
         map.put("CITY", CITY);
         map.put("INCITY", INCITY);
@@ -130,17 +129,18 @@ public class HttpUtil {
     }
 
     public void searchNearbyInformation(String USER, String PASS, String KEYY,
-                                        String INXH, String PROV, String BeginCITY,
-                                        String EndCITY, String INCLASS, String INPHONE,
+                                        String ID, String PROV, String BeginCITY,
+                                        String EndCITY, String INCITY, String INCLASS, String INPHONE,
                                         String INFOR, String StatusFormat, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("USER", USER);
         map.put("PASS", PASS);
         map.put("KEYY", KEYY);
-        map.put("INXH", INXH);
+        map.put("ID", ID);
         map.put("PROV", PROV);
         map.put("BeginCITY", BeginCITY);
         map.put("EndCITY", EndCITY);
+        map.put("INCITY", INCITY);
         map.put("INCLASS", INCLASS);
         map.put("INPHONE", INPHONE);
         map.put("INFOR", INFOR);

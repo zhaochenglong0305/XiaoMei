@@ -15,16 +15,26 @@ public class Line implements Serializable {
     private List<String> toCities = new ArrayList<>();
     private List<String> carLong = new ArrayList<>();
     private List<String> carType = new ArrayList<>();
+    private List<String> keies = new ArrayList<>();
 
     public Line() {
 
     }
 
-    public Line(List<String> fromCities, List<String> toCities,List<String> carLong,List<String> carType) {
+    public Line(List<String> fromCities, List<String> toCities,List<String> carLong,List<String> carType,List<String> keies) {
         setFromCities(fromCities);
         setToCities(toCities);
         setCarLong(carLong);
         setCarType(carType);
+        setKeies(keies);
+    }
+
+    public List<String> getKeies() {
+        return keies;
+    }
+
+    public void setKeies(List<String> keies) {
+        this.keies = keies;
     }
 
     public List<String> getFromCities() {

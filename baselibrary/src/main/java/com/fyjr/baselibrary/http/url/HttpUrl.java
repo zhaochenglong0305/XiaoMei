@@ -25,7 +25,7 @@ public class HttpUrl {
     /**
      * 信息搜索
      */
-    public static String SEARCHINFORMATION = "webservice/search/GetSearData.aspx";
+    public static String SEARCHINFORMATION = "webservice/search/GetSearDataNew.aspx";
 
     /**
      * 周边信息搜索

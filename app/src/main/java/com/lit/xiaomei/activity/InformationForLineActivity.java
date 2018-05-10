@@ -44,6 +44,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         AdapterView.OnItemClickListener, RefreshLayout.OnLoadListener {
     private String fromText = "";
     private String toText = "";
+    private String filter = "";
     private Line line = new Line();
     private InformationHandler handler;
     private InformationAdapter adapter;
@@ -92,10 +93,17 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         setTitle(fromText + " — " + toText);
         setTitleTextColor("#ffffff");
         if (line.getCarLong().size() != 0) {
-            filterText.addAll(line.getCarLong());
+            if (!line.getCarLong().contains("不限")) {
+                filterText.addAll(line.getCarLong());
+            }
         }
         if (line.getCarType().size() != 0) {
-            filterText.addAll(line.getCarType());
+            if (!line.getCarType().contains("不限")) {
+                filterText.addAll(line.getCarType());
+            }
+        }
+        if (line.getKeies().size() != 0) {
+            filterText.addAll(line.getKeies());
         }
         adapter = new InformationAdapter(this, searchINFOBeans, this);
         binding.lvInformation.setAdapter(adapter);
@@ -103,15 +111,15 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         binding.reRefresh.setListView(binding.lvInformation);
         binding.reRefresh.setOnLoadListener(this);
         binding.reRefresh.setRefreshing(true);
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
-                CityListString(line.getToCities()), "", "");
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0", doProvince, CityListString(line.getFromCities()),
+                CityListString(line.getToCities()), "", CityListString(filterText));
     }
 
     private void searchInformation(String USER, String PASS, String KEYY,
-                                   String INXH, final String PROV, final String CITY,
+                                   String ID, final String PROV, final String CITY,
                                    final String INCITY, String INPHONE,
                                    final String INFOR) {
-        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, INXH, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
+        HttpUtil.getInstance().searchInformation(USER, PASS, KEYY, ID, PROV, CITY, INCITY, "货", INPHONE, INFOR, new HttpCallBack<Information>() {
             @Override
             public void onSuccess(Information data, String msg) {
                 Message message = new Message();
@@ -185,8 +193,8 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     @Override
     public void onRefresh() {
         isLoad = false;
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "", doProvince, CityListString(line.getFromCities()),
-                CityListString(line.getToCities()), "", "");
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0", doProvince, CityListString(line.getFromCities()),
+                CityListString(line.getToCities()), "", CityListString(filterText));
     }
 
     @Override
@@ -194,8 +202,8 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         isLoad = true;
         binding.reRefresh.addFooterView();
         binding.reRefresh.showLoading();
-        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getXH(), doProvince, CityListString(line.getFromCities()),
-                CityListString(line.getToCities()), "", "");
+        searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), searchINFOBeans.get(searchINFOBeans.size() - 1).getID(), doProvince, CityListString(line.getFromCities()),
+                CityListString(line.getToCities()), "", CityListString(filterText));
     }
 
     private class InformationHandler extends Handler {
@@ -228,6 +236,12 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                         searchINFOBeans = data.getSearchINFO();
                         adapter.clear();
                         adapter.setData(searchINFOBeans);
+                        List<String> filter = new ArrayList<>();
+                        filter.addAll(line.getToCities());
+                        filter.addAll(line.getCarLong());
+                        filter.addAll(line.getCarType());
+                        filter.addAll(line.getKeies());
+                        adapter.setFilter(filter);
                     }
                     break;
             }
