@@ -223,11 +223,11 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
         String toText = "";
-        for (int i = 0; i < lines.get(position).getToCities().size(); i++) {
-            if (i != lines.get(position).getToCities().size() - 1) {
-                toText = toText + lines.get(position).getToCities().get(i) + "~";
+        for (int i = 0; i < lines.get(position).getFromCities().size(); i++) {
+            if (i != lines.get(position).getFromCities().size() - 1) {
+                toText = toText + lines.get(position).getFromCities().get(i) + "~";
             } else {
-                toText = toText + lines.get(position).getToCities().get(i);
+                toText = toText + lines.get(position).getFromCities().get(i);
             }
         }
         String sendMsg = CreateSendMsg.createInformationMsg(this,

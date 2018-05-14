@@ -560,97 +560,244 @@
             android:id="@+id/ll_search_level_3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp"
             android:visibility="gone">
 
-            <RelativeLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_marginTop="10dp">
+                android:layout_height="match_parent">
 
-
-                <EditText
-                    android:id="@+id/et_add_city_lv2"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_toLeftOf="@+id/btn_add_city_lv2_cancle"
-                    android:background="@drawable/boder_fillet_city"
-                    android:hint="请输入关键字（多个关键字以，隔开）"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:textColor="@color/c888888"
-                    android:textSize="14sp" />
+                    android:paddingRight="10dp">
 
-                <Button
-                    android:id="@+id/btn_add_city_lv2_cancle"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_btn"
-                    android:text="取消"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
 
-            </RelativeLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/cFD933C" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="历史记录"
-                    android:textColor="@color/c888888"
-                    android:textSize="13sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="常用关键字(最多10个)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_clear_record"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:text="清空"
-                    android:textColor="@color/cFD933C"
-                    android:textSize="13sp" />
-            </RelativeLayout>
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_key"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:horizontalSpacing="5dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:verticalSpacing="5dp"
+                            android:visibility="visible" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp">
 
-                <ListView
-                    android:id="@+id/lv_search_lv3_record"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/btn_add_city_lv2"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:divider="@color/white"
-                    android:dividerHeight="1dp"
-                    android:scrollbars="none" />
+                            <EditText
+                                android:id="@+id/et_key"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/boder_fillet_add_city"
+                                android:padding="5dp"
+                                android:textColor="@color/c888888"
+                                android:textSize="15sp" />
 
-                <Button
-                    android:id="@+id/btn_add_city_lv2"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/selector_btn"
-                    android:text="搜索"
-                    android:textColor="@color/white"
-                    android:textSize="13sp" />
-            </RelativeLayout>
+                            <TextView
+                                android:id="@+id/tv_add_key"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:padding="5dp"
+                                android:text="添加"
+                                android:textColor="@color/cFD933C"
+                                android:textSize="15sp" />
 
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/c7E64EE" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="车长(可多选)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_car_long"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:horizontalSpacing="5dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:verticalSpacing="5dp"
+                            android:visibility="visible" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp">
+
+                            <EditText
+                                android:id="@+id/et_car_long"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/boder_fillet_add_city"
+                                android:inputType="numberDecimal"
+                                android:padding="5dp"
+                                android:textColor="@color/c888888"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_add_car_long"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:padding="5dp"
+                                android:text="添加"
+                                android:textColor="@color/cFD933C"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/ce5e5e5" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="5dp"
+                                android:layout_height="16dp"
+                                android:background="@color/c7CCD7C" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:text="车型(可多选)"
+                                android:textColor="@color/c595a6e"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
+                        <com.fyjr.baselibrary.views.GridViewForScrollView
+                            android:id="@+id/gv_car_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:horizontalSpacing="5dp"
+                            android:numColumns="5"
+                            android:scrollbars="none"
+                            android:verticalSpacing="5dp"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btn_add_city_lv2_cancle"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_btn"
+                            android:text="重置"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+
+                        <View
+                            android:layout_width="15dp"
+                            android:layout_height="match_parent" />
+
+                        <Button
+                            android:id="@+id/btn_add_city_lv2"
+                            android:layout_width="0dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/selector_btn"
+                            android:text="搜索"
+                            android:textColor="@color/white"
+                            android:textSize="13sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
 
 

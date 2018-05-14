@@ -22,9 +22,13 @@ import com.blanke.xsocket.tcp.client.helper.stickpackage.AbsStickPackageHelper;
 import com.blanke.xsocket.tcp.client.helper.stickpackage.BaseStickPackageHelper;
 import com.blanke.xsocket.tcp.client.listener.TcpClientListener;
 import com.fyjr.baselibrary.base.BaseActivity;
+import com.fyjr.baselibrary.http.HttpUtil;
+import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.fyjr.baselibrary.http.url.HttpUrl;
 import com.fyjr.baselibrary.utils.JsonUtils;
+import com.fyjr.baselibrary.utils.VersionUtil;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.bean.Version;
 import com.lit.xiaomei.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
@@ -41,6 +45,7 @@ import com.lit.xiaomei.fragment.TubeCarFragment;
 import com.lit.xiaomei.fragment.goods.InformationFragment;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
+import com.lit.xiaomei.utils.UpdateManager;
 import com.yxp.permission.util.lib.PermissionInfo;
 import com.yxp.permission.util.lib.PermissionUtil;
 import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
@@ -68,6 +73,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         super.onCreate(savedInstanceState);
         setContentView(this, R.layout.activity_main);
         initSocket();
+        checkVersion();
     }
 
     @Override
@@ -246,8 +252,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
                 return;
             }
             if (UseInfoManager.getBoolean(this, "isLineData", false)) {
+                Log.e("ting", "GET_LINE_MSG: 开始推送");
                 sendBroadcast(new Intent(GlobalVariable.ReceiverAction.GET_LINE_MSG).putExtra("Msg", receive));
             } else {
+                Log.e("ting", "REAL_TIME_MSG: 开始推送");
                 sendBroadcast(new Intent(GlobalVariable.ReceiverAction.REAL_TIME_MSG).putExtra("Msg", receive));
             }
         }
@@ -323,5 +331,23 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         binding.ivInformation.setImageResource(R.mipmap.main_find_goods_select);
         binding.tvInformation.setTextColor(getResources().getColor(R.color.cFD933C));
     }
+
+    private void checkVersion() {
+        HttpUtil.getInstance().checkVersion(new HttpCallBack<Version>() {
+            @Override
+            public void onSuccess(Version data, String msg) {
+                int newCode = Integer.valueOf(data.getVersionCode());
+                UpdateManager update = new UpdateManager(MainActivity.this, data.getApkURL());
+                update.checkUpdate(newCode);
+            }
+
+            @Override
+            public void onFail(int errorCode, String msg) {
+
+            }
+        });
+    }
+
+
 
 }

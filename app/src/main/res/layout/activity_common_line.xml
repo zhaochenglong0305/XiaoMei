@@ -265,8 +265,6 @@
                                 android:textSize="15sp" />
 
                         </LinearLayout>
-
-
                     </LinearLayout>
 
                     <View
@@ -313,8 +311,6 @@
                             android:scrollbars="none"
                             android:verticalSpacing="5dp"
                             android:visibility="visible" />
-
-
                     </LinearLayout>
 
                     <Button

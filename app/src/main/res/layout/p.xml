@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#00000000"
+    android:orientation="vertical"
+    android:padding="7dp" >
+
+    <ImageView
+        android:id="@+id/content_view_image"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/tiger" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/content_view_image"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/content_view_text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:text="0%"
+            android:textColor="#969191" />
+
+        <ProgressBar
+            android:id="@+id/content_view_progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="6dp"
+            android:layout_marginTop="7dp"
+            android:max="100" />
+    </LinearLayout>
+
+</RelativeLayout>

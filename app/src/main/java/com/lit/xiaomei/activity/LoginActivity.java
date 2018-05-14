@@ -17,6 +17,7 @@ import com.fyjr.baselibrary.base.BaseActivity;
 import com.fyjr.baselibrary.http.HttpUtil;
 import com.fyjr.baselibrary.http.callback.HttpCallBack;
 import com.fyjr.baselibrary.http.url.HttpUrl;
+import com.fyjr.baselibrary.utils.VersionUtil;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.bean.CityPhones;
 import com.lit.xiaomei.bean.Constants;
@@ -51,7 +52,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     public void initView() {
         super.initView();
-        binding.tvAppName.setText(getAppName(this) + " " + getVersionName(this));
+        binding.tvAppName.setText(getAppName(this) + " " + VersionUtil.getVersionName(this));
         user = UseInfoManager.getUser(this);
         if (!TextUtils.isEmpty(UseInfoManager.getString(this, "userCity"))) {
             userCity = UseInfoManager.getString(this, "userCity");
@@ -238,24 +239,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         return null;
     }
 
-    /**
-     * [获取应用程序版本名称信息]
-     *
-     * @param context
-     * @return 当前应用的版本名称
-     */
-    public static String getVersionName(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageInfo(
-                    context.getPackageName(), 0);
-            return packageInfo.versionName;
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     private void getCityPhone() {
         showLoading();

@@ -96,6 +96,17 @@ public class HttpUtil {
     }
 
     /**
+     * 版本更新
+     *
+     * @param callBack
+     */
+    public void checkVersion(Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", 10);
+        doGet(HttpUrl.CHECKVERSION + pinUrl(map), callBack);
+    }
+
+    /**
      * 信息搜索
      *
      * @param USER

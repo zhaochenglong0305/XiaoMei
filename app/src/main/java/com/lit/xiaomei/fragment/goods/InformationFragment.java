@@ -34,6 +34,7 @@ import com.lit.xiaomei.activity.CommonLineActivity;
 import com.lit.xiaomei.activity.InformationDetailsActivity;
 import com.lit.xiaomei.activity.MainActivity;
 import com.lit.xiaomei.R;
+import com.lit.xiaomei.adapter.AttributeAdapter;
 import com.lit.xiaomei.bean.CheckAuthority;
 import com.lit.xiaomei.bean.Constants;
 import com.lit.xiaomei.bean.News;
@@ -126,14 +127,21 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private List<String> filterText = new ArrayList<>();
 
     private InformationHandler handler;
-    private ArrayList<String> texts = new ArrayList<>();
-    private RecordAdapter recordAdapter;
-    private String searchLv2 = "";
+    //    private ArrayList<String> texts = new ArrayList<>();
+    //    private RecordAdapter recordAdapter;
     private String AuthorityType = "QB";
     private boolean isNear = false;
     private boolean isShowTitle = false;
     private boolean isLeft = true;
-
+    private List<String> carLong = new ArrayList<>();
+    private List<String> carLongSelects = new ArrayList<>();
+    private List<String> carType = new ArrayList<>();
+    private List<String> carTypeSelects = new ArrayList<>();
+    private List<String> keies = new ArrayList<>();
+    private List<String> keySelect = new ArrayList<>();
+    private AttributeAdapter carLongAdapter;
+    private AttributeAdapter carTypeAdapter;
+    private AttributeAdapter keyAdapter;
 
     public InformationFragment() {
     }
@@ -161,10 +169,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     @Override
     public void initView() {
         super.initView();
-        ArrayList<String> records = UseInfoManager.getStringArraylist(getContext(), "Record");
-        if (records != null) {
-            texts = records;
-        }
+        intData();
         handler = new InformationHandler();
         listDataBean = UseInfoManager.getUser(getContext()).getListData().get(0);
         if (UseInfoManager.getStringArraylist(getContext(), "SearchCityHistory") != null) {
@@ -203,47 +208,87 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.btnAddCity.setOnClickListener(this);
         binding.btnDoSearch.setOnClickListener(this);
         binding.llSearchLv2.setOnClickListener(this);
-        recordAdapter = new RecordAdapter();
-        binding.lvSearchLv3Record.setAdapter(recordAdapter);
-        binding.lvSearchLv3Record.setOnItemClickListener(new OnSearchLv2ItemClickListener());
-        binding.tvClearRecord.setOnClickListener(this);
+//        recordAdapter = new RecordAdapter();
+//        binding.lvSearchLv3Record.setAdapter(recordAdapter);
+//        binding.lvSearchLv3Record.setOnItemClickListener(new OnSearchLv2ItemClickListener());
+//        binding.tvClearRecord.setOnClickListener(this);
         binding.btnAddCityLv2.setOnClickListener(this);
-        binding.btnAddCityLv2Cancle.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
         binding.tvSearchCityClear.setOnClickListener(this);
+        binding.tvAddCarLong.setOnClickListener(this);
+        binding.tvAddKey.setOnClickListener(this);
+        keyAdapter = new AttributeAdapter(getActivity(), true, keies);
+        carLongAdapter = new AttributeAdapter(getActivity(), true, carLong);
+        carLongSelects.add(carLong.get(0));
+        carLongAdapter.selects(carLongSelects);
+        carTypeAdapter = new AttributeAdapter(getActivity(), true, carType);
+        carTypeSelects.add(carType.get(0));
+        carTypeAdapter.selects(carTypeSelects);
+        binding.gvCarLong.setAdapter(carLongAdapter);
+        binding.gvCarType.setAdapter(carTypeAdapter);
+        binding.gvKey.setAdapter(keyAdapter);
+        binding.gvCarLong.setOnItemClickListener(new OnCarLongItemClickListener());
+        binding.gvCarType.setOnItemClickListener(new OnCarTypeItemClickListener());
+        binding.gvKey.setOnItemClickListener(new OnKeyItemClickListener());
         getNews("1");
         doSearch("0", doProvince, doCity, "", "");
     }
 
-
-    private class OnSearchLv2ItemClickListener implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int positon, long l) {
-            String keyText = texts.get(positon);
-            isSearchLv2LayoutShow = false;
-            initSearchFromLv2Layout();
-            binding.tvSearchLv2.setText(keyText);
-            binding.etAddCityLv2.setText(keyText);
-            searchEdits.clear();
-            if (searchLv2.contains(",")) {
-                String[] keys = keyText.split(",");
-                for (int i = 0; i < keys.length; i++) {
-                    searchEdits.add(keys[i]);
-                }
-            } else if (searchLv2.contains("，")) {
-                String[] keys = keyText.split("，");
-                for (int i = 0; i < keys.length; i++) {
-                    searchEdits.add(keys[i]);
-                }
-            } else {
-                searchEdits.add(keyText);
-            }
-            isLoad = false;
-            isNear = false;
-            doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
+    private void intData() {
+        if (UseInfoManager.getStringArraylist(getContext(), "lineKey") != null) {
+            keies = UseInfoManager.getStringArraylist(getContext(), "lineKey");
         }
+
+        if (UseInfoManager.getStringArraylist(getContext(), "carLong") != null) {
+            carLong = UseInfoManager.getStringArraylist(getContext(), "carLong");
+        } else {
+            carLong.add("不限");
+            carLong.add("7.2米");
+            carLong.add("8.2米");
+            carLong.add("9.6米");
+            carLong.add("12.5米");
+            carLong.add("13米");
+            carLong.add("13.5米");
+            carLong.add("14米");
+        }
+
+        carType.add("不限");
+        carType.add("平板");
+        carType.add("高栏");
+        carType.add("厢式");
+        carType.add("高低板");
+        carType.add("保温");
+        carType.add("冷藏");
+        carType.add("危险品");
     }
+
+//    private class OnSearchLv2ItemClickListener implements AdapterView.OnItemClickListener {
+//
+//        @Override
+//        public void onItemClick(AdapterView<?> adapterView, View view, int positon, long l) {
+//            String keyText = texts.get(positon);
+//            isSearchLv2LayoutShow = false;
+//            initSearchFromLv2Layout();
+//            binding.tvSearchLv2.setText(keyText);
+//            searchEdits.clear();
+//            if (searchLv2.contains(",")) {
+//                String[] keys = keyText.split(",");
+//                for (int i = 0; i < keys.length; i++) {
+//                    searchEdits.add(keys[i]);
+//                }
+//            } else if (searchLv2.contains("，")) {
+//                String[] keys = keyText.split("，");
+//                for (int i = 0; i < keys.length; i++) {
+//                    searchEdits.add(keys[i]);
+//                }
+//            } else {
+//                searchEdits.add(keyText);
+//            }
+//            isLoad = false;
+//            isNear = false;
+//            doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
+//        }
+//    }
 
     @Override
     public void onAttach(Context context) {
@@ -370,50 +415,29 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 showPhone(phone);
                 break;
             case R.id.btn_add_city_lv2:
-                searchLv2 = binding.etAddCityLv2.getText().toString();
-                if (TextUtils.isEmpty(searchLv2)) {
-                    showMessage("内容不能为空");
-                    return;
-                }
-                texts.add(0, searchLv2);
-                UseInfoManager.putStringArraylist(getContext(), "Record", texts);
-                recordAdapter.notifyDataSetChanged();
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
-                binding.tvSearchLv2.setText(searchLv2);
                 searchEdits.clear();
-                if (searchLv2.contains(",")) {
-                    String[] keys = searchLv2.split(",");
-                    for (int i = 0; i < keys.length; i++) {
-                        searchEdits.add(keys[i]);
-                    }
-                } else if (searchLv2.contains("，")) {
-                    String[] keys = searchLv2.split("，");
-                    for (int i = 0; i < keys.length; i++) {
-                        searchEdits.add(keys[i]);
-                    }
-                } else {
-                    searchEdits.add(searchLv2);
+                searchEdits.addAll(keySelect);
+                if (!carLongSelects.contains("不限")) {
+                    searchEdits.addAll(carLongSelects);
                 }
+                if (!carTypeSelects.contains("不限")) {
+                    searchEdits.addAll(carTypeSelects);
+                }
+                binding.tvSearchLv2.setText(showText(2, searchEdits));
                 isLoad = false;
                 isNear = false;
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.btn_add_city_lv2_cancle:
-                binding.tvSearchLv2.setText("二级搜索");
-                searchLv2 = "";
-                binding.etAddCityLv2.setText("");
+                searchEdits.clear();
+                binding.tvSearchLv2.setText(showText(2, searchEdits));
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
-                searchEdits.clear();
                 isLoad = false;
                 isNear = false;
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
-                break;
-            case R.id.tv_clear_record:
-                texts.clear();
-                UseInfoManager.putStringArraylist(getContext(), "Record", texts);
-                recordAdapter.notifyDataSetChanged();
                 break;
             case R.id.iv_news_delete:
                 binding.rlNews.setVisibility(View.GONE);
@@ -449,6 +473,53 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 break;
             case R.id.tv_search_city_clear:
                 addCityHistory();
+                break;
+            case R.id.tv_add_car_long:
+                if (TextUtils.isEmpty(binding.etCarLong.getText().toString())) {
+                    showMessage("车长不能为空!");
+                    return;
+                }
+                double dt = Double.valueOf(binding.etCarLong.getText().toString());
+                if (dt < 1) {
+                    showMessage("车长不能为0!");
+                    return;
+                }
+                String text = binding.etCarLong.getText().toString() + "米";
+                binding.etCarLong.setText("");
+                if (carLong.size() == 10) {
+                    carLong.remove(carLong.size() - 2);
+                }
+                if (carLong.contains(text)) {
+                    showMessage("该长度已存在!");
+                    return;
+                }
+                carLong.add(text);
+                carLongSelects.clear();
+                carLongSelects.add(text);
+                carLongAdapter.selects(carLongSelects);
+                carLongAdapter.notifyDataSetChanged();
+                UseInfoManager.putStringArraylist(getContext(), "carLong", (ArrayList<String>) carLong);
+                break;
+            case R.id.tv_add_key:
+                if (TextUtils.isEmpty(binding.etKey.getText().toString())) {
+                    showMessage("关键字不能为空!");
+                    return;
+                }
+                String key = binding.etKey.getText().toString();
+                binding.etKey.setText("");
+                if (keies.contains(key)) {
+                    showMessage("该关键字已存在!");
+                    return;
+                }
+                if (keies.size() == 10) {
+                    keies.remove(0);
+                }
+                keies.add(key);
+                keySelect.clear();
+                keySelect.add(key);
+                keyAdapter.selects(keySelect);
+                keyAdapter.notifyDataSetChanged();
+                UseInfoManager.putStringArraylist(getContext(), "lineKey", (ArrayList<String>) keies);
                 break;
 
         }
@@ -910,7 +981,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     text = "搜索";
                     break;
                 case 2:
-                    text = "搜索";
+                    text = "二级搜索";
                     break;
             }
         }
@@ -962,10 +1033,18 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             switch (msg.what) {
                 case 0:
                     if (isLoad) {
-                        showMessage("更多信息请查看周边沿线！");
+                        if (isNear){
+                            showMessage("没有信息了！");
+                        }else {
+                            showMessage("更多信息请查看周边沿线！");
+                        }
                         binding.reRefresh.removeFooterView();
                     } else {
-                        showMessage("更多信息请查看周边沿线！");
+                        if (isNear){
+                            showMessage("没有信息了！");
+                        }else {
+                            showMessage("更多信息请查看周边沿线！");
+                        }
                         searchINFOBeans.clear();
                         adapter.clear();
                         binding.reRefresh.setRefreshing(false);
@@ -975,7 +1054,11 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     Information data = (Information) msg.obj;
                     if (isLoad) {
                         if (data.getSearchINFO().size() == 0 || data == null) {
-                            showMessage("更多信息请查看周边沿线！");
+                            if (isNear){
+                                showMessage("没有信息了！");
+                            }else {
+                                showMessage("更多信息请查看周边沿线！");
+                            }
                             binding.reRefresh.setNoMoreData();
                         } else {
                             adapter.addListMsg(data.getSearchINFO());
@@ -997,31 +1080,31 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         }
     }
 
-    private class RecordAdapter extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return texts.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return texts.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_record, viewGroup, false);
-            TextView context = (TextView) view.findViewById(R.id.tv_context);
-            context.setText(texts.get(i));
-            return view;
-        }
-    }
+//    private class RecordAdapter extends BaseAdapter {
+//
+//        @Override
+//        public int getCount() {
+//            return texts.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int i) {
+//            return texts.get(i);
+//        }
+//
+//        @Override
+//        public long getItemId(int i) {
+//            return i;
+//        }
+//
+//        @Override
+//        public View getView(int i, View view, ViewGroup viewGroup) {
+//            view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_record, viewGroup, false);
+//            TextView context = (TextView) view.findViewById(R.id.tv_context);
+//            context.setText(texts.get(i));
+//            return view;
+//        }
+//    }
 
     private void getNews(final String ClassID) {
         HttpUtil.getInstance().getNews(ClassID, new HttpCallBack<News>() {
@@ -1128,5 +1211,66 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     }
                 }
         );
+    }
+
+    private class OnCarLongItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                carLongSelects.clear();
+                carLongSelects.add(carLong.get(i));
+            } else {
+                if (carLongSelects.contains(carLong.get(0))) {
+                    carLongSelects.remove(carLong.get(0));
+                    carLongSelects.add(carLong.get(i));
+                } else if (carLongSelects.contains(carLong.get(i))) {
+                    carLongSelects.remove(carLong.get(i));
+                    if (carLongSelects.size() == 0) {
+                        carLongSelects.add(carLong.get(0));
+                    }
+                } else {
+                    carLongSelects.add(carLong.get(i));
+                }
+            }
+            carLongAdapter.selects(carLongSelects);
+        }
+    }
+
+    private class OnCarTypeItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) {
+                carTypeSelects.clear();
+                carTypeSelects.add(carType.get(i));
+            } else {
+                if (carTypeSelects.contains(carType.get(0))) {
+                    carTypeSelects.remove(carType.get(0));
+                    carTypeSelects.add(carType.get(i));
+                } else if (carTypeSelects.contains(carType.get(i))) {
+                    carTypeSelects.remove(carType.get(i));
+                    if (carTypeSelects.size() == 0) {
+                        carTypeSelects.add(carType.get(0));
+                    }
+                } else {
+                    carTypeSelects.add(carType.get(i));
+                }
+            }
+            carTypeAdapter.selects(carTypeSelects);
+        }
+    }
+
+    private class OnKeyItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (keySelect.contains(keies.get(i))) {
+                keySelect.remove(keies.get(i));
+            } else {
+                keySelect.add(keies.get(i));
+            }
+            keyAdapter.selects(keySelect);
+        }
     }
 }

@@ -23,6 +23,11 @@ public class HttpUrl {
     public static String LOGIN = "webservice/Json/Login.aspx";
 
     /**
+     * 检查更新
+     */
+    public static String CHECKVERSION = "sjfwq/web/ApkUpdate/CheckApkUpdate.aspx";
+
+    /**
      * 信息搜索
      */
     public static String SEARCHINFORMATION = "webservice/search/GetSearDataNew.aspx";
