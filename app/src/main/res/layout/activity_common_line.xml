@@ -130,24 +130,39 @@
                         android:paddingBottom="15dp"
                         android:paddingTop="15dp">
 
-                        <LinearLayout
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
+                            android:layout_height="wrap_content">
 
-                            <View
-                                android:layout_width="5dp"
-                                android:layout_height="16dp"
-                                android:background="@color/cFD933C" />
-
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="20dp"
-                                android:text="常用关键字(最多10个)"
-                                android:textColor="@color/c595a6e"
-                                android:textSize="15sp" />
-                        </LinearLayout>
+                                android:layout_centerVertical="true"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="5dp"
+                                    android:layout_height="16dp"
+                                    android:background="@color/cFD933C" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:text="常用关键字(最多10个)"
+                                    android:textColor="@color/c595a6e"
+                                    android:textSize="15sp" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/iv_clear_keys"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="10dp"
+                                android:src="@mipmap/icon_clear_all" />
+                        </RelativeLayout>
+
 
                         <com.fyjr.baselibrary.views.GridViewForScrollView
                             android:id="@+id/gv_key"

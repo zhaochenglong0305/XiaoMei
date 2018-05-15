@@ -38,7 +38,7 @@ public class DialogGoodType extends PopupWindow implements View.OnClickListener 
         initData();
         this.context = context;
         View view = View.inflate(context, R.layout.dialog_good_type, null);
-        goodTypeAdapter = new AttributeAdapter(context, true, goodType);
+        goodTypeAdapter = new AttributeAdapter(false,context, true, goodType);
         goodTypeGrid = (GridView) view.findViewById(R.id.gv_good_type);
         cancel = (TextView) view.findViewById(R.id.tv_cancel);
         ok = (TextView) view.findViewById(R.id.tv_ok);

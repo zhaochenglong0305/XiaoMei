@@ -61,11 +61,11 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         fromAdapter = new SelectCityAdapter(this, fromSelect, new OnFromCityClickListener());
         toAdapter = new SelectCityAdapter(this, toSelect, new OnToCityClickListener());
         lineListAdapter = new LineListAdapter();
-        keyAdapter = new AttributeAdapter(this, true, keies);
-        carLongAdapter = new AttributeAdapter(this, true, carLong);
+        keyAdapter = new AttributeAdapter(false,this, true, keies);
+        carLongAdapter = new AttributeAdapter(true,this, true, carLong);
         carLongSelects.add(carLong.get(0));
         carLongAdapter.selects(carLongSelects);
-        carTypeAdapter = new AttributeAdapter(this, true, carType);
+        carTypeAdapter = new AttributeAdapter(false,this, true, carType);
         carTypeSelects.add(carType.get(0));
         carTypeAdapter.selects(carTypeSelects);
         if (UseInfoManager.getLineArraylist(this) != null) {
@@ -86,6 +86,7 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
         binding.btnSelectLineCity.setOnClickListener(this);
         binding.tvAddCarLong.setOnClickListener(this);
         binding.tvAddKey.setOnClickListener(this);
+        binding.ivClearKeys.setOnClickListener(this);
         binding.gvCarLong.setAdapter(carLongAdapter);
         binding.gvCarType.setAdapter(carTypeAdapter);
         binding.gvCarLong.setOnItemClickListener(new OnCarLongItemClickListener());
@@ -102,13 +103,13 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
             carLong = UseInfoManager.getStringArraylist(this, "carLong");
         } else {
             carLong.add("不限");
-            carLong.add("7.2米");
-            carLong.add("8.2米");
-            carLong.add("9.6米");
-            carLong.add("12.5米");
-            carLong.add("13米");
-            carLong.add("13.5米");
-            carLong.add("14米");
+            carLong.add("7.2");
+            carLong.add("8.2");
+            carLong.add("9.6");
+            carLong.add("12.5");
+            carLong.add("13");
+            carLong.add("13.5");
+            carLong.add("14");
         }
 
         carType.add("不限");
@@ -158,7 +159,7 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
                     showMessage("车长不能为0!");
                     return;
                 }
-                String text = binding.etCarLong.getText().toString() + "米";
+                String text = binding.etCarLong.getText().toString();
                 binding.etCarLong.setText("");
                 if (carLong.size() == 10) {
                     carLong.remove(carLong.size() - 2);
@@ -186,11 +187,18 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
                     return;
                 }
                 if (keies.size() == 10) {
-                    keies.remove(0);
+                    keies.remove(keies.size() - 1);
                 }
-                keies.add(key);
+                keies.add(0, key);
                 keySelect.clear();
                 keySelect.add(key);
+                keyAdapter.selects(keySelect);
+                keyAdapter.notifyDataSetChanged();
+                UseInfoManager.putStringArraylist(this, "lineKey", (ArrayList<String>) keies);
+                break;
+            case R.id.iv_clear_keys:
+                keies.clear();
+                keySelect.clear();
                 keyAdapter.selects(keySelect);
                 keyAdapter.notifyDataSetChanged();
                 UseInfoManager.putStringArraylist(this, "lineKey", (ArrayList<String>) keies);
@@ -357,9 +365,9 @@ public class CommonLineActivity extends BaseActivity<ActivityCommonLineBinding> 
             }
             for (int i = 0; i < line.getCarLong().size(); i++) {
                 if (i != line.getCarLong().size() - 1) {
-                    carLong = carLong + line.getCarLong().get(i) + "/";
+                    carLong = carLong + line.getCarLong().get(i) + "米" + "/";
                 } else {
-                    carLong = carLong + line.getCarLong().get(i);
+                    carLong = carLong + line.getCarLong().get(i) + "米";
                 }
             }
             for (int i = 0; i < line.getCarType().size(); i++) {

@@ -23,10 +23,12 @@ public class AttributeAdapter extends BaseAdapter {
     private List<String> attributes = new ArrayList<>();
     private boolean isMuchSelect = false;
     private List<String> selects = new ArrayList<>();
+    private boolean isShowM = false;
 
 
-    public AttributeAdapter(Activity context, boolean isMuchSelect, List<String> attributes) {
+    public AttributeAdapter(boolean isShowM, Activity context, boolean isMuchSelect, List<String> attributes) {
         mInflater = LayoutInflater.from(context);
+        this.isShowM = isShowM;
         this.context = context;
         this.isMuchSelect = isMuchSelect;
         this.attributes = attributes;
@@ -59,12 +61,16 @@ public class AttributeAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         String text = attributes.get(position);
-        holder.text.setText(text);
+        if (isShowM) {
+            holder.text.setText(text + "米");
+        } else {
+            holder.text.setText(text);
+        }
         if (isMuchSelect) {
-            if (selects.contains(text)){
+            if (selects.contains(text)) {
                 holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                 holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
-            }else {
+            } else {
                 holder.text.setTextColor(context.getResources().getColor(R.color.c888888));
                 holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
             }

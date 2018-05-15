@@ -46,13 +46,13 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
         this.context = context;
         initData();
         View view = View.inflate(context, R.layout.dialog_car_long_type, null);
-        lingDanAdapter = new AttributeAdapter(context, false, lingDan);
+        lingDanAdapter = new AttributeAdapter(false,context, false, lingDan);
         lingDanSelects.add(lingDan.get(0));
         lingDanAdapter.selects(lingDanSelects);
-        carLongAdapter = new AttributeAdapter(context, true, carLong);
+        carLongAdapter = new AttributeAdapter(true,context, true, carLong);
         carLongSelects.add(carLong.get(0));
         carLongAdapter.selects(carLongSelects);
-        carTypeAdapter = new AttributeAdapter(context, true, carType);
+        carTypeAdapter = new AttributeAdapter(false,context, true, carType);
         carTypeSelects.add(carType.get(0));
         carTypeAdapter.selects(carTypeSelects);
         lingDanGrid = (GridView) view.findViewById(R.id.gv_ling_dan);
@@ -102,13 +102,13 @@ public class DialogCarLongType extends PopupWindow implements View.OnClickListen
         lingDan.add("是");
 
         carLong.add("不限");
-        carLong.add("7.2米");
-        carLong.add("8.2米");
-        carLong.add("9.6米");
-        carLong.add("12.5米");
-        carLong.add("13米");
-        carLong.add("13.5米");
-        carLong.add("14米");
+        carLong.add("7.2");
+        carLong.add("8.2");
+        carLong.add("9.6");
+        carLong.add("12.5");
+        carLong.add("13");
+        carLong.add("13.5");
+        carLong.add("14");
 
         carType.add("不限");
         carType.add("平板");

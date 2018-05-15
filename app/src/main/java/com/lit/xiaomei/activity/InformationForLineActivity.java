@@ -69,7 +69,6 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         getLineDataReceiver = new GetLineDataReceiver();
         registerReceiver(getLineDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.GET_LINE_MSG));
         UseInfoManager.putBoolean(this, "isLineData", true);
-        UseInfoManager.putBoolean(this, "isStartReceive", true);
         UseInfoManager.putBoolean(this, Constants.Tag.MSGSONG, true);
         handler = new InformationHandler();
         line = (Line) getIntent().getSerializableExtra("line");

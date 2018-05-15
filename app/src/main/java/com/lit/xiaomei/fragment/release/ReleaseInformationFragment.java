@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.fyjr.baselibrary.base.BaseFragment;
 import com.fyjr.baselibrary.utils.TimeUtil;
@@ -39,6 +41,8 @@ import com.lit.xiaomei.view.DialogCarLongType;
 import com.lit.xiaomei.view.DialogGoodType;
 import com.lit.xiaomei.view.DialogReleaseSelectCity;
 
+import org.w3c.dom.Text;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -58,8 +62,12 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private String publishMsg = "";
     private int againTime = 0;
     private int againNum = 0;
+    private String[] timesText = {};
     private int[] times = {0, 3, 10, 15, 20, 25, 30};
+    private String[] numsText = {};
     private int[] nums = {0, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30};
+    private SpinnerAdapter timesAdapter;
+    private SpinnerAdapter numsAdapter;
 
     public ReleaseInformationFragment() {
     }
@@ -90,6 +98,8 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     @Override
     public void initView() {
         super.initView();
+        timesText = getResources().getStringArray(R.array.again_time);
+        numsText = getResources().getStringArray(R.array.again_num);
         intentFilter = new IntentFilter();
         intentFilter.addAction(GlobalVariable.ReceiverAction.RELEASE_RESULT);
         receiveMsgReceiver = new ReceiveMsgReceiver();
@@ -108,6 +118,10 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         binding.rlGoodType.setOnClickListener(this);
         binding.etGoodsNum.addTextChangedListener(new GoodNumEditChangeListener());
         binding.etGoodsMoney.addTextChangedListener(new FreightEditChangeListener());
+        timesAdapter = new SpinnerAdapter(timesText);
+        numsAdapter = new SpinnerAdapter(numsText);
+        binding.sAgainTime.setAdapter(timesAdapter);
+        binding.sAgainNum.setAdapter(numsAdapter);
         binding.sAgainTime.setOnItemSelectedListener(new OnAgainTimeItemSelectedListener());
         binding.sAgainNum.setOnItemSelectedListener(new OnAgainNumItemSelectedListener());
     }
@@ -405,6 +419,39 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
         binding.sAgainTime.setGravity(0);
         againNum = nums[0];
         binding.sAgainNum.setGravity(0);
+    }
+
+
+    private class SpinnerAdapter extends BaseAdapter {
+        private String[] text = {};
+
+        public SpinnerAdapter(String[] t) {
+            text = t;
+        }
+
+        @Override
+        public int getCount() {
+            return text.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return text[position];
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View view, ViewGroup parent) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_release_spinner,parent,false);
+            TextView textView = view.findViewById(R.id.tv_text);
+            String con = text[position];
+            textView.setText(con);
+            return view;
+        }
     }
 
 }

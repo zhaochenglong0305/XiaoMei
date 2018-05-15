@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private MineFragment mineFragment;
     private int currentIndex = 2;
     private int oldIndex = 2;
-    private XTcpClient xTcpClient;
+    private XTcpClient xTcpClient = null;
     private String requestSave = "";
     private long time = 0;
     private boolean isClientFaile = false;
@@ -158,9 +158,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         TargetInfo targetInfo = new TargetInfo(ip, 7600);
         xTcpClient = XTcpClient.getTcpClient(targetInfo);
         xTcpClient.addTcpClientListener(this);
-        String start = "";
-        String end = "|";
-//        AbsStickPackageHelper stickHelper = new SpecifiedStickPackageHelper(start.getBytes(), end.getBytes());
         AbsStickPackageHelper stickHelper = new BaseStickPackageHelper();
         xTcpClient.config(new TcpConnConfig.Builder()
                 .setStickPackageHelper(stickHelper)//粘包
@@ -171,6 +168,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         } else {
             Log.e("long", "已经存在该连接");
         }
+    }
+
+
+    public void stopNoMsg() {
+        xTcpClient.sendMsg(CreateSendMsg.createInformationMsg(this, "", ""));
     }
 
     @Override
@@ -197,11 +199,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void onConnected(XTcpClient client) {
         Log.e("long", "连接成功");
-        HeartBeat();
         if (isClientFaile) {
             isClientFaile = false;
-            String informationMsg = CreateSendMsg.createInformationMsg(this, listDataBean.getPR(), listDataBean.getCT());
-            xTcpClient.sendMsg(informationMsg);
         }
     }
 
@@ -213,18 +212,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void onDisconnected(XTcpClient client, String msg, Exception e) {
         Log.e("long", client.getTargetInfo().getIp() + "断开连接 " + msg + e);
+        xTcpClient.disconnect();
         isClientFaile = true;
     }
 
     @Override
     public void onReceive(XTcpClient client, TcpMsg tcpMsg) {
-
-//        byte[][] res = tcpMsg.getEndDecodeData();
-//        byte[] bytes = new byte[0];
-//        for (byte[] i : res) {
-//            bytes = i;
-//            break;
-//        }
         String re = "";
         if (tcpMsg.getSourceDataString().contains("Qkc=") && (tcpMsg.getSourceDataString().substring(tcpMsg.getSourceDataString().length() - 1).equals("|"))) {
             re = tcpMsg.getSourceDataString();
@@ -248,9 +241,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         }
         Log.e("long", "获得数据：解密后===" + receive);
         if (receive.contains("DATA")) {
-            if (!UseInfoManager.getBoolean(this, "isStartReceive", false)) {
-                return;
-            }
             if (UseInfoManager.getBoolean(this, "isLineData", false)) {
                 Log.e("ting", "GET_LINE_MSG: 开始推送");
                 sendBroadcast(new Intent(GlobalVariable.ReceiverAction.GET_LINE_MSG).putExtra("Msg", receive));
@@ -274,16 +264,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String msg = intent.getStringExtra("msg");
-            sendMsgToSocket(msg);
+            if (!TextUtils.isEmpty(intent.getStringExtra("msg"))){
+                String msg = intent.getStringExtra("msg");
+                sendMsgToSocket(msg);
+            }
         }
     }
 
 
     public void sendMsgToSocket(String msg) {
-        if (TextUtils.isEmpty(msg)) {
-            return;
-        }
         xTcpClient.sendMsg(msg);
     }
 
@@ -347,7 +336,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             }
         });
     }
-
 
 
 }

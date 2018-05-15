@@ -83,7 +83,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private InformationAdapter adapter;
     private User.ListDataBean listDataBean = new User.ListDataBean();
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
-    private boolean isStartReceive = false;
     private List<Province> provinces = new ArrayList<>();
     private List<City> cities = new ArrayList<>();
     private List<Zone> zones = new ArrayList<>();
@@ -188,7 +187,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.lvInformation.setOnItemClickListener(this);
         binding.reRefresh.setListView(binding.lvInformation);
         binding.reRefresh.setOnLoadListener(this);
-        binding.reRefresh.setRefreshing(true);
         binding.rlFrom.setOnClickListener(this);
         binding.llFrom.setOnClickListener(this);
         binding.llSearch.setOnClickListener(this);
@@ -214,14 +212,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 //        binding.tvClearRecord.setOnClickListener(this);
         binding.btnAddCityLv2.setOnClickListener(this);
         binding.ivNewsDelete.setOnClickListener(this);
-        binding.tvSearchCityClear.setOnClickListener(this);
+        binding.ivClearSearchCity.setOnClickListener(this);
         binding.tvAddCarLong.setOnClickListener(this);
         binding.tvAddKey.setOnClickListener(this);
-        keyAdapter = new AttributeAdapter(getActivity(), true, keies);
-        carLongAdapter = new AttributeAdapter(getActivity(), true, carLong);
+        binding.ivClearKeys.setOnClickListener(this);
+         binding.btnAddCityLv2Cancle.setOnClickListener(this);
+        keyAdapter = new AttributeAdapter(false, getActivity(), true, keies);
+        carLongAdapter = new AttributeAdapter(true, getActivity(), true, carLong);
         carLongSelects.add(carLong.get(0));
         carLongAdapter.selects(carLongSelects);
-        carTypeAdapter = new AttributeAdapter(getActivity(), true, carType);
+        carTypeAdapter = new AttributeAdapter(false, getActivity(), true, carType);
         carTypeSelects.add(carType.get(0));
         carTypeAdapter.selects(carTypeSelects);
         binding.gvCarLong.setAdapter(carLongAdapter);
@@ -235,21 +235,21 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
     private void intData() {
-        if (UseInfoManager.getStringArraylist(getContext(), "lineKey") != null) {
-            keies = UseInfoManager.getStringArraylist(getContext(), "lineKey");
+        if (UseInfoManager.getStringArraylist(getContext(), "lineKeyMsg") != null) {
+            keies = UseInfoManager.getStringArraylist(getContext(), "lineKeyMsg");
         }
 
         if (UseInfoManager.getStringArraylist(getContext(), "carLong") != null) {
             carLong = UseInfoManager.getStringArraylist(getContext(), "carLong");
         } else {
             carLong.add("不限");
-            carLong.add("7.2米");
-            carLong.add("8.2米");
-            carLong.add("9.6米");
-            carLong.add("12.5米");
-            carLong.add("13米");
-            carLong.add("13.5米");
-            carLong.add("14米");
+            carLong.add("7.2");
+            carLong.add("8.2");
+            carLong.add("9.6");
+            carLong.add("12.5");
+            carLong.add("13");
+            carLong.add("13.5");
+            carLong.add("14");
         }
 
         carType.add("不限");
@@ -406,7 +406,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 isSearchLayoutShow = false;
                 initSearchFromLayout();
                 binding.tvSearch.setText(showText(1, addCities));
+                isFromLayoutShow = false;
+                isSearchLayoutShow = false;
+                isSearchLv2LayoutShow = false;
+                initFromLayout();
+                initSearchFromLayout();
+                initSearchFromLv2Layout();
+                isLoad = false;
+                isLeft = true;
                 isNear = false;
+                switchTitle(0);
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 addCityHistory();
                 break;
@@ -426,8 +435,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     searchEdits.addAll(carTypeSelects);
                 }
                 binding.tvSearchLv2.setText(showText(2, searchEdits));
+                isFromLayoutShow = false;
+                isSearchLayoutShow = false;
+                isSearchLv2LayoutShow = false;
+                initFromLayout();
+                initSearchFromLayout();
+                initSearchFromLv2Layout();
                 isLoad = false;
+                isLeft = true;
                 isNear = false;
+                switchTitle(0);
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.btn_add_city_lv2_cancle:
@@ -435,8 +452,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 binding.tvSearchLv2.setText(showText(2, searchEdits));
                 isSearchLv2LayoutShow = false;
                 initSearchFromLv2Layout();
+                isFromLayoutShow = false;
+                isSearchLayoutShow = false;
+                isSearchLv2LayoutShow = false;
+                initFromLayout();
+                initSearchFromLayout();
+                initSearchFromLv2Layout();
                 isLoad = false;
+                isLeft = true;
                 isNear = false;
+                switchTitle(0);
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.iv_news_delete:
@@ -469,10 +494,19 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
                 break;
             case R.id.tv_common_line:
+                isFromLayoutShow = false;
+                isSearchLayoutShow = false;
+                isSearchLv2LayoutShow = false;
+                initFromLayout();
+                initSearchFromLayout();
+                initSearchFromLv2Layout();
                 startActivityForResult(new Intent(getContext(), CommonLineActivity.class), 101);
                 break;
-            case R.id.tv_search_city_clear:
-                addCityHistory();
+            case R.id.iv_clear_search_city:
+                cityHistory.clear();
+                UseInfoManager.putStringArraylist(getContext(), "SearchCityHistory", (ArrayList<String>) cityHistory);
+                binding.llSearchCityHistory.setVisibility(View.GONE);
+//                addCityHistory();
                 break;
             case R.id.tv_add_car_long:
                 if (TextUtils.isEmpty(binding.etCarLong.getText().toString())) {
@@ -484,7 +518,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     showMessage("车长不能为0!");
                     return;
                 }
-                String text = binding.etCarLong.getText().toString() + "米";
+                String text = binding.etCarLong.getText().toString();
                 binding.etCarLong.setText("");
                 if (carLong.size() == 10) {
                     carLong.remove(carLong.size() - 2);
@@ -512,14 +546,21 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     return;
                 }
                 if (keies.size() == 10) {
-                    keies.remove(0);
+                    keies.remove(keies.size() - 1);
                 }
-                keies.add(key);
+                keies.add(0, key);
                 keySelect.clear();
                 keySelect.add(key);
                 keyAdapter.selects(keySelect);
                 keyAdapter.notifyDataSetChanged();
-                UseInfoManager.putStringArraylist(getContext(), "lineKey", (ArrayList<String>) keies);
+                UseInfoManager.putStringArraylist(getContext(), "lineKeyMsg", (ArrayList<String>) keies);
+                break;
+            case R.id.iv_clear_keys:
+                keies.clear();
+                keySelect.clear();
+                keyAdapter.selects(keySelect);
+                keyAdapter.notifyDataSetChanged();
+                UseInfoManager.putStringArraylist(getContext(), "lineKeyMsg", (ArrayList<String>) keies);
                 break;
 
         }
@@ -685,7 +726,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             String msg = intent.getStringExtra("Msg");
             Log.e("long", "InformationFragment获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
-            if (bean != null && isStartReceive) {
+            if (bean != null) {
                 if (filterText.size() == 0) {
                     adapter.addMsg(bean);
                 } else {
@@ -716,30 +757,25 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     private void doSearch(String ID, final String PROV, final String CITY,
                           final String INCITY, final String INFOR) {
+        if (!isLoad) {
+            binding.reRefresh.setRefreshing(true);
+        }
         filterText.clear();
         if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
-            UseInfoManager.putBoolean(getContext(), "isStartReceive", true);
+            if (!isLoad) {
+                mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY));
+            }
             filterText.addAll(addCities);
             filterText.addAll(searchEdits);
-//            if (!isLeft) {
-//                isLoad = false;
-//                isLeft = true;
-//                isNear = false;
-//                switchTitle(0);
-//            }
         } else {
-            UseInfoManager.putBoolean(getContext(), "isStartReceive", false);
+            mainActivity.stopNoMsg();
         }
         if (TextUtils.isEmpty(INCITY) && TextUtils.isEmpty(INFOR)) {
             AuthorityType = "QB";
         } else {
             AuthorityType = "SS";
         }
-        if (!isLoad) {
-            mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY));
-            binding.reRefresh.setRefreshing(true);
-        }
-        isStartReceive = false;
+
         if (isNear) {
             searchNearbyInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), ID,
                     PROV, CITY, "", INCITY, "", INFOR, "0");
@@ -931,7 +967,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         five.addAll(cityHistory);
         for (String city : addCities) {
             if (five.contains(city)) {
-                return;
+                continue;
             }
             five.add(0, city);
         }
@@ -1033,16 +1069,16 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             switch (msg.what) {
                 case 0:
                     if (isLoad) {
-                        if (isNear){
+                        if (isNear) {
                             showMessage("没有信息了！");
-                        }else {
+                        } else {
                             showMessage("更多信息请查看周边沿线！");
                         }
                         binding.reRefresh.removeFooterView();
                     } else {
-                        if (isNear){
+                        if (isNear) {
                             showMessage("没有信息了！");
-                        }else {
+                        } else {
                             showMessage("更多信息请查看周边沿线！");
                         }
                         searchINFOBeans.clear();
@@ -1054,9 +1090,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     Information data = (Information) msg.obj;
                     if (isLoad) {
                         if (data.getSearchINFO().size() == 0 || data == null) {
-                            if (isNear){
+                            if (isNear) {
                                 showMessage("没有信息了！");
-                            }else {
+                            } else {
                                 showMessage("更多信息请查看周边沿线！");
                             }
                             binding.reRefresh.setNoMoreData();
@@ -1072,7 +1108,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         searchINFOBeans = data.getSearchINFO();
                         adapter.clear();
                         adapter.setData(searchINFOBeans);
-                        isStartReceive = true;
                     }
                     adapter.setFilter(filterText);
                     break;
