@@ -56,7 +56,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     private String AuthorityType = "QB";
     private GetLineDataReceiver getLineDataReceiver;
     private List<String> filterText = new ArrayList<>();
-
+    private  Ringtone mRingtone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -298,13 +298,23 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
+                            playSound();
                         }
                     }
                 }
-                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                Ringtone ringtone = RingtoneManager.getRingtone(getContext(), uri);
-                ringtone.play();
             }
+        }
+    }
+    public synchronized void playSound() {
+        if (mRingtone == null) {
+            Log.e("long", "----------初始化铃声----------");
+            String uri = "android.resource://" + getContext().getPackageName() + "/" + R.raw.chimes;
+            Uri no = Uri.parse(uri);
+            mRingtone = RingtoneManager.getRingtone(getContext().getApplicationContext(), no);
+        }
+        if (!mRingtone.isPlaying()) {
+            Log.e("long", "--------------播放铃声---------------" + mRingtone.isPlaying());
+            mRingtone.play();
         }
     }
 }

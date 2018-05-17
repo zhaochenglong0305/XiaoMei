@@ -8,8 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetFileDescriptor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -23,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fyjr.baselibrary.base.BaseFragment;
@@ -40,10 +41,7 @@ import com.lit.xiaomei.bean.Constants;
 import com.lit.xiaomei.bean.News;
 import com.lit.xiaomei.databinding.FragmentInformationBinding;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +55,6 @@ import com.lit.xiaomei.bean.Information;
 import com.lit.xiaomei.bean.Province;
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.bean.Zone;
-import com.lit.xiaomei.fragment.GoodsFragment;
 import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.CreateSendMsg;
@@ -141,7 +138,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private AttributeAdapter carLongAdapter;
     private AttributeAdapter carTypeAdapter;
     private AttributeAdapter keyAdapter;
-
+    private MediaPlayer mediaPlayer;
+    private  Ringtone mRingtone;
     public InformationFragment() {
     }
 
@@ -216,7 +214,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.tvAddCarLong.setOnClickListener(this);
         binding.tvAddKey.setOnClickListener(this);
         binding.ivClearKeys.setOnClickListener(this);
-         binding.btnAddCityLv2Cancle.setOnClickListener(this);
+        binding.btnAddCityLv2Cancle.setOnClickListener(this);
         keyAdapter = new AttributeAdapter(false, getActivity(), true, keies);
         carLongAdapter = new AttributeAdapter(true, getActivity(), true, carLong);
         carLongSelects.add(carLong.get(0));
@@ -733,15 +731,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
+                            //播放提示音
+                            if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
+                                if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
+                                    playSound();
+//                                    play();
+                                }
+                            }
                         }
-                    }
-                }
-                //播放提示音
-                if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
-                    if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
-                        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        Ringtone ringtone = RingtoneManager.getRingtone(getContext(), uri);
-                        ringtone.play();
                     }
                 }
             }
@@ -832,20 +829,20 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     }
 
     private void initDateBase() {
-        if (!new File(GlobalVariable.DateBaseMsg.DB_PATH).exists()) {
-            try {
-                FileOutputStream out = new FileOutputStream(GlobalVariable.DateBaseMsg.DB_PATH);
-                InputStream in = getContext().getAssets().open("city.db");
-                byte[] buffer = new byte[1024];
-                int readBytes = 0;
-                while ((readBytes = in.read(buffer)) != -1)
-                    out.write(buffer, 0, readBytes);
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!new File(GlobalVariable.DateBaseMsg.DB_PATH).exists()) {
+//            try {
+//                FileOutputStream out = new FileOutputStream(GlobalVariable.DateBaseMsg.DB_PATH);
+//                InputStream in = getContext().getAssets().open("city.db");
+//                byte[] buffer = new byte[1024];
+//                int readBytes = 0;
+//                while ((readBytes = in.read(buffer)) != -1)
+//                    out.write(buffer, 0, readBytes);
+//                in.close();
+//                out.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         SQLiteDatabase db = new CityDbHandler().getDataBase(getContext());
         DbSqlite dbSqlite = new DbSqlite(getContext(), db);
         provinceIBaseDao = DaoFactory.createGenericDao(dbSqlite, Province.class);
@@ -1306,6 +1303,18 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 keySelect.add(keies.get(i));
             }
             keyAdapter.selects(keySelect);
+        }
+    }
+    public synchronized void playSound() {
+        if (mRingtone == null) {
+            Log.e("long", "----------初始化铃声----------");
+            String uri = "android.resource://" + getContext().getPackageName() + "/" + R.raw.chimes;
+            Uri no = Uri.parse(uri);
+            mRingtone = RingtoneManager.getRingtone(getContext().getApplicationContext(), no);
+        }
+        if (!mRingtone.isPlaying()) {
+            Log.e("long", "--------------播放铃声---------------" + mRingtone.isPlaying());
+            mRingtone.play();
         }
     }
 }

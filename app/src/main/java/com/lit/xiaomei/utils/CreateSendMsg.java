@@ -37,7 +37,7 @@ public class CreateSendMsg {
      * @return
      */
     public static String createInformationMsg(Context context, String sheng, String city) {
-//        BG:SJQQ,US:123456,PW:1234567890,KY:1234567890,PR:省份,CT:城市,PH:电话,MS:信息内容,TY:1,FU:10098,ND|
+//        BG:SJQQ,US:123456,PW:1234567890,KY:1234567890,PR:省份,CT:城市,PH:电话,MS:信息内容,TY:1,FU:10098,TS:信息条数,IC:信息类型(车源/货源),ND|
         String s = "BG:SJQQ";
         s = s + ",US:" + UseInfoManager.getUser(context).getListData().get(0).getUS();
         s = s + ",PW:" + UseInfoManager.getUser(context).getListData().get(0).getPW();
@@ -48,6 +48,8 @@ public class CreateSendMsg {
         s = s + ",MS:" + "";
         s = s + ",TY:" + "1";
         s = s + ",FU:" + "";
+        s = s + ",TS:" + "0";
+        s = s + ",IC:" + "货源";
         s = s + ",ND";
         String s64 = Base64.encodeToString(s.getBytes(), Base64.DEFAULT);
         s64 = s64 + "|";
