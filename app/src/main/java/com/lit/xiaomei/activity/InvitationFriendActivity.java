@@ -19,8 +19,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import okhttp3.internal.Util;
 
 public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFriendBinding> {
-    private static final String APP_ID="wx1e1aa0e79162f697";
+    private static final String APP_ID = "wx1e1aa0e79162f697";
     private IWXAPI api;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +31,7 @@ public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFri
     @Override
     public void initView() {
         super.initView();
-        api = WXAPIFactory.createWXAPI(getApplicationContext(),APP_ID,true);
+        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
         api.registerApp(APP_ID);
         setTitle("邀请好友");
         setTitleTextColor("#ffffff");
@@ -42,21 +43,22 @@ public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFri
         });
     }
 
-    private void doShare(){
+    private void doShare() {
         WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl="http://www.56770.net/reg/Register.htm?aa="+ UseInfoManager.getUser(this).getListData().get(0).getUS();
+        webpage.webpageUrl = "http://www.56770.net/reg/Register.htm?aa=" + UseInfoManager.getUser(this).getListData().get(0).getUS();
         WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title="网页标题";
-        msg.description="网页描述";
-        Bitmap thumb = BitmapFactory.decodeResource(getResources(),R.mipmap.tiger);
-        msg.thumbData = com.lit.xiaomei.utils.Util.bmpToByteArray(thumb,true);
+        msg.title = "网页标题";
+        msg.description = "网页描述";
+        Bitmap thumb = BitmapFactory.decodeResource(getResources(), R.mipmap.tiger_small);
+        msg.thumbData = com.lit.xiaomei.utils.Util.bmpToByteArray(thumb, true);
         SendMessageToWX.Req req = new SendMessageToWX.Req();
         req.transaction = buildTransaction("webpage");
         req.message = msg;
-        req.scene = SendMessageToWX.Req.WXSceneSession;
+        req.scene = SendMessageToWX.Req.WXSceneTimeline;
         api.sendReq(req);
 
     }
+
     private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }

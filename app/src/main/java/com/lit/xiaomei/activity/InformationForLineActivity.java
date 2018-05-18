@@ -55,8 +55,10 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
     private String doCity = "";
     private String AuthorityType = "QB";
     private GetLineDataReceiver getLineDataReceiver;
+
     private List<String> filterText = new ArrayList<>();
-    private  Ringtone mRingtone;
+    private Ringtone mRingtone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -292,9 +294,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
             Log.e("ting", "InformationForLineActivity获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             if (bean != null) {
-                if (filterText.size() == 0) {
-                    adapter.addMsg(bean);
-                } else {
+                if (filterText.size() != 0) {
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
@@ -305,6 +305,8 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
             }
         }
     }
+
+
     public synchronized void playSound() {
         if (mRingtone == null) {
             Log.e("long", "----------初始化铃声----------");

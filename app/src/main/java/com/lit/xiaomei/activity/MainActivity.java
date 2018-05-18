@@ -278,6 +278,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     public void showInformationFragment() {
         binding.bottomBarRg.check(R.id.rb_information);
+        sendBroadcast(new Intent(GlobalVariable.ReceiverAction.UPDATE_INFORMATION));
     }
 
     private void HeartBeat() {

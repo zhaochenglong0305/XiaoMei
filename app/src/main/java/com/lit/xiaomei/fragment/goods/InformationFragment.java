@@ -139,7 +139,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private AttributeAdapter carTypeAdapter;
     private AttributeAdapter keyAdapter;
     private MediaPlayer mediaPlayer;
-    private  Ringtone mRingtone;
+    private Ringtone mRingtone;
+    private UpdateDataReceiver updateDataReceiver;
+
     public InformationFragment() {
     }
 
@@ -178,7 +180,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         intentFilter = new IntentFilter();
         intentFilter.addAction(GlobalVariable.ReceiverAction.REAL_TIME_MSG);
         receiveMsgReceiver = new ReceiveMsgReceiver();
+        updateDataReceiver = new UpdateDataReceiver();
         getContext().registerReceiver(receiveMsgReceiver, intentFilter);
+        getContext().registerReceiver(updateDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.UPDATE_INFORMATION));
+        ;
         adapter = new InformationAdapter(getContext(), searchINFOBeans, this);
         binding.tvFrom.setText(listDataBean.getCT());
         binding.lvInformation.setAdapter(adapter);
@@ -725,9 +730,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             Log.e("long", "InformationFragment获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             if (bean != null) {
-                if (filterText.size() == 0) {
-                    adapter.addMsg(bean);
-                } else {
+                if (filterText.size() != 0) {
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
@@ -735,7 +738,6 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
                                 if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
                                     playSound();
-//                                    play();
                                 }
                             }
                         }
@@ -749,6 +751,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     public void onDestroy() {
         super.onDestroy();
         getContext().unregisterReceiver(receiveMsgReceiver);
+        getContext().unregisterReceiver(updateDataReceiver);
+        ;
     }
 
 
@@ -1236,6 +1240,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private void requestPermission() {
         PermissionUtil.getInstance().request(getActivity(), new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
                         Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionOriginResultCallBack() {
                     @Override
                     public void onResult(List<PermissionInfo> acceptList, List<PermissionInfo> rationalList, List<PermissionInfo> deniedList) {
@@ -1305,6 +1310,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             keyAdapter.selects(keySelect);
         }
     }
+
     public synchronized void playSound() {
         if (mRingtone == null) {
             Log.e("long", "----------初始化铃声----------");
@@ -1315,6 +1321,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         if (!mRingtone.isPlaying()) {
             Log.e("long", "--------------播放铃声---------------" + mRingtone.isPlaying());
             mRingtone.play();
+        }
+    }
+
+    private class UpdateDataReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));
         }
     }
 }
