@@ -232,12 +232,27 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             re = requestSave;
             requestSave = "";
         }
+        String[] res = re.split("\\|");
+        if (res.length == 1) {
+            Log.e("kong", "单条信息");
+            doResult(res[0]);
+        } else {
+            Log.e("kong", "多条信息" + res.length);
+            for (int i = 1; i < res.length; i++) {
+                doResult(res[i]);
+            }
+        }
+    }
+
+    private void doResult(String re) {
         String receive = "";
-        Log.e("long", "获得数据：解密前===" + tcpMsg.getSourceDataString());
+        Log.e("long", "获得数据：解密前===" + re);
         try {
             receive = new String(Base64.decode(re, Base64.DEFAULT));
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("kong", "解密错误：" + re);
+            Log.e("kong", "解密错误：" + e.toString());
         }
         Log.e("long", "获得数据：解密后===" + receive);
         if (receive.contains("DATA")) {
@@ -252,7 +267,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         if (receive.contains("SJSB")) {
             sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
         }
-
     }
 
     @Override
@@ -264,7 +278,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (!TextUtils.isEmpty(intent.getStringExtra("msg"))){
+            if (!TextUtils.isEmpty(intent.getStringExtra("msg"))) {
                 String msg = intent.getStringExtra("msg");
                 sendMsgToSocket(msg);
             }

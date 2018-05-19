@@ -93,6 +93,9 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         }
         setTitle(fromText + " — " + toText);
         setTitleTextColor("#ffffff");
+        if (line.getToCities().size() != 0) {
+            filterText.addAll(line.getToCities());
+        }
         if (line.getCarLong().size() != 0) {
             if (!line.getCarLong().contains("不限")) {
                 filterText.addAll(line.getCarLong());
@@ -291,14 +294,15 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         @Override
         public void onReceive(Context context, Intent intent) {
             String msg = intent.getStringExtra("Msg");
-            Log.e("ting", "InformationForLineActivity获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
+            Log.e("kong", "InformationForLineActivity获得数据：" + bean.getMS());
             if (bean != null) {
                 if (filterText.size() != 0) {
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
                             playSound();
+                            break;
                         }
                     }
                 }

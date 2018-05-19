@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         debug {
-            keyAlias 'yueda'
-            keyPassword 'huyue_1234'
-            storeFile file('key.jks')
-            storePassword 'huyue_1234'
+            keyAlias 'qj_test'
+            keyPassword 'long4913313'
+            storeFile file('long.keystore')
+            storePassword 'long4913313'
         }
     }
     compileSdkVersion 26
@@ -17,6 +17,7 @@ android {
         versionCode 2
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     dataBinding {
         enabled = true
@@ -27,7 +28,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     sourceSets {
@@ -53,5 +55,6 @@ dependencies {
     implementation 'am.widget:wraplayout:1.2.1'
     implementation files('libs/BaiduLBS_Android.jar')
     implementation project(':checkpermissions')
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+//    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    implementation project(':UMLibrary')
 }

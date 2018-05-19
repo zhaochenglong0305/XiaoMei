@@ -734,12 +734,12 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
-                            //播放提示音
                             if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
                                 if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
                                     playSound();
                                 }
                             }
+                            break;
                         }
                     }
                 }
@@ -1241,6 +1241,14 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         PermissionUtil.getInstance().request(getActivity(), new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.CALL_PHONE,
+                        Manifest.permission.GET_ACCOUNTS,
+                        Manifest.permission.SET_DEBUG_APP,
+                        Manifest.permission.SYSTEM_ALERT_WINDOW,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_LOGS,
+                        Manifest.permission.WRITE_APN_SETTINGS,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.ACCESS_FINE_LOCATION}, new PermissionOriginResultCallBack() {
                     @Override
                     public void onResult(List<PermissionInfo> acceptList, List<PermissionInfo> rationalList, List<PermissionInfo> deniedList) {

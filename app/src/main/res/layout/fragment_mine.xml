@@ -186,11 +186,22 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:text="邀请好友"
-                            android:textColor="#595a6e"
+                            android:textColor="@color/c595a6e"
                             android:textSize="18sp" />
                     </LinearLayout>
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/tv_right"
+                        android:text="推荐有奖"
+                        android:textColor="@color/red"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/tv_right"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
