@@ -94,6 +94,27 @@ public class HttpUtil {
 //        doPost(HttpUrl.LOGIN, map, callBack);
         doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
     }
+    /**
+     * 登录
+     *
+     * @param NetID      用户名
+     * @param PWord      密码
+     * @param key        唯一标识
+     * @param Type       用户类型：1司机，0货主
+     * @param TextFormat 返回格式  字符串 0 | json 1
+     * @param callBack
+     */
+    public void againLogin(String NetID, String PWord, String key, String Type, String TextFormat, Callback callBack) {
+        retrofitInstance.againInit();
+        Map<String, Object> map = new HashMap<>();
+        map.put("NetID", NetID);
+        map.put("PWord", PWord);
+        map.put("key", key);
+        map.put("Type", Type);
+        map.put("TextFormat", TextFormat);
+        doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
+    }
+
 
     /**
      * 版本更新

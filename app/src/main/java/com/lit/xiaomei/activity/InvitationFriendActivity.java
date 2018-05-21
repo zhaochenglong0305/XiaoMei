@@ -45,10 +45,16 @@ public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFri
         api.registerApp(APP_ID);
         setTitle("邀请好友");
         setTitleTextColor("#ffffff");
-        binding.ivShare.setOnClickListener(new View.OnClickListener() {
+        binding.vShareFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareUrl();
+            }
+        });
+        binding.vShareQuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareUrlToQuan();
             }
         });
     }
@@ -78,6 +84,15 @@ public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFri
         web.setDescription("手机配货网");
         new ShareAction(this).withMedia(web)
                 .setPlatform(SHARE_MEDIA.WEIXIN)
+                .setCallback(shareListener).share();
+    }
+    private void shareUrlToQuan(){
+        UMWeb web = new UMWeb("http://www.56770.net/reg/Register.htm?aa=" + UseInfoManager.getUser(this).getListData().get(0).getUS());
+        web.setTitle("手机配货网");
+        web.setThumb(new UMImage(this, R.mipmap.tiger_small));
+        web.setDescription("手机配货网");
+        new ShareAction(this).withMedia(web)
+                .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                 .setCallback(shareListener).share();
     }
 

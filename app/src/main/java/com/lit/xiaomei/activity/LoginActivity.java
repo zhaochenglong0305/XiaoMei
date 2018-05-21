@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -41,6 +42,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     private String passWord = "";
     private int ipFre = 0;
     private User user = null;
+    private ArrayList<String> ips = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     @Override
     public void initView() {
         super.initView();
+        ips = UseInfoManager.getStringArraylist(this, "NetIPs");
+        if (!TextUtils.isEmpty(UseInfoManager.getString(LoginActivity.this, "NetIP"))) {
+            HttpUrl.BASE_URL = UseInfoManager.getString(LoginActivity.this, "NetIP");
+            Log.e("long", " HttpUrl.BASE_URL==" + UseInfoManager.getString(LoginActivity.this, "NetIP"));
+        } else {
+            HttpUrl.BASE_URL = ips.get(0);
+        }
         binding.tvAppName.setText(getAppName(this) + " " + VersionUtil.getVersionName(this));
         user = UseInfoManager.getUser(this);
         if (!TextUtils.isEmpty(UseInfoManager.getString(this, "userCity"))) {
@@ -157,57 +166,87 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
         if (isShowLoading) {
             showLoading();
         }
-        final ArrayList<String> ips = UseInfoManager.getStringArraylist(this, "NetIPs");
-        HttpUrl.BASE_URL = ips.get(ipFre);
 //        key为90cf9e6c2544be04越过权限，正式上线时替换成key
         HttpUtil.getInstance().login(NetID, PWord, getANDROID_ID(), Type, TextFormat, new HttpCallBack<User>() {
             @Override
             public void onSuccess(User data, String msg) {
-                hideLoading();
-                int rz = Integer.valueOf(data.getListData().get(0).getRZ());
-                switch (rz) {
-                    case 0:
-                        showMessage("机器码发生变化不能登录！");
-                        break;
-                    case 1:
-                        data.getListData().get(0).setPW(PWord);
-                        UseInfoManager.putBoolean(LoginActivity.this, "RememberPassword", binding.cbRememberPassword.isChecked());
-                        UseInfoManager.putBoolean(LoginActivity.this, Constants.Tag.autoLogin, binding.cbAutomaticLogon.isChecked());
-                        UseInfoManager.saveUser(LoginActivity.this, data);
-                        UseInfoManager.putString(LoginActivity.this, "userCity", data.getListData().get(0).getCT());
-                        showMessage("登录成功！");
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        finish();
-                        break;
-                    case 2:
-                        showMessage("密码错误！");
-                        break;
-                    case 3:
-                        showMessage("用户已过期，请联系客服！");
-                        break;
-                    case 4:
-                        showMessage("禁止登陆，请联系客服！");
-                        break;
-                    case 5:
-                        showMessage("用户不存在！");
-                        break;
-                }
+                loginSuccess(data);
+            }
+
+            @Override
+            public void onFail(int errorCode, String msg) {
+                loginFaile();
+            }
+        });
+
+    }
+
+    private void doLoginAgain(final String NetID, final String PWord, final String key, final String Type, final String TextFormat, boolean isShowLoading) {
+        if (isShowLoading) {
+            showLoading();
+        }
+        HttpUtil.getInstance().againLogin(NetID, PWord, getANDROID_ID(), Type, TextFormat, new HttpCallBack<User>() {
+            @Override
+            public void onSuccess(User data, String msg) {
+                loginSuccess(data);
             }
 
             @Override
             public void onFail(int errorCode, String msg) {
                 ipFre++;
-                if (ipFre < ips.size()) {
-                    showMessage("登录失败，正在切换线路！");
-                    doLogin(NetID, PWord, key, Type, TextFormat, false);
-                } else {
-                    ipFre = 0;
-                    hideLoading();
-                    showMessage("登录失败，请检查网络！");
-                }
+                loginFaile();
             }
         });
 
+    }
+
+    private void loginSuccess(User data) {
+        hideLoading();
+        int rz = Integer.valueOf(data.getListData().get(0).getRZ());
+        switch (rz) {
+            case 0:
+                showMessage("机器码发生变化不能登录！");
+                break;
+            case 1:
+                UseInfoManager.putString(LoginActivity.this, "NetIP",  HttpUrl.BASE_URL);
+                data.getListData().get(0).setPW(binding.etPassword.getText().toString());
+                UseInfoManager.putBoolean(LoginActivity.this, "RememberPassword", binding.cbRememberPassword.isChecked());
+                UseInfoManager.putBoolean(LoginActivity.this, Constants.Tag.autoLogin, binding.cbAutomaticLogon.isChecked());
+                UseInfoManager.saveUser(LoginActivity.this, data);
+                UseInfoManager.putString(LoginActivity.this, "userCity", data.getListData().get(0).getCT());
+                showMessage("登录成功！");
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+                break;
+            case 2:
+                showMessage("密码错误！");
+                break;
+            case 3:
+                showMessage("用户已过期，请联系客服！");
+                break;
+            case 4:
+                showMessage("禁止登陆，请联系客服！");
+                break;
+            case 5:
+                showMessage("用户不存在！");
+                break;
+        }
+    }
+
+    private void loginFaile() {
+        if (ipFre < ips.size()) {
+            HttpUrl.BASE_URL = ips.get(ipFre);
+            showMessage("登录失败，正在切换线路！");
+            Log.e("net", "切换ip" + HttpUrl.BASE_URL);
+            doLoginAgain(binding.etUsername.getText().toString(), binding.etPassword.getText().toString(), getANDROID_ID(), "0", "1", false);
+
+        } else {
+            ipFre = 0;
+            HttpUrl.BASE_URL = ips.get(ipFre);
+            Log.e("net", "切换ip" + HttpUrl.BASE_URL);
+            hideLoading();
+            showMessage("登录失败，请检查网络！");
+        }
     }
 
 

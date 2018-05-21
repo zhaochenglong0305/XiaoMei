@@ -52,6 +52,7 @@ import com.yxp.permission.util.lib.callback.PermissionOriginResultCallBack;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements RadioGroup.OnCheckedChangeListener, TcpClientListener, View.OnClickListener {
     private List<Fragment> fragments;
+    private ArrayList<String> ips = new ArrayList<>();
     //    private TubeCarFragment tubeCarFragment;
     private FindCarsFragment findCarsFragment;
     private ReleaseFragment releaseFragment;
@@ -79,6 +80,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void initView() {
         super.initView();
+        ips = UseInfoManager.getStringArraylist(this,"NetIPs");
         lineDataReceiver = new LineDataReceiver();
         registerReceiver(lineDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.LINE_MSG));
         UseInfoManager.putBoolean(this, "isStartReceive", false);
@@ -155,6 +157,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     private void initSocket() {
         String ip = HttpUrl.BASE_URL.substring(HttpUrl.BASE_URL.indexOf("//") + 2, HttpUrl.BASE_URL.indexOf(":8081"));
+        Log.e("xTcpClient", "ip=="+ip);
         TargetInfo targetInfo = new TargetInfo(ip, 7600);
         xTcpClient = XTcpClient.getTcpClient(targetInfo);
         xTcpClient.addTcpClientListener(this);
@@ -166,7 +169,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         if (xTcpClient.isDisconnected()) {
             xTcpClient.connect();
         } else {
-            Log.e("long", "已经存在该连接");
+            Log.e("xTcpClient", "已经存在该连接");
         }
     }
 
@@ -198,7 +201,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     @Override
     public void onConnected(XTcpClient client) {
-        Log.e("long", "连接成功");
+        Log.e("xTcpClient", "连接成功");
         if (isClientFaile) {
             isClientFaile = false;
         }
@@ -206,12 +209,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     @Override
     public void onSended(XTcpClient client, TcpMsg tcpMsg) {
-        Log.e("long", "发送数据：" + tcpMsg.getSourceDataString());
+        Log.e("xTcpClient", "发送数据：" + tcpMsg.getSourceDataString());
     }
 
     @Override
     public void onDisconnected(XTcpClient client, String msg, Exception e) {
-        Log.e("long", client.getTargetInfo().getIp() + "断开连接 " + msg + e);
+        Log.e("xTcpClient", client.getTargetInfo().getIp() + "断开连接 " + msg + e);
+        Log.e("xTcpClient", xTcpClient.toString());
         xTcpClient.disconnect();
         isClientFaile = true;
     }

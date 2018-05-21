@@ -31,9 +31,25 @@ public class RetrofitInstance {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         client = builder.retryOnConnectionFailure(true)
                 .addNetworkInterceptor(new LogInterceptor())
-                .connectTimeout(50, TimeUnit.SECONDS)
-                .readTimeout(50, TimeUnit.SECONDS)
-                .writeTimeout(50, TimeUnit.SECONDS)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .build();
+        retrofit = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(HttpUrl.BASE_URL)
+                .client(client)
+                .build();
+        service = retrofit.create(RetrofitService.class);
+    }
+
+    public void againInit() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        client = builder.retryOnConnectionFailure(true)
+                .addNetworkInterceptor(new LogInterceptor())
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .build();
         retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())

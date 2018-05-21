@@ -4,22 +4,27 @@
     android:layout_height="match_parent"
     android:background="#50ffffff">
 
-    <ImageView
-        android:id="@+id/iv_news"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp">
 
-    <ImageView
-        android:id="@+id/iv_close_news"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/iv_news"
-        android:layout_marginLeft="-50dp"
-        android:layout_marginTop="-12dp"
-        android:layout_toRightOf="@+id/iv_news"
-        android:src="@mipmap/close_news" />
+        <ImageView
+            android:id="@+id/iv_news"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY" />
 
+        <ImageView
+            android:id="@+id/iv_close_news"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/iv_news"
+            android:src="@mipmap/close_news" />
+    </RelativeLayout>
 </RelativeLayout>

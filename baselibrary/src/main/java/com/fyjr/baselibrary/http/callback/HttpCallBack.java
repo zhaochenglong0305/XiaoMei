@@ -8,6 +8,7 @@ import com.fyjr.baselibrary.utils.JsonUtils;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
