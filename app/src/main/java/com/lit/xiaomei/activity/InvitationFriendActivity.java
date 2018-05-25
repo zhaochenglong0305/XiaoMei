@@ -104,20 +104,21 @@ public class InvitationFriendActivity extends BaseActivity<ActivityInvitationFri
 
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            Toast.makeText(InvitationFriendActivity.this,"成功了",Toast.LENGTH_LONG).show();
             SocializeUtils.safeCloseDialog(dialog);
+            showMessage("分享成功！");
         }
 
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
             SocializeUtils.safeCloseDialog(dialog);
-            Toast.makeText(InvitationFriendActivity.this,"失败"+t.getMessage(),Toast.LENGTH_LONG).show();
+            showMessage("没有安装应用！");
+//            Toast.makeText(InvitationFriendActivity.this,"失败"+t.getMessage(),Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA platform) {
             SocializeUtils.safeCloseDialog(dialog);
-            Toast.makeText(InvitationFriendActivity.this,"取消了",Toast.LENGTH_LONG).show();
+            showMessage("取消分享！");
 
         }
     };

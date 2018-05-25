@@ -1,7 +1,9 @@
 package com.lit.xiaomei.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -87,13 +89,16 @@ public class UpdatePasswordActivity extends BaseActivity<ActivityUpdatePasswordB
 
     }
 
-    private void doFinish(String user, String pwd) {
+    private void doFinish(final String user, final String pwd) {
         showLoading();
-        HttpUtil.getInstance().updatePassword(user, pwd, new HttpCallBack<SimpleBean>() {
+        HttpUtil.getInstance().updatePassword(user, pwd, getANDROID_ID(), new HttpCallBack<SimpleBean>() {
             @Override
             public void onSuccess(SimpleBean data, String msg) {
                 hideLoading();
                 showMessage("修改成功！");
+                Intent intent = new Intent();
+                intent.putExtra("password", pwd);
+                setResult(102, intent);
                 finish();
             }
 
@@ -110,6 +115,7 @@ public class UpdatePasswordActivity extends BaseActivity<ActivityUpdatePasswordB
         HttpUtil.getInstance().checkYZM(user, yzm, new HttpCallBack<SimpleBean>() {
             @Override
             public void onSuccess(SimpleBean data, String msg) {
+                isFirst = false;
                 binding.llYzm.setVisibility(View.GONE);
                 binding.llPassword.setVisibility(View.VISIBLE);
                 binding.btnOk.setText("完成");
@@ -175,5 +181,9 @@ public class UpdatePasswordActivity extends BaseActivity<ActivityUpdatePasswordB
             // 设置可点击
             binding.btnGetYzm.setClickable(true);
         }
+    }
+
+    public String getANDROID_ID() {
+        return Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
     }
 }

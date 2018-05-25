@@ -230,10 +230,11 @@ public class HttpUtil {
      * @param PWD
      * @param callBack
      */
-    public void updatePassword(String NetID, String PWD, Callback callBack) {
+    public void updatePassword(String NetID, String PWD,String key, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("NetID", NetID);
         map.put("PWD", PWD);
+        map.put("key", key);
         doGet(HttpUrl.UPDATEPASSWORD + pinUrl(map), callBack);
     }
 

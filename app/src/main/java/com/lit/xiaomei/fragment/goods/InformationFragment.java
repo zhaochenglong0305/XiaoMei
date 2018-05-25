@@ -38,6 +38,7 @@ import com.lit.xiaomei.R;
 import com.lit.xiaomei.adapter.AttributeAdapter;
 import com.lit.xiaomei.bean.CheckAuthority;
 import com.lit.xiaomei.bean.Constants;
+import com.lit.xiaomei.bean.Filter;
 import com.lit.xiaomei.bean.News;
 import com.lit.xiaomei.databinding.FragmentInformationBinding;
 
@@ -120,7 +121,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private List<String> addCities = new ArrayList<>();
     private List<String> cityHistory = new ArrayList<>();
     private List<String> searchEdits = new ArrayList<>();
-    private List<String> filterText = new ArrayList<>();
+    private Filter filterText = new Filter();
 
     private InformationHandler handler;
     //    private ArrayList<String> texts = new ArrayList<>();
@@ -730,19 +731,43 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             Log.e("long", "InformationFragment获得数据：" + msg);
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             if (bean != null) {
-                if (filterText.size() != 0) {
-                    for (String filter : filterText) {
-                        if (bean.getMS().contains(filter)) {
-                            adapter.addMsg(bean);
-                            if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
-                                if (!UseInfoManager.getBoolean(context, Constants.Tag.MSGSONG, false)) {
-                                    playSound();
+                if (filterText != null) {
+                        if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() == 0) {
+                            for (String text : filterText.getFilter1()) {
+                                if (bean.getMS().contains(text)) {
+                                    doFilter(bean);
+                                    break;
                                 }
                             }
-                            break;
+                        } else if (filterText.getFilter1().size() == 0 && filterText.getFilter2().size() != 0) {
+                            for (String text : filterText.getFilter2()) {
+                                if (bean.getMS().contains(text)) {
+                                    doFilter(bean);
+                                    break;
+                                }
+                            }
+                        } else if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() != 0) {
+                            for (String text : filterText.getFilter1()) {
+                                if (bean.getMS().contains(text)) {
+                                    for (String text2 : filterText.getFilter2()) {
+                                        if (bean.getMS().contains(text2)) {
+                                            doFilter(bean);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    }
                 }
+            }
+        }
+    }
+
+    private void doFilter(Information.SearchINFOBean bean) {
+        adapter.addMsg(bean);
+        if (UseInfoManager.getBoolean(getContext(), Constants.Tag.SONG, false)) {
+            if (!UseInfoManager.getBoolean(getContext(), Constants.Tag.MSGSONG, false)) {
+                playSound();
             }
         }
     }
@@ -761,13 +786,13 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         if (!isLoad) {
             binding.reRefresh.setRefreshing(true);
         }
-        filterText.clear();
+        filterText = new Filter();
         if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
             if (!isLoad) {
                 mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY));
             }
-            filterText.addAll(addCities);
-            filterText.addAll(searchEdits);
+            filterText.setFilter1(addCities);
+            filterText.setFilter2(searchEdits);
         } else {
             mainActivity.stopNoMsg();
         }
@@ -1041,6 +1066,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             for (int i = 0; i < pxs.length; i++) {
                 phones.add(pxs[i]);
             }
+
         } else if (phoneString.contains(" ")) {
             String[] pks = phoneString.split(" ");
             for (int i = 0; i < pks.length; i++) {
@@ -1110,7 +1136,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         adapter.clear();
                         adapter.setData(searchINFOBeans);
                     }
-                    adapter.setFilter(filterText);
+                    List<String> filters = new ArrayList<>();
+                    filters.addAll(filterText.getFilter1());
+                    filters.addAll(filterText.getFilter2());
+                    adapter.setFilter(filters);
                     break;
             }
         }

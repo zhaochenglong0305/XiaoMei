@@ -140,7 +140,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
             case R.id.tv_forget_pwd:
-                startActivity(new Intent(this, UpdatePasswordActivity.class));
+                startActivityForResult(new Intent(this, UpdatePasswordActivity.class),REQUEST_CODE);
                 break;
             case R.id.tv_kefu:
                 getCityPhone();
@@ -154,11 +154,20 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
             if (data == null) {
                 return;
             }
-            userName = data.getStringExtra("userName");
-            binding.etUsername.setText(userName);
-            passWord = data.getStringExtra("password");
-            binding.etPassword.setText(passWord);
-            userCity = data.getStringExtra("userCity");
+            switch (resultCode){
+                case 101:
+                    userName = data.getStringExtra("userName");
+                    binding.etUsername.setText(userName);
+                    passWord = data.getStringExtra("password");
+                    binding.etPassword.setText(passWord);
+                    userCity = data.getStringExtra("userCity");
+                    break;
+                case 102:
+                    passWord = data.getStringExtra("password");
+                    binding.etPassword.setText(passWord);
+                    break;
+            }
+
         }
     }
 

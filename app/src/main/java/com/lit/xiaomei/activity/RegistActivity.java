@@ -64,7 +64,7 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
                 if (position != 0) {
                     province = "辽宁";
                     city = registCity[position];
-                }else {
+                } else {
                     province = "";
                     city = "";
                 }
@@ -101,7 +101,9 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
                 yzm = binding.etYzm.getText().toString();
                 pwd = binding.etPwd.getText().toString();
                 pwd2 = binding.etPwd2.getText().toString();
-                tjrNum = binding.etTJRID.getText().toString();
+                if (!TextUtils.isEmpty(binding.etTJRID.getText().toString())) {
+                    tjrNum = binding.etTJRID.getText().toString();
+                }
                 if (TextUtils.isEmpty(userType)) {
                     showMessage("请选择用户类型！");
                     return;
@@ -203,7 +205,7 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
                         intent.putExtra("userName", user);
                         intent.putExtra("password", pwd);
                         intent.putExtra("userCity", city);
-                        setResult(RESULT_CODE, intent);
+                        setResult(101, intent);
                         finish();
                     }
 
