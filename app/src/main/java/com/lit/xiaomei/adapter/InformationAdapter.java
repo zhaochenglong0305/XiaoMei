@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 import com.lit.xiaomei.bean.DetecatedInformation;
 import com.lit.xiaomei.bean.Information;
+import com.lit.xiaomei.manager.UseInfoManager;
 import com.lit.xiaomei.utils.StringUtil;
 
 /**
@@ -99,7 +100,23 @@ public class InformationAdapter extends BaseAdapter {
         } else {
             holder.tv_information.setText(information);
         }
-        holder.tv_phone.setText("电话：" + searchINFOBean.getPH());
+        if (UseInfoManager.getBoolean(context, "showPhoneNumber", false)) {
+            holder.tv_phone.setVisibility(View.VISIBLE);
+            String phoneText = "";
+            String[] phones = searchINFOBean.getPH().split(" ");
+            if (phones.length <= 2) {
+                for (int i = 0; i < phones.length; i++) {
+                    phoneText = phoneText + phones[i] + " ";
+                }
+            } else {
+                for (int i = 0; i < 2; i++) {
+                    phoneText = phoneText + phones[i] + " ";
+                }
+            }
+            holder.tv_phone.setText("电话：" + phoneText);
+        } else {
+            holder.tv_phone.setVisibility(View.GONE);
+        }
         if (!TextUtils.isEmpty(searchINFOBean.getNA())) {
             holder.tv_huozhan.setVisibility(View.VISIBLE);
             holder.tv_huozhan.setText("货站名：" + searchINFOBean.getNA());

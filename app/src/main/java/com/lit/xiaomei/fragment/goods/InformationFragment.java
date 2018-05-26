@@ -789,7 +789,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         filterText = new Filter();
         if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
             if (!isLoad) {
-                mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY));
+                mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY),false);
             }
             filterText.setFilter1(addCities);
             filterText.setFilter2(searchEdits);

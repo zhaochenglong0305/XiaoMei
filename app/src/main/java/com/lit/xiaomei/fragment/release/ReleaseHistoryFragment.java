@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.bean.ReleaseHistory;
 import com.lit.xiaomei.manager.UseInfoManager;
+import com.lit.xiaomei.utils.AgainReleaseUtil;
 import com.lit.xiaomei.utils.CreateSendMsg;
 
 /**
@@ -106,22 +108,24 @@ public class ReleaseHistoryFragment extends BaseFragment<FragmentReleaseHistoryB
         }
 
         @Override
-        public View getView(int position, View view, ViewGroup parent) {
+        public View getView(final int position, View view, ViewGroup parent) {
             view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_release_history, parent, false);
             TextView historyContext = (TextView) view.findViewById(R.id.tv_history_context);
             TextView historyTime = (TextView) view.findViewById(R.id.tv_time);
+            final TextView againNum = (TextView) view.findViewById(R.id.tv_again_num);
             Button again = (Button) view.findViewById(R.id.btn_again);
             Button delete = (Button) view.findViewById(R.id.btn_delete);
             final ReleaseHistory releaseHistory = releaseHistories.get(position);
             historyContext.setText(releaseHistory.getReleaseContext());
             historyTime.setText(TimeUtil.getTimeFormatText(releaseHistory.getTime()));
+            againNum.setText(releaseHistory.getAgainNum() + "");
             again.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showLoading();
                     String releseMsg = CreateSendMsg.createReleaseMsg(getContext(), releaseHistory.getReleaseType(),
                             releaseHistory.getFrom(), "", releaseHistory.getReleaseContext());
-                    mainActivity.sendMsgToSocket(releseMsg);
+                    mainActivity.sendMsgToSocket(releseMsg, false);
                 }
             });
             delete.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +136,24 @@ public class ReleaseHistoryFragment extends BaseFragment<FragmentReleaseHistoryB
                     notifyDataSetChanged();
                 }
             });
-
+            if (!releaseHistory.isAgaining()) {
+                AgainReleaseUtil againReleaseUtil = new AgainReleaseUtil(releaseHistory, mainActivity, new AgainReleaseUtil.OnUpdateNumListener() {
+                    @Override
+                    public void onUpdate(int num) {
+                        if (num == 0) {
+                            releaseHistory.setAgaining(false);
+                        }
+                        againNum.setText(num + "");
+                        releaseHistory.setAgainNum(num);
+                        releaseHistories.set(position, releaseHistory);
+                        UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
+                    }
+                });
+                againReleaseUtil.doAgain();
+                releaseHistory.setAgaining(true);
+                releaseHistories.set(position, releaseHistory);
+                UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
+            }
             return view;
         }
     }
@@ -166,4 +187,6 @@ public class ReleaseHistoryFragment extends BaseFragment<FragmentReleaseHistoryB
             }
         }
     }
+
+
 }

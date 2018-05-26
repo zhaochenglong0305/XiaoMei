@@ -145,7 +145,7 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 }
                 showLoading();
                 String releseMsg = CreateSendMsg.createReleaseMsg(getContext(), type, binding.tvPublishFrom.getText().toString(), "", publishMsg);
-                mainActivity.sendMsgToSocket(releseMsg);
+                mainActivity.sendMsgToSocket(releseMsg, false);
                 break;
             case R.id.rl_publish_from:
                 cityType = 1;
@@ -446,7 +446,7 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
 
         @Override
         public View getView(int position, View view, ViewGroup parent) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_release_spinner,parent,false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.adapter_release_spinner, parent, false);
             TextView textView = view.findViewById(R.id.tv_text);
             String con = text[position];
             textView.setText(con);

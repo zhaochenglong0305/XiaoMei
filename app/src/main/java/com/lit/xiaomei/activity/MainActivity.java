@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     private boolean isClientFaile = false;
     private User.ListDataBean listDataBean = new User.ListDataBean();
     private LineDataReceiver lineDataReceiver;
+    private boolean isAgain = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
     @Override
     public void initView() {
         super.initView();
-        ips = UseInfoManager.getStringArraylist(this,"NetIPs");
+        ips = UseInfoManager.getStringArraylist(this, "NetIPs");
         lineDataReceiver = new LineDataReceiver();
         registerReceiver(lineDataReceiver, new IntentFilter(GlobalVariable.ReceiverAction.LINE_MSG));
         UseInfoManager.putBoolean(this, "isStartReceive", false);
@@ -157,7 +158,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
 
     private void initSocket() {
         String ip = HttpUrl.BASE_URL.substring(HttpUrl.BASE_URL.indexOf("//") + 2, HttpUrl.BASE_URL.indexOf(":8081"));
-        Log.e("xTcpClient", "ip=="+ip);
+        Log.e("xTcpClient", "ip==" + ip);
         TargetInfo targetInfo = new TargetInfo(ip, 7600);
         xTcpClient = XTcpClient.getTcpClient(targetInfo);
         xTcpClient.addTcpClientListener(this);
@@ -269,7 +270,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
             }
         }
         if (receive.contains("SJSB")) {
-            sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
+            if (!isAgain){
+                sendBroadcast(new Intent(GlobalVariable.ReceiverAction.RELEASE_RESULT).putExtra("Msg", receive));
+            }
         }
     }
 
@@ -284,14 +287,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements R
         public void onReceive(Context context, Intent intent) {
             if (!TextUtils.isEmpty(intent.getStringExtra("msg"))) {
                 String msg = intent.getStringExtra("msg");
-                sendMsgToSocket(msg);
+                sendMsgToSocket(msg, false);
             }
         }
     }
 
 
-    public void sendMsgToSocket(String msg) {
+    public void sendMsgToSocket(String msg, boolean isAgain) {
         xTcpClient.sendMsg(msg);
+        this.isAgain = isAgain;
     }
 
     public void showInformationFragment() {

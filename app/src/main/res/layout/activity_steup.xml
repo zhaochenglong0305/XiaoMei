@@ -134,6 +134,35 @@
                 android:button="@drawable/checkbox_style"
                 android:checked="true" />
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_show_phonenumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@null">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:text="显示电话"
+                android:textColor="#595a6e"
+                android:textSize="20sp" />
+
+            <CheckBox
+                android:id="@+id/cb_show_phonenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:button="@drawable/checkbox_style"
+                android:checked="false" />
+        </RelativeLayout>
 
     </LinearLayout>
 

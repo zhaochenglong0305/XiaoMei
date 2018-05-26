@@ -1,5 +1,6 @@
 package com.lit.xiaomei.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.CompoundButton;
 import com.fyjr.baselibrary.base.BaseActivity;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.bean.Constants;
+import com.lit.xiaomei.bean.GlobalVariable;
 import com.lit.xiaomei.databinding.ActivitySteupBinding;
 import com.lit.xiaomei.manager.UseInfoManager;
 
@@ -28,6 +30,7 @@ public class SteupActivity extends BaseActivity<ActivitySteupBinding> implements
         binding.rlIsxsdh.setOnClickListener(this);
         binding.rlIsbigtext.setOnClickListener(this);
         binding.rlMsgSong.setOnClickListener(this);
+        binding.rlShowPhonenumber.setOnClickListener(this);
 
         if (UseInfoManager.getBoolean(this, Constants.Tag.autoLogin, false)) {
             binding.autoLogin.setChecked(true);
@@ -92,6 +95,24 @@ public class SteupActivity extends BaseActivity<ActivitySteupBinding> implements
                 }
             }
         });
+        if (UseInfoManager.getBoolean(this, "showPhoneNumber", false)) {
+            binding.cbShowPhonenumber.setChecked(true);
+        } else {
+            binding.cbShowPhonenumber.setChecked(false);
+        }
+
+        binding.cbShowPhonenumber.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    UseInfoManager.putBoolean(SteupActivity.this, "showPhoneNumber", b);
+                } else {
+                    UseInfoManager.putBoolean(SteupActivity.this, "showPhoneNumber", b);
+                }
+                sendBroadcast(new Intent(GlobalVariable.ReceiverAction.UPDATE_INFORMATION));
+            }
+        });
+
     }
 
     @Override
@@ -100,37 +121,36 @@ public class SteupActivity extends BaseActivity<ActivitySteupBinding> implements
             case R.id.rl_autoLogin:
                 if (binding.autoLogin.isChecked()) {
                     binding.autoLogin.setChecked(false);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.autoLogin, false);
                 } else {
                     binding.autoLogin.setChecked(true);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.autoLogin, true);
                 }
                 break;
             case R.id.rl_isxsdh:
                 if (binding.isxsdh.isChecked()) {
                     binding.isxsdh.setChecked(false);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.DIANHUA, false);
                 } else {
                     binding.isxsdh.setChecked(true);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.DIANHUA, true);
                 }
                 break;
             case R.id.rl_isbigtext:
                 if (binding.isbigtext.isChecked()) {
                     binding.isbigtext.setChecked(false);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.BIGTEXT, false);
                 } else {
                     binding.isbigtext.setChecked(true);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.BIGTEXT, true);
                 }
                 break;
             case R.id.rl_MsgSong:
                 if (binding.msgsong.isChecked()) {
                     binding.msgsong.setChecked(false);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.SONG, false);
                 } else {
                     binding.msgsong.setChecked(true);
-                    UseInfoManager.putBoolean(SteupActivity.this, Constants.Tag.SONG, true);
+                }
+                break;
+            case R.id.rl_show_phonenumber:
+                if (binding.cbShowPhonenumber.isChecked()) {
+                    binding.cbShowPhonenumber.setChecked(false);
+                } else {
+                    binding.cbShowPhonenumber.setChecked(true);
                 }
                 break;
         }

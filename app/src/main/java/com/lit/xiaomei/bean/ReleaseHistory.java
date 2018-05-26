@@ -11,7 +11,16 @@ public class ReleaseHistory {
     private int againNum = 0;
     private String releaseType = "";
     private String from = "";
+    private boolean isAgaining = false;
 
+
+    public boolean isAgaining() {
+        return isAgaining;
+    }
+
+    public void setAgaining(boolean againing) {
+        isAgaining = againing;
+    }
 
     public ReleaseHistory() {
 
