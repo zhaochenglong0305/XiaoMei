@@ -36,6 +36,7 @@ import com.lit.xiaomei.bean.ReleaseHistory;
 import com.lit.xiaomei.bean.User;
 import com.lit.xiaomei.manager.LocationManager;
 import com.lit.xiaomei.manager.UseInfoManager;
+import com.lit.xiaomei.utils.AgainReleaseUtil;
 import com.lit.xiaomei.utils.CreateSendMsg;
 import com.lit.xiaomei.view.DialogCarLongType;
 import com.lit.xiaomei.view.DialogGoodType;
@@ -208,7 +209,9 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 if (UseInfoManager.getReleseaeHistoryArraylist(getContext()) != null) {
                     releaseHistories = UseInfoManager.getReleseaeHistoryArraylist(getContext());
                 }
-                releaseHistories.add(new ReleaseHistory(publishMsg, TimeUtil.currentTimeMillis(), againTime, againNum, type, binding.tvPublishFrom.getText().toString()));
+                ReleaseHistory rh = new ReleaseHistory(publishMsg, TimeUtil.currentTimeMillis(), againTime, againNum, type, binding.tvPublishFrom.getText().toString());
+                releaseHistories.add(rh);
+                doAgainRelease(rh);
                 UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
                 getContext().sendBroadcast(new Intent(GlobalVariable.ReceiverAction.UPDATE_HISTORY));
 //                initRelease();
@@ -218,6 +221,19 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
                 showMessage("网络异常！");
             }
         }
+    }
+
+    private void doAgainRelease(final ReleaseHistory releaseHistory) {
+        AgainReleaseUtil againReleaseUtil = new AgainReleaseUtil(releaseHistory, mainActivity, new AgainReleaseUtil.OnUpdateNumListener() {
+            @Override
+            public void onUpdate(int num) {
+                if (num == 0) {
+                    releaseHistory.setAgaining(false);
+                }
+                releaseHistory.setAgainNum(num);
+            }
+        });
+        againReleaseUtil.doAgain();
     }
 
     private void showCityDialog() {

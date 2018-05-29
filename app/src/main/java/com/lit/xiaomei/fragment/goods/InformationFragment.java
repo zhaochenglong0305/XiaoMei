@@ -302,7 +302,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
 
     @Override
     public void onRefresh() {
-        isNear = false;
+//        isNear = false;
         isShowTitle = false;
         isLoad = false;
         doSearch("0", doProvince, doCity, CityListToString(addCities), CityListToString(searchEdits));

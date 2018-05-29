@@ -136,24 +136,24 @@ public class ReleaseHistoryFragment extends BaseFragment<FragmentReleaseHistoryB
                     notifyDataSetChanged();
                 }
             });
-            if (!releaseHistory.isAgaining()) {
-                AgainReleaseUtil againReleaseUtil = new AgainReleaseUtil(releaseHistory, mainActivity, new AgainReleaseUtil.OnUpdateNumListener() {
-                    @Override
-                    public void onUpdate(int num) {
-                        if (num == 0) {
-                            releaseHistory.setAgaining(false);
-                        }
-                        againNum.setText(num + "");
-                        releaseHistory.setAgainNum(num);
-                        releaseHistories.set(position, releaseHistory);
-                        UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
-                    }
-                });
-                againReleaseUtil.doAgain();
-                releaseHistory.setAgaining(true);
-                releaseHistories.set(position, releaseHistory);
-                UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
-            }
+//            if (!releaseHistory.isAgaining()) {
+//                AgainReleaseUtil againReleaseUtil = new AgainReleaseUtil(releaseHistory, mainActivity, new AgainReleaseUtil.OnUpdateNumListener() {
+//                    @Override
+//                    public void onUpdate(int num) {
+//                        if (num == 0) {
+//                            releaseHistory.setAgaining(false);
+//                        }
+//                        againNum.setText(num + "");
+//                        releaseHistory.setAgainNum(num);
+//                        releaseHistories.set(position, releaseHistory);
+//                        UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
+//                    }
+//                });
+//                againReleaseUtil.doAgain();
+//                releaseHistory.setAgaining(true);
+//                releaseHistories.set(position, releaseHistory);
+//                UseInfoManager.putReleseaeHistoryArraylist(getContext(), releaseHistories);
+//            }
             return view;
         }
     }
