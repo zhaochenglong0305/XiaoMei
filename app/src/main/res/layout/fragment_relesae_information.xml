@@ -272,7 +272,7 @@
                                 android:layout_toLeftOf="@+id/ll_company"
                                 android:background="@null"
                                 android:hint="请选择货物数量"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:textColor="@color/c888888"
                                 android:textColorHint="@color/c888888"
                                 android:textSize="15sp" />
@@ -346,7 +346,7 @@
                                 android:layout_toLeftOf="@+id/ll_company_money"
                                 android:background="@null"
                                 android:hint="请选择货物运费"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:textColor="@color/c888888"
                                 android:textColorHint="@color/c888888"
                                 android:textSize="15sp" />

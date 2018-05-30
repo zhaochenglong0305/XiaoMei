@@ -94,6 +94,7 @@ public class HttpUtil {
 //        doPost(HttpUrl.LOGIN, map, callBack);
         doGet(HttpUrl.LOGIN + pinUrl(map), callBack);
     }
+
     /**
      * 登录
      *
@@ -118,12 +119,14 @@ public class HttpUtil {
 
     /**
      * 版本更新
+     * http://113.6.252.164:8081/sjfwq/web/ApkUpdate/CheckApkUpdate_List.aspx
+     * 版本上传
      *
      * @param callBack
      */
     public void checkVersion(Callback callBack) {
         Map<String, Object> map = new HashMap<>();
-        map.put("id", 10);
+        map.put("ID", 10);
         doGet(HttpUrl.CHECKVERSION + pinUrl(map), callBack);
     }
 
@@ -230,7 +233,7 @@ public class HttpUtil {
      * @param PWD
      * @param callBack
      */
-    public void updatePassword(String NetID, String PWD,String key, Callback callBack) {
+    public void updatePassword(String NetID, String PWD, String key, Callback callBack) {
         Map<String, Object> map = new HashMap<>();
         map.put("NetID", NetID);
         map.put("PWD", PWD);

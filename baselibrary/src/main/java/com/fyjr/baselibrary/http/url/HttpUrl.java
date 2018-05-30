@@ -25,7 +25,7 @@ public class HttpUrl {
     /**
      * 检查更新
      */
-    public static String CHECKVERSION = "sjfwq/web/ApkUpdate/CheckApkUpdate.aspx";
+    public static String CHECKVERSION = "webservice/Update/CheckApkUpdate.aspx";
 
     /**
      * 信息搜索
