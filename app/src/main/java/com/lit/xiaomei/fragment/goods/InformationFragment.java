@@ -706,7 +706,11 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     } else {
                         City city = searchCities.get(i);
                         searchSelectCity = city.getCityName();
-                        searchZones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                        if (zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()}) != null) {
+                            searchZones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                        }else {
+                            searchZones.clear();
+                        }
                         searchZones.add(0, new Zone(searchSelectCity));
                         binding.gvCitylevel2.setAdapter(searchZoneAdapter);
                         searchZoneAdapter.setDatas(3, searchZones);
@@ -732,32 +736,32 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             if (bean != null) {
                 if (filterText != null) {
-                        if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() == 0) {
-                            for (String text : filterText.getFilter1()) {
-                                if (bean.getMS().contains(text)) {
-                                    doFilter(bean);
-                                    break;
-                                }
+                    if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() == 0) {
+                        for (String text : filterText.getFilter1()) {
+                            if (bean.getMS().contains(text)) {
+                                doFilter(bean);
+                                break;
                             }
-                        } else if (filterText.getFilter1().size() == 0 && filterText.getFilter2().size() != 0) {
-                            for (String text : filterText.getFilter2()) {
-                                if (bean.getMS().contains(text)) {
-                                    doFilter(bean);
-                                    break;
-                                }
+                        }
+                    } else if (filterText.getFilter1().size() == 0 && filterText.getFilter2().size() != 0) {
+                        for (String text : filterText.getFilter2()) {
+                            if (bean.getMS().contains(text)) {
+                                doFilter(bean);
+                                break;
                             }
-                        } else if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() != 0) {
-                            for (String text : filterText.getFilter1()) {
-                                if (bean.getMS().contains(text)) {
-                                    for (String text2 : filterText.getFilter2()) {
-                                        if (bean.getMS().contains(text2)) {
-                                            doFilter(bean);
-                                            break;
-                                        }
+                        }
+                    } else if (filterText.getFilter1().size() != 0 && filterText.getFilter2().size() != 0) {
+                        for (String text : filterText.getFilter1()) {
+                            if (bean.getMS().contains(text)) {
+                                for (String text2 : filterText.getFilter2()) {
+                                    if (bean.getMS().contains(text2)) {
+                                        doFilter(bean);
+                                        break;
                                     }
                                 }
                             }
                         }
+                    }
                 }
             }
         }
@@ -789,7 +793,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         filterText = new Filter();
         if (!TextUtils.isEmpty(INCITY) || !TextUtils.isEmpty(INFOR)) {
             if (!isLoad) {
-                mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY),false);
+                mainActivity.sendMsgToSocket(CreateSendMsg.createInformationMsg(getContext(), PROV, CITY), false);
             }
             filterText.setFilter1(addCities);
             filterText.setFilter2(searchEdits);

@@ -70,6 +70,7 @@ public class UpdatePasswordActivity extends BaseActivity<ActivityUpdatePasswordB
                 } else {
                     pwd = binding.etPwd.getText().toString();
                     pwd2 = binding.etPwd2.getText().toString();
+
                     if (TextUtils.isEmpty(pwd)) {
                         showMessage("密码不能为空！");
                         return;
@@ -80,6 +81,10 @@ public class UpdatePasswordActivity extends BaseActivity<ActivityUpdatePasswordB
                     }
                     if (!TextUtils.equals(pwd, pwd2)) {
                         showMessage("密码不一致！");
+                        return;
+                    }
+                    if (pwd.length() < 6 || pwd.length() > 8) {
+                        showMessage("密码长度为6~8个字符！");
                         return;
                     }
                     doFinish(user, pwd);

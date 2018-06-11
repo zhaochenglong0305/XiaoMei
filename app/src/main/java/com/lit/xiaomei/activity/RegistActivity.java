@@ -124,8 +124,8 @@ public class RegistActivity extends BaseActivity<ActivityRegistBinding> implemen
                     showMessage("密码不能为空！");
                     return;
                 }
-                if (pwd.length() < 6) {
-                    showMessage("密码最少为6位数！");
+                if (pwd.length() < 6 || pwd.length() > 8) {
+                    showMessage("密码长度为6~8个字符！");
                     return;
                 }
                 if (TextUtils.isEmpty(pwd2)) {
