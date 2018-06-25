@@ -236,6 +236,7 @@ public class UpdateManager {
             return;
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri contentUri = FileProvider.getUriForFile(mContext, "com.lit.xiaomei.fileProvider", apkfile);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

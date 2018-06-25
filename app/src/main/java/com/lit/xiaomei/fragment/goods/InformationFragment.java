@@ -1224,6 +1224,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     if (TextUtils.equals(doCity, cityRes)) {
                         return;
                     }
+                    if (TextUtils.equals(listDataBean.getCT(),"集装箱")){
+                        return;
+                    }
                     final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getContext());
                     normalDialog.setTitle("定位成功");
                     normalDialog.setMessage("是否切换到" + city + "?");
