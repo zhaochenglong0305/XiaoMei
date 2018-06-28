@@ -10,28 +10,40 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DownloadManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.IntentFilter;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.FileProvider;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ProgressBar;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fyjr.baselibrary.utils.VersionUtil;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.activity.MainActivity;
+
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class UpdateManager {
     ArrayList<String> getCode = new ArrayList<String>();
@@ -42,6 +54,11 @@ public class UpdateManager {
     private static final int DOWNLOAD_FINISH = 2;
     private static final int DOWNLOAD_ERROR = 3;
     private AlertDialog updateYesOrNo;
+    private DownloadManager mDownloadManager;
+    private long mId;
+    private TextView mPrecent;
+    private ProgressBar mProgressBar;
+    private Dialog mDialog1;
 
     public String getUrlStr() {
         return urlStr;
@@ -126,7 +143,8 @@ public class UpdateManager {
                 @Override
                 public void onClick(View v) {
                     updateYesOrNo.dismiss();
-                    showDownloadDialog();
+//                    showDownloadDialog();
+                    showDownloadDialog2();
                     // Intent intent = new Intent();
                     // intent.setAction("android.intent.action.VIEW");
                     // Uri content_url =
@@ -154,6 +172,31 @@ public class UpdateManager {
         }
     }
 
+    private void showDownloadDialog2() {
+        mDownloadManager = (DownloadManager) mContext.getSystemService(DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(urlStr));
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setTitle("下载");
+        request.setDescription("apk正在下载");
+        //设置保存目录  /storage/emulated/0/Android/包名/files/Download
+        request.setDestinationInExternalFilesDir(mContext, Environment.DIRECTORY_DOWNLOADS, "sjphw.apk");
+        mId = mDownloadManager.enqueue(request);
+        //注册内容观察者，实时显示进度
+        MyContentObserver downloadChangeObserver = new MyContentObserver(null);
+        mContext.getContentResolver().registerContentObserver(Uri.parse("content://downloads/my_downloads"), true, downloadChangeObserver);
+        //广播监听下载完成
+        listener(mId);
+        //弹出进度条，先隐藏前一个dialog
+//        dialog.dismiss();
+        //显示进度的对话框
+        mDialog1 = new Dialog(mContext, R.style.Theme_AppCompat_Dialog_Alert);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.progress_dialog, null);
+        mProgressBar = view.findViewById(R.id.pb);
+        mPrecent = view.findViewById(R.id.tv_precent);
+        mDialog1.setContentView(view);
+        mDialog1.show();
+    }
+
     private void showDownloadDialog() {
         // 点击通知栏后打开的activity
         Intent intent = new Intent(mContext, MainActivity.class);
@@ -161,13 +204,34 @@ public class UpdateManager {
                 0);
         manager = (NotificationManager) mContext
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        notif = new Notification();
-        notif.icon = R.mipmap.tiger;
-        notif.tickerText = "更新通知";
-        // 通知栏显示所用到的布局文件
-        notif.contentView = new RemoteViews(mContext.getPackageName(),
-                R.layout.p);
-        notif.contentIntent = pIntent;
+        if (Build.VERSION.SDK_INT >= 26) {
+            NotificationChannel mChannel = new NotificationChannel("lit_sjphw_01", "手机配货网", NotificationManager.IMPORTANCE_LOW);
+            mChannel.setDescription("下载");
+            mChannel.enableLights(false);
+            mChannel.enableVibration(false);
+            manager.createNotificationChannel(mChannel);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notif = new Notification.Builder(mContext.getApplicationContext(), "lit_sjphw_01")
+                    .setSmallIcon(R.mipmap.tiger)
+                    .setTicker("更新通知")
+                    .setContent(new RemoteViews(mContext.getPackageName(),
+                            R.layout.p))
+                    .setContentIntent(pIntent).build();
+        } else {
+            notif = new NotificationCompat.Builder(mContext.getApplicationContext(), "lit_sjphw_01")
+                    .setSmallIcon(R.mipmap.tiger)
+                    .setTicker("更新通知")
+                    .setContent(new RemoteViews(mContext.getPackageName(),
+                            R.layout.p))
+                    .setContentIntent(pIntent).build();
+        }
+//        notif.icon = R.mipmap.tiger;
+//        notif.tickerText = "更新通知";
+//        // 通知栏显示所用到的布局文件
+//        notif.contentView = new RemoteViews(mContext.getPackageName(),
+//                R.layout.p);
+//        notif.contentIntent = pIntent;
         manager.notify(0, notif);
         downloadApk();
     }
@@ -247,5 +311,65 @@ public class UpdateManager {
             intent.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");
         }
         mContext.startActivity(intent);
+    }
+
+    private void listener(final long id) {
+        //Toast.makeText(MainActivity.this,"XXXX",Toast.LENGTH_SHORT).show();
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long longExtra = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (id == longExtra) {
+                    installApk();
+//                    Uri downloadUri = mDownloadManager.getUriForDownloadedFile(id);
+                    File apkFile = mContext.getExternalFilesDir("DownLoad/sjphw.apk");
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        Uri contentUri = FileProvider.getUriForFile(mContext, "com.lit.xiaomei.fileProvider", apkFile);
+                        install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        install.setDataAndType(contentUri, "application/vnd.android.package-archive");
+                    } else {
+                        install.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        install.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                    }
+                    mContext.startActivity(install);
+                }
+            }
+        };
+        mContext.registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private class MyContentObserver extends ContentObserver {
+
+        public MyContentObserver(Handler handler) {
+            super(handler);
+        }
+
+
+        @TargetApi(Build.VERSION_CODES.N)
+        @Override
+        public void onChange(boolean selfChange) {
+            DownloadManager.Query query = new DownloadManager.Query();
+            query.setFilterById(mId);
+            DownloadManager dManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+            final Cursor cursor = dManager.query(query);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int totalColumn = cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES);
+                final int currentColumn = cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+                int totalSize = cursor.getInt(totalColumn);
+                int currentSize = cursor.getInt(currentColumn);
+                float percent = (float) currentSize / (float) totalSize;
+                float progress = (float) Math.floor(percent * 100);
+                mPrecent.setText(progress + "%");
+                mProgressBar.setProgress((int) progress, true);
+                if (progress == 100)
+                    mDialog1.dismiss();
+            }
+        }
+
     }
 }

@@ -224,7 +224,6 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                     }
                     break;
                 case 1:
-
                     Information data = (Information) msg.obj;
                     if (isLoad) {
                         if (data.getSearchINFO().size() == 0 || data == null) {

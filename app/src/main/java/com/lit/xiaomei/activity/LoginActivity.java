@@ -140,7 +140,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
             case R.id.tv_forget_pwd:
-                startActivityForResult(new Intent(this, UpdatePasswordActivity.class),REQUEST_CODE);
+                startActivityForResult(new Intent(this, UpdatePasswordActivity.class), REQUEST_CODE);
                 break;
             case R.id.tv_kefu:
                 getCityPhone();
@@ -154,7 +154,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
             if (data == null) {
                 return;
             }
-            switch (resultCode){
+            switch (resultCode) {
                 case 101:
                     userName = data.getStringExtra("userName");
                     binding.etUsername.setText(userName);
@@ -217,12 +217,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 showMessage("机器码发生变化不能登录！");
                 break;
             case 1:
-                UseInfoManager.putString(LoginActivity.this, "NetIP",  HttpUrl.BASE_URL);
+                UseInfoManager.putString(LoginActivity.this, "NetIP", HttpUrl.BASE_URL);
                 data.getListData().get(0).setPW(binding.etPassword.getText().toString());
                 UseInfoManager.putBoolean(LoginActivity.this, "RememberPassword", binding.cbRememberPassword.isChecked());
                 UseInfoManager.putBoolean(LoginActivity.this, Constants.Tag.autoLogin, binding.cbAutomaticLogon.isChecked());
                 UseInfoManager.saveUser(LoginActivity.this, data);
                 UseInfoManager.putString(LoginActivity.this, "userCity", data.getListData().get(0).getCT());
+                UseInfoManager.putString(LoginActivity.this, "CanNotLookCity", data.getListData().get(0).getJZ());
                 showMessage("登录成功！");
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 finish();

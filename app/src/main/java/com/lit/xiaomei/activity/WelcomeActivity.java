@@ -47,7 +47,6 @@ public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding> {
     }
 
     private void initNetIP() {
-        countTimer();
         new Thread() {
             @Override
             public void run() {
@@ -106,6 +105,13 @@ public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding> {
             finishTime = timer;
             Log.e("long", finishTime + "====" + timer);
             UseInfoManager.putStringArraylist(WelcomeActivity.this, "NetIPs", ips);
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                    finish();
+                }
+            }, 2000);
         }
     }
 
@@ -139,15 +145,15 @@ public class WelcomeActivity extends BaseActivity<ActivityWelcomeBinding> {
     };
 
     private void countTimer() {
-        mHandler.postDelayed(TimerRunnable, 1000);
+        mHandler.postDelayed(TimerRunnable, 2000);
         mHandler.postDelayed(loginRunnable, 1000);
     }
 
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         mHandler.removeCallbacks(TimerRunnable);
         mHandler.removeCallbacks(loginRunnable);
+        super.onDestroy();
     }
 }

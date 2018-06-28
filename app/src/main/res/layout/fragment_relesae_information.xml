@@ -373,7 +373,7 @@
                                     android:layout_height="match_parent"
                                     android:layout_marginRight="5dp"
                                     android:gravity="center_vertical|right"
-                                    android:text="元/吨"
+                                    android:text="元"
                                     android:textColor="@color/c4A9EFE"
                                     android:textSize="15sp" />
                             </LinearLayout>

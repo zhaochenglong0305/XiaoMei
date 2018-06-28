@@ -55,7 +55,7 @@ public class ReleaseInformationFragment extends BaseFragment<FragmentRelesaeInfo
     private String type = "货源";
     private final static int REQUESTCODE = 1; // 返回的结果码
     private String danwei = "吨";
-    private String danjia = "元/吨";
+    private String danjia = "元";
     private int informationType = 1;
     private int cityType = 1;
     private String from = "", to = "", che = "", huo = "", shu = "", money = "";

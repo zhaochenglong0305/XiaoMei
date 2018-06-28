@@ -32,7 +32,6 @@ import com.lit.xiaomei.utils.StringUtil;
  */
 
 public class InformationAdapter extends BaseAdapter {
-    private LayoutInflater mInflater;
     private Context context;
     private List<Information.SearchINFOBean> searchINFOBeans = new ArrayList<>();
     private View.OnClickListener listener;
@@ -41,7 +40,6 @@ public class InformationAdapter extends BaseAdapter {
     private int num = -1;
 
     public InformationAdapter(Context context, List<Information.SearchINFOBean> searchINFOBeans, View.OnClickListener listener) {
-        mInflater = LayoutInflater.from(context);
         this.context = context;
         this.searchINFOBeans = searchINFOBeans;
         this.listener = listener;
@@ -67,7 +65,8 @@ public class InformationAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder holder = null;
         if (view == null) {
-            view = mInflater.inflate(R.layout.adapter_information, viewGroup, false);//加载布局
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.adapter_information, null);//加载布局
             holder = new ViewHolder();
             holder.tv_title = (TextView) view.findViewById(R.id.tv_zhoubian_title);
             holder.tv_time = (TextView) view.findViewById(R.id.tv_time);

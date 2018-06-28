@@ -143,6 +143,8 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
     private Ringtone mRingtone;
     private UpdateDataReceiver updateDataReceiver;
 
+    private List<String> canNotLookCities = new ArrayList<>();
+
     public InformationFragment() {
     }
 
@@ -197,8 +199,11 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         binding.gvCitylevel1.setOnItemClickListener(new FromOnItemClick());
         binding.gvCitylevel2.setOnItemClickListener(new SearchOnItemClick());
         fromProvinceAdapter = new CityAdapter(getContext(), 1, provinces);
+        fromProvinceAdapter.setCanNotLook(canNotLookCities);
         fromCityAdapter = new CityAdapter(getContext(), 2, cities);
+        fromCityAdapter.setCanNotLook(canNotLookCities);
         fromZoneAdapter = new CityAdapter(getContext(), 3, zones);
+        fromZoneAdapter.setCanNotLook(canNotLookCities);
         searchProvinceAdapter = new CityAdapter(getContext(), 1, provinces);
         searchCityAdapter = new CityAdapter(getContext(), 2, cities);
         searchZoneAdapter = new CityAdapter(getContext(), 3, zones);
@@ -264,6 +269,18 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
         carType.add("保温");
         carType.add("冷藏");
         carType.add("危险品");
+
+        if (!TextUtils.isEmpty(UseInfoManager.getString(getContext(), "CanNotLookCity"))) {
+            String citytext = UseInfoManager.getString(getContext(), "CanNotLookCity");
+            if (citytext.contains("~")) {
+                String[] citytexts = citytext.split("~");
+                for (int i = 0; i < citytexts.length; i++) {
+                    canNotLookCities.add(citytexts[i]);
+                }
+            } else {
+                canNotLookCities.add(citytext);
+            }
+        }
     }
 
 //    private class OnSearchLv2ItemClickListener implements AdapterView.OnItemClickListener {
@@ -625,6 +642,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                 case 1:
                     Province province = provinces.get(i);
                     selectProvince = province.getProName();
+                    if (canNotLookCities.contains(selectProvince)){
+                        return;
+                    }
                     if (TextUtils.equals(selectProvince, "北京") ||
                             TextUtils.equals(selectProvince, "天津") ||
                             TextUtils.equals(selectProvince, "上海") ||
@@ -655,6 +675,9 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     initFromLayout();
                     City city = cities.get(i);
                     selectCity = city.getCityName();
+                    if (canNotLookCities.contains(selectCity)){
+                        return;
+                    }
                     doProvince = selectProvince;
                     doCity = selectCity;
                     isLoad = false;
@@ -708,7 +731,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                         searchSelectCity = city.getCityName();
                         if (zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()}) != null) {
                             searchZones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
-                        }else {
+                        } else {
                             searchZones.clear();
                         }
                         searchZones.add(0, new Zone(searchSelectCity));
@@ -1224,7 +1247,10 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                     if (TextUtils.equals(doCity, cityRes)) {
                         return;
                     }
-                    if (TextUtils.equals(listDataBean.getCT(),"集装箱")){
+                    if (TextUtils.equals(listDataBean.getCT(), "集装箱")) {
+                        return;
+                    }
+                    if (canNotLookCities.contains(cityRes)){
                         return;
                     }
                     final AlertDialog.Builder normalDialog = new AlertDialog.Builder(getContext());

@@ -28,6 +28,7 @@ public class CityAdapter<T> extends BaseAdapter {
     // 1：省，2：市，3：区
     private int CityType = 0;
     private String select = "";
+    private List<String> canNotLookCities = new ArrayList<>();
 
     public CityAdapter(Context context, int CityType, List<T> citys) {
         mInflater = LayoutInflater.from(context);
@@ -70,9 +71,12 @@ public class CityAdapter<T> extends BaseAdapter {
                 if (TextUtils.equals(select, province.getProName())) {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
-                }else {
+                } else {
                     holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
+                if (canNotLookCities.contains(province.getProName())) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.ce8e8e8));
                 }
                 break;
             case 2:
@@ -81,9 +85,12 @@ public class CityAdapter<T> extends BaseAdapter {
                 if (TextUtils.equals(select, city.getCityName())) {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
-                }else {
+                } else {
                     holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
+                if (canNotLookCities.contains(city.getCityName())) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.ce8e8e8));
                 }
                 break;
             case 3:
@@ -93,9 +100,12 @@ public class CityAdapter<T> extends BaseAdapter {
                 if (TextUtils.equals(select, zoneName)) {
                     holder.text.setTextColor(context.getResources().getColor(R.color.cFD933C));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city_select);
-                }else {
+                } else {
                     holder.text.setTextColor(context.getResources().getColor(R.color.black));
                     holder.text.setBackgroundResource(R.drawable.boder_fillet_city);
+                }
+                if (canNotLookCities.contains(zoneName)) {
+                    holder.text.setTextColor(context.getResources().getColor(R.color.ce8e8e8));
                 }
                 break;
             default:
@@ -120,5 +130,10 @@ public class CityAdapter<T> extends BaseAdapter {
 
     private class ViewHolder {
         TextView text;
+    }
+
+    public void setCanNotLook(List<String> canNotLookCities) {
+        this.canNotLookCities = canNotLookCities;
+        notifyDataSetChanged();
     }
 }
