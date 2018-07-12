@@ -39,6 +39,7 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fyjr.baselibrary.utils.MathUtil;
 import com.fyjr.baselibrary.utils.VersionUtil;
 import com.lit.xiaomei.R;
 import com.lit.xiaomei.activity.MainActivity;
@@ -127,6 +128,7 @@ public class UpdateManager {
             }
             showNoticeDialog();
         }
+//        showNoticeDialog();
     }
 
 
@@ -364,7 +366,7 @@ public class UpdateManager {
                 int currentSize = cursor.getInt(currentColumn);
                 float percent = (float) currentSize / (float) totalSize;
                 float progress = (float) Math.floor(percent * 100);
-                mPrecent.setText(progress + "%");
+                mPrecent.setText(progress + "");
                 mProgressBar.setProgress((int) progress, true);
                 if (progress == 100)
                     mDialog1.dismiss();

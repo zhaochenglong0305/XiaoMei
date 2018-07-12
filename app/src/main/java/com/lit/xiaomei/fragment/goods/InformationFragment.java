@@ -1151,6 +1151,7 @@ public class InformationFragment extends BaseFragment<FragmentInformationBinding
                             }
                             binding.reRefresh.setNoMoreData();
                         } else {
+                            searchINFOBeans.addAll(data.getSearchINFO());
                             adapter.addListMsg(data.getSearchINFO());
                         }
                     } else {

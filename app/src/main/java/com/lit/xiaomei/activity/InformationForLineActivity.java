@@ -117,6 +117,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         binding.reRefresh.setRefreshing(true);
         searchInformation(listDataBean.getUS(), listDataBean.getPW(), listDataBean.getKY(), "0", doProvince, CityListString(line.getFromCities()),
                 CityListString(line.getToCities()), "", CityListString(filterText));
+
     }
 
     private void searchInformation(String USER, String PASS, String KEYY,
@@ -229,6 +230,7 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                         if (data.getSearchINFO().size() == 0 || data == null) {
                             binding.reRefresh.setNoMoreData();
                         } else {
+                            searchINFOBeans.addAll(data.getSearchINFO());
                             adapter.addListMsg(data.getSearchINFO());
                         }
                     } else {
