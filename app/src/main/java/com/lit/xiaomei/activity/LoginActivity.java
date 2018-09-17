@@ -143,7 +143,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
                 startActivityForResult(new Intent(this, UpdatePasswordActivity.class), REQUEST_CODE);
                 break;
             case R.id.tv_kefu:
-                getCityPhone();
+                getCityPhone(userCity);
                 break;
         }
     }
@@ -289,21 +289,13 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
     }
 
 
-    private void getCityPhone() {
+    private void getCityPhone(String DName) {
         showLoading();
-        HttpUtil.getInstance().getCityPhone(new HttpCallBack<CityPhones>() {
+        HttpUtil.getInstance().getCityPhone(DName, new HttpCallBack<CityPhones>() {
             @Override
             public void onSuccess(CityPhones data, String msg) {
                 hideLoading();
-                CityPhones.OpratesBean opratesBean = null;
-                if (!TextUtils.isEmpty(userCity)) {
-                    for (CityPhones.OpratesBean ob : data.getOprates()) {
-                        if (TextUtils.equals(userCity, ob.getDName())) {
-                            opratesBean = ob;
-                            break;
-                        }
-                    }
-                }
+                CityPhones.OpratesBean opratesBean = data.getOprates().get(0);
                 DialogShowKeFu dialogShowKeFu = new DialogShowKeFu(LoginActivity.this, opratesBean);
                 dialogShowKeFu.showAtLocation(binding.rlLoginMain, Gravity.CENTER, 0, 0);
             }

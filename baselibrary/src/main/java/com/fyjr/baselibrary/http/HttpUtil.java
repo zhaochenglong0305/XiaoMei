@@ -3,6 +3,7 @@ package com.fyjr.baselibrary.http;
 
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.fyjr.baselibrary.http.url.HttpUrl;
 
@@ -71,6 +72,7 @@ public class HttpUtil {
      * @param callBack
      */
     private void doGet(String path, Callback callBack) {
+        Log.e("ting", "doGetPath:" + path);
         retrofitInstance.get(path, callBack);
     }
 
@@ -293,8 +295,10 @@ public class HttpUtil {
      *
      * @param callBack
      */
-    public void getCityPhone(Callback callBack) {
-        doGet(HttpUrl.GETCITYPHONE, callBack);
+    public void getCityPhone(String DName, Callback callBack) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("DName", DName);
+        doGet(HttpUrl.GETCITYPHONE + pinUrl(map), callBack);
     }
 
     /**

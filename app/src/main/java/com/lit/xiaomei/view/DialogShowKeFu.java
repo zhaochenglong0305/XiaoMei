@@ -30,7 +30,7 @@ public class DialogShowKeFu extends PopupWindow implements View.OnClickListener 
     private TextView tv_dialog_cancle;
     private TextView tv_kefu_phone;
     private TextView tv_kefu_weixin;
-    private String phone = "";
+    private String phone = "024-31677009";
     private String weixin = "";
 
 

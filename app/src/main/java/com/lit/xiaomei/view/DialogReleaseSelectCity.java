@@ -186,7 +186,11 @@ public class DialogReleaseSelectCity extends PopupWindow implements View.OnClick
                 } else {
                     City city = cities.get(i);
                     selectCity = city.getCityName();
-                    zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                    if (zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()}) != null) {
+                        zones = zoneIBaseDao.query("CityID=?", new String[]{city.getCitySort()});
+                    } else {
+                        zones.clear();
+                    }
                     zones.add(0, new Zone(selectCity));
                     cityGrid.setAdapter(zoneAdapter);
                     zoneAdapter.setDatas(3, zones);

@@ -9,22 +9,12 @@ import java.util.List;
 public class CityPhones {
 
     /**
-     * oprates : [{"ID":"2","departno":"02","DName":"沈阳","kefu":"024-31677009","weixin":"18640557055"},{"ID":"3","departno":"03","DName":"营口","kefu":"0417-3332770","weixin":"yk3332770"},{"ID":"4","departno":"04","DName":"鞍山","kefu":"0412-8880588","weixin":"as04128880588"},{"ID":"5","departno":"05","DName":"鲅鱼圈","kefu":"0417-3332535","weixin":"15941718740"},{"ID":"6","departno":"05","DName":"集装箱","kefu":"0417-3332535","weixin":"15941718740"},{"ID":"7","departno":"06","DName":"铁岭","kefu":"","weixin":""},{"ID":"8","departno":"08","DName":"集装箱","kefu":"0417-3332535","weixin":"15941718740"}]
-     * nonestatus : 0
-     * status : 1
+     * oprates : [{"ID":"0","departno":"","DName":"总台","kefu":"024-31677009","weixin":""}]
+     * status : 0
      */
 
-    private String nonestatus;
     private String status;
     private List<OpratesBean> oprates;
-
-    public String getNonestatus() {
-        return nonestatus;
-    }
-
-    public void setNonestatus(String nonestatus) {
-        this.nonestatus = nonestatus;
-    }
 
     public String getStatus() {
         return status;
@@ -44,11 +34,11 @@ public class CityPhones {
 
     public static class OpratesBean {
         /**
-         * ID : 2
-         * departno : 02
-         * DName : 沈阳
+         * ID : 0
+         * departno :
+         * DName : 总台
          * kefu : 024-31677009
-         * weixin : 18640557055
+         * weixin :
          */
 
         private String ID;

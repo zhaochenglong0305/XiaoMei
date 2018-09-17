@@ -44,7 +44,6 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         AdapterView.OnItemClickListener, RefreshLayout.OnLoadListener {
     private String fromText = "";
     private String toText = "";
-    private String filter = "";
     private Line line = new Line();
     private InformationHandler handler;
     private InformationAdapter adapter;
@@ -93,9 +92,9 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
         }
         setTitle(fromText + " — " + toText);
         setTitleTextColor("#ffffff");
-        if (line.getToCities().size() != 0) {
-            filterText.addAll(line.getToCities());
-        }
+//        if (line.getToCities().size() != 0) {
+//            filterText.addAll(line.getToCities());
+//        }
         if (line.getCarLong().size() != 0) {
             if (!line.getCarLong().contains("不限")) {
                 filterText.addAll(line.getCarLong());
@@ -298,7 +297,25 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
             Information.SearchINFOBean bean = FormatString.formatInformation(msg);
             Log.e("kong", "InformationForLineActivity获得数据：" + bean.getMS());
             if (bean != null) {
-                if (filterText.size() != 0) {
+                if (filterText.size() != 0 && line.getToCities().size() != 0) {
+                    for (String city : line.getToCities()) {
+                        for (String filter : filterText) {
+                            if (bean.getMS().contains(filter) && bean.getMS().contains(city)) {
+                                adapter.addMsg(bean);
+                                playSound();
+                                break;
+                            }
+                        }
+                    }
+                } else if (filterText.size() == 0 && line.getToCities().size() != 0) {
+                    for (String city : line.getToCities()) {
+                        if (bean.getMS().contains(city)) {
+                            adapter.addMsg(bean);
+                            playSound();
+                            break;
+                        }
+                    }
+                } else if (filterText.size() != 0 && line.getToCities().size() == 0) {
                     for (String filter : filterText) {
                         if (bean.getMS().contains(filter)) {
                             adapter.addMsg(bean);
@@ -306,7 +323,11 @@ public class InformationForLineActivity extends BaseActivity<ActivityInformation
                             break;
                         }
                     }
+                }else {
+                    adapter.addMsg(bean);
+                    playSound();
                 }
+
             }
         }
     }

@@ -54,7 +54,7 @@ public abstract class HttpCallBack<T> implements Callback<T> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            onFail(response.code(), "请求失败");
+            onFail(response.code(), "请求失败" + e);
         }
     }
 

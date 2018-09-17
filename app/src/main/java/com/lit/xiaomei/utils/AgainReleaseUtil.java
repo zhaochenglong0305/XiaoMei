@@ -27,8 +27,8 @@ public class AgainReleaseUtil {
 
     public void doAgain() {
         againNum = releaseHistory.getAgainNum();
-        againTime = 10000;
-//        againTime = releaseHistory.getAgainTime() * 60 * 1000;
+//        againTime = 10000;
+        againTime = releaseHistory.getAgainTime() * 60 * 1000;
         Log.e("again", releaseHistory.getReleaseContext() + "---重发次数" + againNum + "---间隔时间" + againTime);
         mHandler.postDelayed(releaseRunnable, againTime);
     }
